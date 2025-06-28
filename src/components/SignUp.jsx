@@ -36,7 +36,7 @@ function SignUp() {
       <form onSubmit={handleSubmit} className="p-8 bg-white dark:bg-secondary-800 rounded-xl shadow-xl flex flex-col gap-6 border border-secondary-100 dark:border-secondary-700">
         <div className="text-center mb-4">
           <h2 className="text-3xl font-bold text-secondary-900 dark:text-white mb-2">{t('signUp.title')}</h2>
-          <p className="text-secondary-600 dark:text-secondary-400">Créez votre compte</p>
+          <p className="text-secondary-600 dark:text-secondary-400">{t('signUp.subtitle')}</p>
         </div>
         
         <div className="flex flex-col gap-1">
@@ -80,7 +80,7 @@ function SignUp() {
           className="px-6 py-3 bg-primary-600 text-white rounded-lg hover:bg-primary-700 disabled:bg-secondary-400 disabled:cursor-not-allowed transition-colors font-medium"
           disabled={loading}
         >
-          {loading ? 'Création...' : t('signUp.submit')}
+          {loading ? t('signUp.loading') : t('signUp.submit')}
         </button>
       </form>
     </div>

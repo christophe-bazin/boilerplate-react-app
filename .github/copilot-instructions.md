@@ -34,6 +34,13 @@
 - Code propre et concis
 - Pas de données sensibles dans le code
 
+## Internationalisation (i18n)
+- Utiliser react-i18next pour tous les textes utilisateur
+- Importer `useTranslation` et utiliser `const { t } = useTranslation('namespace')`
+- Tous les textes affichés doivent utiliser `t('key')` (pas de fallbacks)
+- Organiser les traductions par namespace (auth, common, etc.)
+- Maintenir les fichiers de traduction dans `src/locales/fr/` et `src/locales/en/`
+
 ## Maintenance du projet
 - README.md : Maintenir les étapes d'installation et la description du projet
 - package.json : Ajouter les nouveaux scripts et dépendances

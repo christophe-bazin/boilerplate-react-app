@@ -33,7 +33,7 @@ function SignIn() {
       <form onSubmit={handleSubmit} className="p-8 bg-white dark:bg-secondary-800 rounded-xl shadow-xl flex flex-col gap-6 border border-secondary-100 dark:border-secondary-700">
         <div className="text-center mb-4">
           <h2 className="text-3xl font-bold text-secondary-900 dark:text-white mb-2">{t('signIn.title')}</h2>
-          <p className="text-secondary-600 dark:text-secondary-400">Connectez-vous à votre compte</p>
+          <p className="text-secondary-600 dark:text-secondary-400">{t('signIn.subtitle')}</p>
         </div>
         
         <div className="flex flex-col gap-1">
@@ -65,13 +65,13 @@ function SignIn() {
           className="px-6 py-3 bg-primary-600 hover:bg-primary-700 disabled:bg-secondary-400 disabled:cursor-not-allowed text-white rounded-lg transition-colors font-medium"
           disabled={loading}
         >
-          {loading ? 'Connexion...' : t('signIn.submit')}
+          {loading ? t('signIn.loading') : t('signIn.submit')}
         </button>
         
         <div className="flex flex-col sm:flex-row justify-between items-center gap-3 text-sm">
           <a href="#" className="text-primary-600 dark:text-primary-400 hover:text-primary-800 dark:hover:text-primary-300 hover:underline">{t('signIn.forgot')}</a>
           <Link to="/signup" className="text-secondary-600 dark:text-secondary-400">
-            Pas de compte ? <span className="text-primary-600 dark:text-primary-400 hover:text-primary-800 dark:hover:text-primary-300 hover:underline">S'inscrire</span>
+            {t('signIn.noAccount')} <span className="text-primary-600 dark:text-primary-400 hover:text-primary-800 dark:hover:text-primary-300 hover:underline">{t('signIn.signUpLink')}</span>
           </Link>
         </div>
       </form>
