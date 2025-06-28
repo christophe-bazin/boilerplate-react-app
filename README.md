@@ -92,17 +92,26 @@ VITE_SUPABASE_ANON_KEY=your_supabase_anon_key
 ```
 
 3. **Database Setup**
-The `user_preferences` table is already created in Supabase with the following structure:
+Execute the setup script in your Supabase SQL editor:
 ```sql
--- Table already exists with theme persistence and RLS enabled
--- Includes: id, user_id, theme, created_at, updated_at
--- With proper policies for user data access
+-- Copy and paste: database/setup.sql
+-- Creates user_preferences table with RLS and policies
 ```
 
 4. **Start Development Server**
 ```bash
 npm run dev
 ```
+
+## 🚀 Production Deployment
+
+For detailed production deployment instructions, see **[DEPLOYMENT.md](./DEPLOYMENT.md)**.
+
+Quick overview:
+1. Create new Supabase project
+2. Execute `database/setup.sql` 
+3. Configure environment variables
+4. Build and deploy to Netlify/Vercel
 
 ## 📋 Available Scripts
 
