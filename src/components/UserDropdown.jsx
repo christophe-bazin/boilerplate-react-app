@@ -41,9 +41,9 @@ function UserDropdown({ className = '' }) {
     <div className={`relative ${className}`} ref={dropdownRef}>
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center gap-2 px-3 py-2 text-sm font-medium text-secondary-700 dark:text-secondary-300 bg-white dark:bg-secondary-800 border border-secondary-300 dark:border-secondary-600 rounded-lg hover:bg-secondary-50 dark:hover:bg-secondary-700 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-colors"
+        className="flex items-center gap-2 px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
       >
-        <div className="w-6 h-6 bg-primary-500 text-white rounded-full flex items-center justify-center text-xs font-medium">
+        <div className="w-6 h-6 bg-blue-500 text-white rounded-full flex items-center justify-center text-xs font-medium">
           {user.email?.charAt(0).toUpperCase()}
         </div>
         <span className="hidden sm:inline">{user.email}</span>
@@ -53,16 +53,16 @@ function UserDropdown({ className = '' }) {
       </button>
 
       {isOpen && (
-        <div className="absolute right-0 mt-2 w-64 bg-white dark:bg-secondary-800 border border-secondary-200 dark:border-secondary-700 rounded-lg shadow-lg z-50">
-          <div className="p-4 border-b border-secondary-200 dark:border-secondary-700">
-            <p className="text-sm font-medium text-secondary-900 dark:text-white">{user.email}</p>
-            <p className="text-xs text-secondary-500 dark:text-secondary-400">Connecté</p>
+        <div className="absolute right-0 mt-2 w-64 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg z-50">
+          <div className="p-4 border-b border-gray-200 dark:border-gray-700">
+            <p className="text-sm font-medium text-gray-900 dark:text-white">{user.email}</p>
+            <p className="text-xs text-gray-500 dark:text-gray-400">Connecté</p>
           </div>
           
           <div className="py-1">
             <button
               onClick={() => setIsOpen(false)}
-              className="w-full flex items-center gap-3 px-4 py-2 text-sm text-left text-secondary-700 dark:text-secondary-300 hover:bg-secondary-100 dark:hover:bg-secondary-700 transition-colors"
+              className="w-full flex items-center gap-3 px-4 py-2 text-sm text-left text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
             >
               <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
                 <path fillRule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clipRule="evenodd" />
@@ -70,14 +70,14 @@ function UserDropdown({ className = '' }) {
               <span>{t('navigation.profile')}</span>
             </button>
             
-            <div className="px-4 py-2 border-t border-secondary-200 dark:border-secondary-700">
+            <div className="px-4 py-2 border-t border-gray-200 dark:border-gray-700">
               <div className="flex items-center justify-between">
-                <span className="text-sm text-secondary-700 dark:text-secondary-300">Thème</span>
+                <span className="text-sm text-gray-700 dark:text-gray-300">Thème</span>
                 <ThemeToggle />
               </div>
             </div>
 
-            <div className="border-t border-secondary-200 dark:border-secondary-700">
+            <div className="border-t border-gray-200 dark:border-gray-700">
               <button
                 onClick={handleSignOut}
                 className="w-full flex items-center gap-3 px-4 py-2 text-sm text-left text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors"

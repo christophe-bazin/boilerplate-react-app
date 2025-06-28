@@ -10,6 +10,26 @@
     "signUp": "S'inscrire",
     "profile": "Profil",
     "settings": "Paramètres", 
-    "signOut": "Se déconnecter"
+    "signOut": "Se déconnecter",
+    "logout": "Déconnexion"
+  },
+  "homepage": {
+    "title": "Transcript IA",
+    "tagline": "Transcription intelligente de vos documents",
+    "description": "Transformez vos documents PDF et audio en texte structuré grâce à l'intelligence artificielle.",
+    "features": {
+      "pdf": {
+        "title": "Transcription PDF",
+        "description": "Convertissez vos documents PDF en texte structuré et modifiable"
+      },
+      "audio": {
+        "title": "Transcription Audio", 
+        "description": "Transformez vos fichiers audio en texte avec une précision élevée"
+      },
+      "ai": {
+        "title": "IA Avancée",
+        "description": "Powered by intelligence artificielle pour des résultats optimaux"
+      }
+    }
   }
 }

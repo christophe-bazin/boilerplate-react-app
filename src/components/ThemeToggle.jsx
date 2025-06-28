@@ -63,15 +63,15 @@ function ThemeToggle({ className = '' }) {
   };
 
   const getThemeLabel = (themeValue) => {
-    return config.theme[themeValue] || themeValue;
+    return t(`theme.${themeValue}`);
   };
 
   return (
     <div className={`relative ${className}`} ref={dropdownRef}>
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center gap-2 px-3 py-2 text-sm font-medium text-secondary-700 dark:text-secondary-300 bg-white dark:bg-secondary-800 border border-secondary-300 dark:border-secondary-600 rounded-lg hover:bg-secondary-50 dark:hover:bg-secondary-700 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-colors"
-        aria-label={t('theme.toggle', 'Toggle theme')}
+        className="flex items-center gap-2 px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
+        aria-label={t('theme.toggle')}
       >
         {getThemeIcon(theme)}
         <span className="hidden sm:inline">{getThemeLabel(theme)}</span>
@@ -81,16 +81,16 @@ function ThemeToggle({ className = '' }) {
       </button>
 
       {isOpen && (
-        <div className="absolute right-0 mt-2 w-48 bg-white dark:bg-secondary-800 border border-secondary-200 dark:border-secondary-700 rounded-lg shadow-lg z-50">
+        <div className="absolute right-0 mt-2 w-48 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg z-50">
           <div className="py-1">
             {themes.map((themeOption) => (
               <button
                 key={themeOption}
                 onClick={() => handleThemeChange(themeOption)}
-                className={`w-full flex items-center gap-3 px-4 py-2 text-sm text-left hover:bg-secondary-100 dark:hover:bg-secondary-700 transition-colors ${
+                className={`w-full flex items-center gap-3 px-4 py-2 text-sm text-left hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors ${
                   theme === themeOption 
-                    ? 'bg-primary-50 dark:bg-primary-900/20 text-primary-600 dark:text-primary-400' 
-                    : 'text-secondary-700 dark:text-secondary-300'
+                    ? 'bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400' 
+                    : 'text-gray-700 dark:text-gray-300'
                 }`}
               >
                 {getThemeIcon(themeOption)}
