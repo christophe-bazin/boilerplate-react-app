@@ -1,0 +1,15 @@
+{
+  "theme": {
+    "toggle": "Toggle theme",
+    "light": "Light",
+    "dark": "Dark",
+    "system": "System"
+  },
+  "navigation": {
+    "signIn": "Sign In", 
+    "signUp": "Sign Up",
+    "profile": "Profile",
+    "settings": "Settings",
+    "signOut": "Sign Out"
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "app": {
+    "name": "Transcript IA",
+    "tagline": "Transcription intelligente de vos documents",
+    "logo": "/src/assets/logo.svg",
+    "description": "Transformez vos documents PDF et audio en texte structuré grâce à l'intelligence artificielle."
+  },
+  "navigation": {
+    "signIn": "Se connecter",
+    "signUp": "S'inscrire",
+    "profile": "Profil",
+    "settings": "Paramètres",
+    "signOut": "Se déconnecter"
+  },
+  "theme": {
+    "light": "Clair",
+    "dark": "Sombre",
+    "system": "Système"
+  }
+}
