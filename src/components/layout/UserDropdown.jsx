@@ -5,8 +5,8 @@ import { useState, useRef, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 
 // Local imports
-import { useAuth } from '../hooks/useAuth';
-import ThemeToggle from './ThemeToggle';
+import { useAuth } from '../../hooks/useAuth';
+import ThemeToggle from '../ui/ThemeToggle';
 
 /**
  * UserDropdown component

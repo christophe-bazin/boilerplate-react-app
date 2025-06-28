@@ -5,8 +5,8 @@ import { useState, useRef, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 
 // Local imports
-import { useTheme } from '../hooks/useTheme';
-import { useAppConfig } from '../hooks/useAppConfig';
+import { useTheme } from '../../hooks/useTheme';
+import { useAppConfig } from '../../hooks/useAppConfig';
 
 /**
  * ThemeToggle component

@@ -67,7 +67,12 @@ Your app will be available at `http://localhost:5173`
 
 ```
 src/
-├── components/          # React components
+├── components/          # React components organized by feature
+│   ├── auth/           # Authentication components (SignIn, SignUp, etc.)
+│   ├── layout/         # Layout components (TopBar, UserDropdown, etc.)
+│   ├── ui/             # Reusable UI components (ThemeToggle, etc.)
+│   ├── pages/          # Page components (HomePage, etc.)
+│   └── index.js        # Main components exports
 ├── hooks/              # Custom React hooks (useAuth, useTheme, useAppConfig)
 ├── lib/                # External library configurations (Supabase)
 ├── locales/            # i18n translations (fr/en)

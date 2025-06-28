@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 
 // Local imports
-import { useAppConfig } from '../hooks/useAppConfig';
+import { useAppConfig } from '../../hooks/useAppConfig';
 
 /**
  * HomePage component

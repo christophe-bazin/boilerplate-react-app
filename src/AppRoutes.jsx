@@ -8,11 +8,10 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 
 // Local imports
 import { useAuth } from './hooks/useAuth';
-import ThemeToggle from './components/ThemeToggle';
-import TopBar from './components/TopBar';
-import HomePage from './components/HomePage';
-import SignIn from './components/SignIn';
-import SignUp from './components/SignUp';
+import { ThemeToggle } from './components/ui';
+import { TopBar } from './components/layout';
+import { HomePage } from './components/pages';
+import { SignIn, SignUp } from './components/auth';
 
 /**
  * PublicLayout component

@@ -3,10 +3,10 @@ import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 
 // Local imports
-import { useAuth } from '../hooks/useAuth';
-import { useAppConfig } from '../hooks/useAppConfig';
+import { useAuth } from '../../hooks/useAuth';
+import { useAppConfig } from '../../hooks/useAppConfig';
 import UserDropdown from './UserDropdown';
-import ThemeToggle from './ThemeToggle';
+import ThemeToggle from '../ui/ThemeToggle';
 
 /**
  * TopBar component
