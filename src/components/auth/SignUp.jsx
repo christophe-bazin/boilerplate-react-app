@@ -6,6 +6,7 @@ import { useTranslation } from 'react-i18next';
 
 // Local imports
 import { useAuth } from '../../hooks/useAuth';
+import { translateAuthError } from '../../lib/errorTranslation';
 import PasswordStrength from './PasswordStrength';
 
 /**
@@ -28,7 +29,7 @@ function SignUp() {
     if (password.length < 6) return setError(t('errors.passwordShort'));
     if (password !== confirmPassword) return setError(t('errors.passwordMismatch'));
     const { error } = await signUp({ email, password });
-    if (error) setError(error.message);
+    if (error) setError(translateAuthError(error.message, t));
   };
 
   return (

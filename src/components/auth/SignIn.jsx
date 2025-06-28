@@ -7,6 +7,7 @@ import { Link } from 'react-router-dom';
 
 // Local imports
 import { useAuth } from '../../hooks/useAuth';
+import { translateAuthError } from '../../lib/errorTranslation';
 
 /**
  * SignIn component
@@ -25,7 +26,7 @@ function SignIn() {
     if (!email) return setError(t('errors.required'));
     if (!password) return setError(t('errors.required'));
     const { error } = await signIn({ email, password });
-    if (error) setError(error.message);
+    if (error) setError(translateAuthError(error.message, t));
   };
 
   return (

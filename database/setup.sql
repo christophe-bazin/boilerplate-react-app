@@ -2,10 +2,11 @@
 -- Execute this in your Supabase SQL Editor for production deployment
 
 -- Create user_preferences table
+-- Note: auth.users is automatically managed by Supabase
 CREATE TABLE IF NOT EXISTS user_preferences (
   id uuid DEFAULT gen_random_uuid() PRIMARY KEY,
   user_id uuid REFERENCES auth.users(id) ON DELETE CASCADE NOT NULL,
-  theme text CHECK (theme IN ('light', 'dark')) DEFAULT 'light',
+  theme text CHECK (theme IN ('light', 'dark', 'system')) DEFAULT 'light',
   language text CHECK (language IN ('fr', 'en')) DEFAULT 'fr',
   created_at timestamptz DEFAULT now(),
   updated_at timestamptz DEFAULT now(),
@@ -14,6 +15,12 @@ CREATE TABLE IF NOT EXISTS user_preferences (
 
 -- Enable Row Level Security
 ALTER TABLE user_preferences ENABLE ROW LEVEL SECURITY;
+
+-- Drop existing policies if they exist
+DROP POLICY IF EXISTS "Users can view own preferences" ON user_preferences;
+DROP POLICY IF EXISTS "Users can insert own preferences" ON user_preferences;
+DROP POLICY IF EXISTS "Users can update own preferences" ON user_preferences;
+DROP POLICY IF EXISTS "Users can delete own preferences" ON user_preferences;
 
 -- Create RLS policies
 CREATE POLICY "Users can view own preferences" ON user_preferences
@@ -36,6 +43,9 @@ BEGIN
   RETURN NEW;
 END;
 $$ language 'plpgsql';
+
+-- Drop existing trigger if it exists
+DROP TRIGGER IF EXISTS update_user_preferences_updated_at ON user_preferences;
 
 -- Create trigger
 CREATE TRIGGER update_user_preferences_updated_at

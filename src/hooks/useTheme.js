@@ -7,11 +7,11 @@ import { UserPreferencesService } from '../lib/userPreferences';
 
 /**
  * useTheme hook
- * Manages theme state with localStorage, system preference detection, and Supabase sync
+ * Manages theme state with localStorage and system preference detection
  * Supports 'light', 'dark', and 'system' themes with automatic system detection
  */
 export function useTheme() {
-  const { user } = useAuth();
+  const { user } = useAuth(); // Get current user
   const [theme, setTheme] = useState('system'); // Current theme setting
   const [resolvedTheme, setResolvedTheme] = useState('light'); // Actual applied theme
 
