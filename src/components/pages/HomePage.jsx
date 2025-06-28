@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 
 // Local imports
 import { useAppConfig } from '../../hooks/useAppConfig';
+import { AuthTestComponent } from '../debug/AuthTestComponent';
 
 /**
  * HomePage component
@@ -104,6 +105,11 @@ function HomePage() {
               </p>
             </div>
           </div>
+        </div>
+        
+        {/* Debug component - remove in production */}
+        <div className="mt-8">
+          <AuthTestComponent />
         </div>
       </div>
     </div>

@@ -1,5 +1,5 @@
 // React imports first
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 // External libraries
 import { useTranslation } from 'react-i18next';
@@ -8,6 +8,7 @@ import { useTranslation } from 'react-i18next';
 import { useAuth } from '../../hooks/useAuth';
 import { translateAuthError } from '../../lib/errorTranslation';
 import PasswordInput from '../ui/PasswordInput';
+import { BanWarning } from './BanWarning';
 
 /**
  * SignUp component
@@ -15,7 +16,7 @@ import PasswordInput from '../ui/PasswordInput';
  */
 function SignUp() {
   const { t } = useTranslation('auth');
-  const { signUp, loading } = useAuth();
+  const { signUp, loading, bruteForceProtection } = useAuth();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');

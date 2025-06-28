@@ -1,5 +1,5 @@
 // React imports first
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 // External libraries
 import { useTranslation } from 'react-i18next';
@@ -9,6 +9,7 @@ import { Link } from 'react-router-dom';
 import { useAuth } from '../../hooks/useAuth';
 import { translateAuthError } from '../../lib/errorTranslation';
 import PasswordInput from '../ui/PasswordInput';
+import { BanWarning } from './BanWarning';
 
 /**
  * SignIn component
@@ -16,16 +17,25 @@ import PasswordInput from '../ui/PasswordInput';
  */
 function SignIn() {
   const { t } = useTranslation('auth');
-  const { signIn, loading } = useAuth();
+  const { signIn, loading, bruteForceProtection } = useAuth();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
 
+  // Check ban status when email changes
+  useEffect(() => {
+    if (email) {
+      bruteForceProtection.checkBanStatus(email);
+    }
+  }, [email, bruteForceProtection]);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
+    
     if (!email) return setError(t('errors.required'));
     if (!password) return setError(t('errors.required'));
+    
     const { error } = await signIn({ email, password });
     if (error) setError(translateAuthError(error.message, t));
   };
@@ -37,6 +47,15 @@ function SignIn() {
           <h2 className="text-3xl font-bold text-secondary-900 dark:text-white mb-2">{t('signIn.title')}</h2>
           <p className="text-secondary-600 dark:text-secondary-400">{t('signIn.subtitle')}</p>
         </div>
+        
+        {/* Brute force protection warning */}
+        <BanWarning
+          isBanned={bruteForceProtection.isBanned}
+          banUntil={bruteForceProtection.banUntil}
+          attemptsCount={bruteForceProtection.attemptsCount}
+          formatBanTime={bruteForceProtection.formatBanTime}
+          onBanExpired={bruteForceProtection.resetBanStatus}
+        />
         
         <div className="flex flex-col gap-1">
           <input

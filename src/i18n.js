@@ -5,15 +5,19 @@ import frAuth from './locales/fr/auth.json';
 import enAuth from './locales/en/auth.json';
 import frCommon from './locales/fr/common.json';
 import enCommon from './locales/en/common.json';
+import frProfile from './locales/fr/profile.json';
+import enProfile from './locales/en/profile.json';
 
 const resources = {
   fr: { 
     auth: frAuth,
-    common: frCommon
+    common: frCommon,
+    profile: frProfile
   },
   en: { 
     auth: enAuth,
-    common: enCommon
+    common: enCommon,
+    profile: enProfile
   },
 };
 
@@ -23,7 +27,7 @@ i18n
     resources,
     lng: 'fr',
     fallbackLng: 'en',
-    ns: ['auth', 'common'],
+    ns: ['auth', 'common', 'profile'],
     defaultNS: 'auth',
     interpolation: {
       escapeValue: false,

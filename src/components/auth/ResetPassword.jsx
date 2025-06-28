@@ -1,5 +1,5 @@
 // React imports first
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 // External libraries
 import { useTranslation } from 'react-i18next';
@@ -8,6 +8,7 @@ import { Link } from 'react-router-dom';
 // Local imports
 import { useAuth } from '../../hooks/useAuth';
 import { translateAuthError } from '../../lib/errorTranslation';
+import { BanWarning } from './BanWarning';
 
 /**
  * ResetPassword component
@@ -15,7 +16,7 @@ import { translateAuthError } from '../../lib/errorTranslation';
  */
 function ResetPassword() {
   const { t } = useTranslation('auth');
-  const { resetPassword } = useAuth();
+  const { resetPassword, bruteForceProtection } = useAuth();
   const [email, setEmail] = useState('');
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);

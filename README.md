@@ -7,6 +7,7 @@ A production-ready React application boilerplate with authentication, theming, a
 - 🚀 **React 18** + **Vite** - Lightning fast development
 - 🎨 **Tailwind CSS** - Utility-first CSS with dark/light/system themes
 - 🔐 **Supabase Auth** - Complete authentication system (sign up, sign in, logout)
+- 🛡️ **Brute Force Protection** - Account lockout after failed login attempts
 - 🌍 **i18n** - French/English internationalization with react-i18next
 - 🛡️ **Protected Routes** - Authentication-based routing
 - 📱 **Responsive** - Mobile-first design
@@ -83,6 +84,27 @@ src/
 
 ## ⚙️ Advanced Configuration
 
+### 🛡️ Security Features
+
+**Brute Force Protection:**
+- Automatic account lockout after 5 failed login attempts
+- 15-minute temporary ban with countdown timer
+- Client-side and server-side protection layers
+- IP-based and email-based tracking
+- Visual warnings before account lockout
+
+**Password Security:**
+- bcrypt hashing with random salt
+- Password strength indicator
+- Protection against leaked passwords (HaveIBeenPwned integration)
+- Configurable password requirements
+
+**Authentication Security:**
+- JWT-based sessions with automatic refresh
+- Row Level Security (RLS) on database
+- Rate limiting on auth endpoints
+- Optional CAPTCHA protection
+
 ### Theme System
 The app includes a complete theme system with:
 - **Light mode** - Clean white interface
@@ -104,10 +126,13 @@ Add new languages by:
 
 ### Authentication Flow
 Complete authentication system with:
-- **Sign Up** - Email/password registration
-- **Sign In** - Email/password login
+- **Sign Up** - Email/password registration with strength validation
+- **Sign In** - Email/password login with brute force protection
+- **Password Reset** - Secure email-based password recovery
+- **Profile Management** - Email, password, language, account deletion
 - **Protected Routes** - Automatic redirects
 - **User Session** - Persistent login state
+- **Brute Force Protection** - Account lockout after failed attempts
 
 ## 🏗️ Building Your App
 
