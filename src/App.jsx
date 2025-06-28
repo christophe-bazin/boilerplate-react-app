@@ -1,35 +1,42 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+/**
+ * App component
+ * Main application component with authentication and theme providers
+ */
 
-function App() {
-  const [count, setCount] = useState(0)
+// External libraries
+import { Suspense } from 'react';
 
+// Local imports
+import { AuthProvider } from './hooks/useAuth';
+import { ThemeProvider } from './hooks/useTheme';
+import AppRoutes from './AppRoutes';
+
+/**
+ * Loading component
+ * Displays a loading spinner while the app initializes
+ */
+function AppLoading() {
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    <div className="flex justify-center items-center h-screen bg-white dark:bg-gray-900">
+      <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+    </div>
+  );
 }
 
-export default App
+/**
+ * App component
+ * Root component with all necessary providers
+ */
+function App() {
+  return (
+    <ThemeProvider>
+      <AuthProvider>
+        <Suspense fallback={<AppLoading />}>
+          <AppRoutes />
+        </Suspense>
+      </AuthProvider>
+    </ThemeProvider>
+  );
+}
+
+export default App;
