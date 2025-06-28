@@ -22,6 +22,25 @@ fi
 
 echo "✅ Node.js $(node -v) detected"
 
+# Ask for app name to customize title
+echo ""
+read -p "Enter your app name (default: My App): " APP_NAME
+APP_NAME=${APP_NAME:-"My App"}
+
+# Update app title
+echo "⚙️  Updating app configuration..."
+sed -i "s/<title>.*<\/title>/<title>$APP_NAME<\/title>/" index.html
+
+# Update app.json
+cat > src/config/app.json << EOL
+{
+  "app": {
+    "name": "$APP_NAME",
+    "logo": "/src/assets/logo.svg"
+  }
+}
+EOL
+
 # Install dependencies
 echo "📦 Installing dependencies..."
 npm install
