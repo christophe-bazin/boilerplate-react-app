@@ -12,7 +12,8 @@ import { translateAuthError } from '../../lib/errorTranslation';
 import PasswordInput from '../ui/PasswordInput';
 
 function ProfilePage() {
-  const { t, i18n } = useTranslation('auth');
+  const { t, i18n } = useTranslation('profile');
+  const { t: tAuth } = useTranslation('auth');
   const { user, updateEmail, updatePassword, deleteAccount } = useAuth();
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState({ type: '', text: '' });
@@ -61,9 +62,9 @@ function ProfilePage() {
 
     try {
       await updateEmail(newEmail);
-      setMessage({ type: 'success', text: t('profile.emailUpdated') });
+      setMessage({ type: 'success', text: t('emailUpdated') });
     } catch (error) {
-      setMessage({ type: 'success', text: t('profile.emailUpdated') });
+      setMessage({ type: 'success', text: t('emailUpdated') });
     } finally {
       setEmailLoading(false);
     }
@@ -74,11 +75,11 @@ function ProfilePage() {
     e.preventDefault();
     if (!currentPassword || !newPassword) return;
     if (newPassword.length < 6) {
-      setMessage({ type: 'error', text: t('errors.passwordShort') });
+      setMessage({ type: 'error', text: tAuth('errors.passwordShort') });
       return;
     }
     if (newPassword !== confirmPassword) {
-      setMessage({ type: 'error', text: t('errors.passwordMismatch') });
+      setMessage({ type: 'error', text: tAuth('errors.passwordMismatch') });
       return;
     }
 
@@ -90,7 +91,7 @@ function ProfilePage() {
       if (error) {
         setMessage({ type: 'error', text: translateAuthError(error.message, t) });
       } else {
-        setMessage({ type: 'success', text: t('profile.passwordUpdated') });
+        setMessage({ type: 'success', text: t('passwordUpdated') });
         setCurrentPassword('');
         setNewPassword('');
         setConfirmPassword('');
@@ -119,9 +120,9 @@ function ProfilePage() {
         await UserSettingsService.updateLanguage(user.id, newLanguage);
       }
 
-      setMessage({ type: 'success', text: t('profile.languageUpdated') });
+      setMessage({ type: 'success', text: t('languageUpdated') });
     } catch (error) {
-      setMessage({ type: 'error', text: t('errors.unknownError') });
+      setMessage({ type: 'error', text: tAuth('errors.unknownError') });
     } finally {
       setLanguageLoading(false);
     }
@@ -130,9 +131,9 @@ function ProfilePage() {
   // Delete account
   const handleDeleteAccount = async () => {
     // Check if confirmation text matches
-    const requiredText = t('profile.confirmDeleteKeyword');
+    const requiredText = tProfile('confirmDeleteKeyword');
     if (deleteConfirmation !== requiredText) {
-      setMessage({ type: 'error', text: t('profile.confirmDeleteError') });
+      setMessage({ type: 'error', text: tProfile('confirmDeleteError') });
       return;
     }
 
@@ -141,10 +142,10 @@ function ProfilePage() {
 
     try {
       await deleteAccount();
-      setMessage({ type: 'success', text: t('profile.accountDeleted') });
+      setMessage({ type: 'success', text: tProfile('accountDeleted') });
       // The user will be automatically redirected due to auth state change
     } catch (error) {
-      setMessage({ type: 'error', text: translateAuthError(error.message, t) });
+      setMessage({ type: 'error', text: translateAuthError(error.message, tAuth) });
       setShowDeleteModal(false);
     } finally {
       setDeleteLoading(false);
@@ -162,7 +163,7 @@ function ProfilePage() {
       <div className="min-h-screen bg-secondary-50 dark:bg-secondary-900 flex items-center justify-center">
         <div className="text-center">
           <h1 className="text-2xl font-bold text-secondary-900 dark:text-white mb-4">
-            {t('errors.accessDenied')}
+            {tAuth('errors.accessDenied')}
           </h1>
         </div>
       </div>
@@ -175,10 +176,10 @@ function ProfilePage() {
         {/* Header */}
         <div className="text-center mb-8">
           <h1 className="text-3xl font-bold text-secondary-900 dark:text-white mb-2">
-            {t('profile.title')}
+            {t('title')}
           </h1>
           <p className="text-secondary-600 dark:text-secondary-400">
-            {t('profile.subtitle')}
+            {t('subtitle')}
           </p>
         </div>
 
@@ -197,13 +198,13 @@ function ProfilePage() {
           {/* Email Section */}
           <div className="bg-white dark:bg-secondary-800 rounded-xl shadow-lg p-6 border border-secondary-100 dark:border-secondary-700">
             <h2 className="text-xl font-semibold text-secondary-900 dark:text-white mb-4">
-              {t('profile.email')}
+              {t('email')}
             </h2>
             <form onSubmit={handleEmailUpdate} className="space-y-4">
               <div>
                 <input
                   type="email"
-                  placeholder={t('profile.email')}
+                  placeholder={t('email')}
                   className="w-full px-4 py-3 border border-secondary-300 dark:border-secondary-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-colors bg-white dark:bg-secondary-700 text-secondary-900 dark:text-white placeholder-secondary-500 dark:placeholder-secondary-400"
                   value={newEmail}
                   onChange={e => setNewEmail(e.target.value)}
@@ -215,7 +216,7 @@ function ProfilePage() {
                 disabled={emailLoading || newEmail === user?.email}
                 className="px-6 py-3 bg-primary-600 hover:bg-primary-700 disabled:bg-secondary-400 disabled:cursor-not-allowed text-white rounded-lg transition-colors font-medium"
               >
-                {emailLoading ? t('loading') : t('profile.updateEmail')}
+                {emailLoading ? t('loading') : t('updateEmail')}
               </button>
             </form>
           </div>
@@ -223,12 +224,12 @@ function ProfilePage() {
           {/* Password Section */}
           <div className="bg-white dark:bg-secondary-800 rounded-xl shadow-lg p-6 border border-secondary-100 dark:border-secondary-700">
             <h2 className="text-xl font-semibold text-secondary-900 dark:text-white mb-4">
-              {t('profile.updatePassword')}
+              {t('updatePassword')}
             </h2>
             <form onSubmit={handlePasswordUpdate} className="space-y-4">
               <div>
                 <PasswordInput
-                  placeholder={t('profile.currentPassword')}
+                  placeholder={t('currentPassword')}
                   value={currentPassword}
                   onChange={e => setCurrentPassword(e.target.value)}
                   required
@@ -237,7 +238,7 @@ function ProfilePage() {
               </div>
               <div>
                 <PasswordInput
-                  placeholder={t('profile.newPassword')}
+                  placeholder={t('newPassword')}
                   value={newPassword}
                   onChange={e => setNewPassword(e.target.value)}
                   required
@@ -247,7 +248,7 @@ function ProfilePage() {
               </div>
               <div>
                 <PasswordInput
-                  placeholder={t('profile.confirmPassword')}
+                  placeholder={t('confirmPassword')}
                   value={confirmPassword}
                   onChange={e => setConfirmPassword(e.target.value)}
                   required
@@ -259,7 +260,7 @@ function ProfilePage() {
                 disabled={passwordLoading || !currentPassword || !newPassword || !confirmPassword}
                 className="px-6 py-3 bg-primary-600 hover:bg-primary-700 disabled:bg-secondary-400 disabled:cursor-not-allowed text-white rounded-lg transition-colors font-medium"
               >
-                {passwordLoading ? t('loading') : t('profile.updatePassword')}
+                {passwordLoading ? t('loading') : t('updatePassword')}
               </button>
             </form>
           </div>
@@ -267,7 +268,7 @@ function ProfilePage() {
           {/* Language Section */}
           <div className="bg-white dark:bg-secondary-800 rounded-xl shadow-lg p-6 border border-secondary-100 dark:border-secondary-700">
             <h2 className="text-xl font-semibold text-secondary-900 dark:text-white mb-4">
-              {t('profile.language')}
+              {t('language')}
             </h2>
             <div className="space-y-4">
               <div className="flex gap-4">
@@ -300,7 +301,7 @@ function ProfilePage() {
           {/* Delete Account Section */}
           <div className="bg-white dark:bg-secondary-800 rounded-xl shadow-lg p-6 border border-red-200 dark:border-red-800">
             <h2 className="text-xl font-semibold text-red-600 dark:text-red-400 mb-4">
-              {t('profile.deleteAccount')}
+              {t('deleteAccount')}
             </h2>
             <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-4 mb-4">
               <div className="flex items-start gap-3">
@@ -308,7 +309,7 @@ function ProfilePage() {
                   <path fillRule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
                 </svg>
                 <p className="text-red-700 dark:text-red-300 text-sm">
-                  {t('profile.deleteAccountWarning')}
+                  {t('deleteAccountWarning')}
                 </p>
               </div>
             </div>
@@ -316,7 +317,7 @@ function ProfilePage() {
               onClick={() => setShowDeleteModal(true)}
               className="px-6 py-3 bg-red-600 hover:bg-red-700 text-white rounded-lg transition-colors font-medium"
             >
-              {t('profile.deleteAccount')}
+              {t('deleteAccount')}
             </button>
           </div>
         </div>
@@ -333,22 +334,22 @@ function ProfilePage() {
             {/* Modal */}
             <div className="relative bg-white dark:bg-secondary-800 rounded-xl shadow-lg p-6 max-w-md w-full mx-4 border border-secondary-200 dark:border-secondary-700">
               <h3 className="text-lg font-semibold text-secondary-900 dark:text-white mb-4">
-                {t('profile.confirmDeleteTitle')}
+                {t('confirmDeleteTitle')}
               </h3>
               <p className="text-secondary-700 dark:text-secondary-300 mb-4">
-                {t('profile.confirmDeleteMessage')}
+                {t('confirmDeleteMessage')}
               </p>
               
               {/* Confirmation input */}
               <div className="mb-6">
                 <label className="block text-sm font-medium text-secondary-700 dark:text-secondary-300 mb-2">
-                  {t('profile.confirmDeleteInput')}
+                  {t('confirmDeleteInput')}
                 </label>
                 <input
                   type="text"
                   value={deleteConfirmation}
                   onChange={(e) => setDeleteConfirmation(e.target.value)}
-                  placeholder={t('profile.confirmDeletePlaceholder')}
+                  placeholder={t('confirmDeletePlaceholder')}
                   className="w-full px-3 py-2 border border-secondary-300 dark:border-secondary-600 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent transition-colors bg-white dark:bg-secondary-700 text-secondary-900 dark:text-white placeholder-secondary-500 dark:placeholder-secondary-400"
                   disabled={deleteLoading}
                 />
@@ -360,14 +361,14 @@ function ProfilePage() {
                   disabled={deleteLoading}
                   className="px-4 py-2 bg-secondary-200 dark:bg-secondary-600 text-secondary-700 dark:text-secondary-300 hover:bg-secondary-300 dark:hover:bg-secondary-500 disabled:opacity-50 rounded-lg transition-colors"
                 >
-                  {t('profile.cancelDelete')}
+                  {t('cancelDelete')}
                 </button>
                 <button
                   onClick={handleDeleteAccount}
-                  disabled={deleteLoading || deleteConfirmation !== t('profile.confirmDeleteKeyword')}
+                  disabled={deleteLoading || deleteConfirmation !== t('confirmDeleteKeyword')}
                   className="px-4 py-2 bg-red-600 hover:bg-red-700 disabled:bg-red-400 disabled:cursor-not-allowed text-white rounded-lg transition-colors"
                 >
-                  {deleteLoading ? t('loading') : t('profile.confirmDelete')}
+                  {deleteLoading ? t('loading') : t('confirmDelete')}
                 </button>
               </div>
             </div>
