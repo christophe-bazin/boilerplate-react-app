@@ -7,34 +7,38 @@ import { UserPreferencesService } from '../lib/userPreferences';
 
 /**
  * useTheme hook
- * Manages theme state with localStorage and Supabase sync for authenticated users
+ * Manages theme state with localStorage, system preference detection, and Supabase sync
+ * Supports 'light', 'dark', and 'system' themes with automatic system detection
  */
 export function useTheme() {
   const { user } = useAuth();
-  const [theme, setTheme] = useState(null);
-  const [resolvedTheme, setResolvedTheme] = useState('light');
+  const [theme, setTheme] = useState('system'); // Current theme setting
+  const [resolvedTheme, setResolvedTheme] = useState('light'); // Actual applied theme
 
-  // Get system preference
+  // Get system theme preference
   const getSystemTheme = useCallback(() => {
     return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
   }, []);
 
+  // Get effective theme (resolves 'system' to actual theme)
+  const getEffectiveTheme = useCallback((currentTheme) => {
+    if (currentTheme === 'system') {
+      return getSystemTheme();
+    }
+    return currentTheme;
+  }, [getSystemTheme]);
+
   // Apply theme to document
   const applyTheme = useCallback((themeValue) => {
-    setResolvedTheme(themeValue);
+    const effectiveTheme = getEffectiveTheme(themeValue);
+    setResolvedTheme(effectiveTheme);
     
-    if (themeValue === 'dark') {
+    if (effectiveTheme === 'dark') {
       document.documentElement.classList.add('dark');
     } else {
       document.documentElement.classList.remove('dark');
     }
-  }, []);
-
-  // Load theme from localStorage or default to system
-  const loadTheme = useCallback(() => {
-    const savedTheme = localStorage.getItem('theme');
-    return savedTheme || getSystemTheme();
-  }, [getSystemTheme]);
+  }, [getEffectiveTheme]);
 
   // Save theme to localStorage and optionally Supabase
   const saveTheme = useCallback(async (newTheme) => {
@@ -48,6 +52,12 @@ export function useTheme() {
       }
     }
   }, [user]);
+
+  // Load theme from localStorage or default to system
+  const loadTheme = useCallback(() => {
+    const savedTheme = localStorage.getItem('theme');
+    return savedTheme || 'system';
+  }, []);
 
   // Load theme from Supabase for authenticated users
   const loadThemeFromSupabase = useCallback(async () => {
@@ -90,26 +100,33 @@ export function useTheme() {
     initTheme();
   }, [user, loadTheme, loadThemeFromSupabase, applyTheme]);
 
-  // Listen for system theme changes
+  // Listen for system theme changes when theme is set to 'system'
   useEffect(() => {
     const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
     const handleChange = () => {
-      // Only auto-switch if no explicit theme is set
-      if (!localStorage.getItem('theme')) {
-        const systemTheme = getSystemTheme();
-        setTheme(systemTheme);
-        applyTheme(systemTheme);
+      if (theme === 'system') {
+        applyTheme('system');
       }
     };
 
     mediaQuery.addEventListener('change', handleChange);
     return () => mediaQuery.removeEventListener('change', handleChange);
-  }, [getSystemTheme, applyTheme]);
+  }, [theme, applyTheme]);
 
   return {
-    theme,
-    resolvedTheme,
+    theme, // Current theme setting ('light', 'dark', 'system')
+    resolvedTheme, // Actual applied theme ('light', 'dark')
     setTheme: setThemeValue,
-    isSystemDark: getSystemTheme() === 'dark'
+    isSystemDark: getSystemTheme() === 'dark',
+    themes: ['light', 'dark', 'system']
   };
+}
+
+/**
+ * ThemeProvider component
+ * Simple provider component that initializes the theme system
+ */
+export function ThemeProvider({ children }) {
+  useTheme(); // Initialize theme system
+  return children;
 }

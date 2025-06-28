@@ -32,3 +32,12 @@ export function useAuth() {
 
   return { user, loading, signIn, signUp, signOut };
 }
+
+/**
+ * AuthProvider component
+ * Simple provider component that initializes the authentication system
+ */
+export function AuthProvider({ children }) {
+  useAuth(); // Initialize auth system
+  return children;
+}
