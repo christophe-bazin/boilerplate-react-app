@@ -14,21 +14,21 @@
     "logout": "Logout"
   },
   "homepage": {
-    "title": "Transcript IA",
-    "tagline": "Intelligent transcription of your documents",
-    "description": "Transform your PDF and audio documents into structured text using artificial intelligence.",
+    "title": "My Application",
+    "tagline": "Modern solution for your needs",
+    "description": "Transform the way you work with our innovative and intuitive application.",
     "features": {
-      "pdf": {
-        "title": "PDF Transcription",
-        "description": "Convert your PDF documents into structured and editable text"
+      "feature1": {
+        "title": "Feature 1",
+        "description": "Description of your first main feature"
       },
-      "audio": {
-        "title": "Audio Transcription", 
-        "description": "Transform your audio files into text with high accuracy"
+      "feature2": {
+        "title": "Feature 2", 
+        "description": "Description of your second key functionality"
       },
-      "ai": {
-        "title": "Advanced AI",
-        "description": "Powered by artificial intelligence for optimal results"
+      "feature3": {
+        "title": "Feature 3",
+        "description": "Description of your third competitive advantage"
       }
     }
   }

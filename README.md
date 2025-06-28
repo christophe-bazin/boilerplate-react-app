@@ -1,34 +1,61 @@
-# Transcript IA - Frontend
+# React + Supabase Boilerplate
 
-Frontend React application for the Transcript IA transcription platform.
+A production-ready React application boilerplate with authentication, theming, and internationalization.
 
-## Stack
+## ✨ Features
 
-- **React 18** + **Vite** - Fast development
-- **Tailwind CSS** - Custom color system with dark/light themes
-- **Supabase** - Authentication and user preferences
-- **react-i18next** - French/English support
-- **React Router** - Protected routes
+- 🚀 **React 18** + **Vite** - Lightning fast development
+- 🎨 **Tailwind CSS** - Utility-first CSS with dark/light themes
+- 🔐 **Supabase Auth** - Complete authentication system
+- 🌍 **i18n** - French/English internationalization
+- 🛡️ **Protected Routes** - Authentication-based routing
+- 📱 **Responsive** - Mobile-first design
+- 🎯 **TypeScript Ready** - Easy migration to TypeScript
+- 🔧 **ESLint** - Code quality and consistency
 
-## Features
+## 🚀 Quick Start
 
-- ✅ Authentication (sign-in/sign-up)
-- ✅ Theme persistence (dark/light mode)
-- ✅ Internationalization (FR/EN)
-- ✅ Protected routes
-- ✅ Responsive design
-
-## Setup
-
-1. **Install dependencies**
 ```bash
-npm install
+git clone <this-repo>
+cd <project-name>
+chmod +x scripts/setup.sh
+./scripts/setup.sh
 ```
 
-2. **Environment**
+## 📁 Project Structure
+
+```
+src/
+├── components/          # React components
+├── hooks/              # Custom React hooks
+├── lib/                # External library configurations
+├── locales/            # i18n translations (fr/en)
+├── styles/             # Global CSS styles
+├── config/             # App configuration
+└── assets/             # Static assets
+```
+
+## ⚙️ Configuration
+
+### App Settings
+Edit `src/config/app.json`:
+```json
+{
+  "app": {
+    "name": "Your App Name",
+    "logo": "/src/assets/logo.svg"
+  }
+}
+```
+
+### Translations
+Update files in `src/locales/` to customize your app content and translations.
+
+### Environment Variables
 Create `.env.local`:
 ```env
 VITE_SUPABASE_URL=your_supabase_url
+VITE_SUPABASE_ANON_KEY=your_supabase_anon_key
 VITE_SUPABASE_ANON_KEY=your_supabase_anon_key
 ```
 
