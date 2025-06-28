@@ -10,6 +10,6 @@
 - Sensitive data (API keys, secrets) must never be committed.
 - Use i18n for all user-facing text.
 - Use Tailwind CSS for styling.
-- Commit early and often, with clear messages.
+- Commit early and often, with clear and concise messages (avoid overly long commit descriptions).
 
 _This file is a living document. Update as the project evolves._
