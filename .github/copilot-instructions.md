@@ -23,14 +23,17 @@
 - Responsive first (mobile-first)
 - Classes utilitaires plutôt que CSS custom
 
-## Authentification
-- Utiliser le hook useAuth custom
-- Gérer les états loading/error
-- Validation côté client ET serveur
+## Data management
+- Utiliser les hooks customs pour la logique métier
+- Gérer les états loading/error dans tous les appels async
+- Validation côté client ET serveur pour toutes les données
+- Utiliser Supabase pour l'auth et la base de données
 
 ## Code quality
-- Commentaire de présentation obligatoire en début de fichier (en anglais)
-- Autres commentaires uniquement si nécessaires pour clarifier la logique (en anglais)
+- Commentaires toujours en anglais
+- Commentaire de présentation obligatoire en début de fichier
+- Commentaires pour découper les sections d'un script
+- Autres commentaires uniquement si nécessaires pour clarifier la logique
 - Code propre et concis
 - Pas de données sensibles dans le code
 
