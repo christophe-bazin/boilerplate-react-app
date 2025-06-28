@@ -25,17 +25,17 @@ export default function SignIn() {
 
   return (
     <div className="w-full">
-      <form onSubmit={handleSubmit} className="p-8 bg-white dark:bg-slate-800 rounded-xl shadow-xl flex flex-col gap-6 border border-slate-100 dark:border-slate-700">
+      <form onSubmit={handleSubmit} className="p-8 bg-white dark:bg-secondary-800 rounded-xl shadow-xl flex flex-col gap-6 border border-secondary-100 dark:border-secondary-700">
         <div className="text-center mb-4">
-          <h2 className="text-3xl font-bold text-slate-900 dark:text-white mb-2">{t('signIn.title')}</h2>
-          <p className="text-slate-600 dark:text-slate-400">Connectez-vous à votre compte</p>
+          <h2 className="text-3xl font-bold text-secondary-900 dark:text-white mb-2">{t('signIn.title')}</h2>
+          <p className="text-secondary-600 dark:text-secondary-400">Connectez-vous à votre compte</p>
         </div>
         
         <div className="flex flex-col gap-1">
           <input
             type="email"
             placeholder={t('signIn.email')}
-            className="px-4 py-3 border border-slate-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-colors bg-white dark:bg-slate-700 text-slate-900 dark:text-white placeholder-slate-500 dark:placeholder-slate-400"
+            className="px-4 py-3 border border-secondary-300 dark:border-secondary-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-colors bg-white dark:bg-secondary-700 text-secondary-900 dark:text-white placeholder-secondary-500 dark:placeholder-secondary-400"
             value={email}
             onChange={e => setEmail(e.target.value)}
             required
@@ -46,7 +46,7 @@ export default function SignIn() {
           <input
             type="password"
             placeholder={t('signIn.password')}
-            className="px-4 py-3 border border-slate-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-colors bg-white dark:bg-slate-700 text-slate-900 dark:text-white placeholder-slate-500 dark:placeholder-slate-400"
+            className="px-4 py-3 border border-secondary-300 dark:border-secondary-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-colors bg-white dark:bg-secondary-700 text-secondary-900 dark:text-white placeholder-secondary-500 dark:placeholder-secondary-400"
             value={password}
             onChange={e => setPassword(e.target.value)}
             required
@@ -57,7 +57,7 @@ export default function SignIn() {
         
         <button 
           type="submit" 
-          className="px-6 py-3 bg-primary-600 hover:bg-primary-700 disabled:bg-slate-400 disabled:cursor-not-allowed text-white rounded-lg transition-colors font-medium"
+          className="px-6 py-3 bg-primary-600 hover:bg-primary-700 disabled:bg-secondary-400 disabled:cursor-not-allowed text-white rounded-lg transition-colors font-medium"
           disabled={loading}
         >
           {loading ? 'Connexion...' : t('signIn.submit')}
@@ -65,7 +65,7 @@ export default function SignIn() {
         
         <div className="flex flex-col sm:flex-row justify-between items-center gap-3 text-sm">
           <a href="#" className="text-primary-600 dark:text-primary-400 hover:text-primary-800 dark:hover:text-primary-300 hover:underline">{t('signIn.forgot')}</a>
-          <Link to="/signup" className="text-slate-600 dark:text-slate-400">
+          <Link to="/signup" className="text-secondary-600 dark:text-secondary-400">
             Pas de compte ? <span className="text-primary-600 dark:text-primary-400 hover:text-primary-800 dark:hover:text-primary-300 hover:underline">S'inscrire</span>
           </Link>
         </div>

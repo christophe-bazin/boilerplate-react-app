@@ -1,3 +1,5 @@
+const colors = require('tailwindcss/colors')
+
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: [
@@ -8,8 +10,12 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        primary: '#3b82f6',    // Blue for brand
-        secondary: '#64748b',  // Slate for neutral
+        primary: colors.blue,
+        secondary: colors.slate,
+        accent: colors.violet,
+        success: colors.green,
+        warning: colors.yellow,
+        error: colors.red,
       }
     },
   },

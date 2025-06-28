@@ -1,11 +1,11 @@
 #!/bin/bash
 
-# Local Development Setup Script for Transcript IA Frontend
+# Local Development Setup Script for Frontend
 # Run with: chmod +x scripts/setup-local.sh && ./scripts/setup-local.sh
 
 set -e
 
-echo "🚀 Setting up Transcript IA Frontend for local development..."
+echo "🚀 Setting up Frontend for local development..."
 
 # Check if Node.js is installed
 if ! command -v node &> /dev/null; then

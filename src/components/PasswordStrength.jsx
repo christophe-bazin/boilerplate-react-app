@@ -24,7 +24,7 @@ export default function PasswordStrength({ password }) {
       { score: 1, label: 'Très faible', color: 'text-red-600', bg: 'bg-red-200' },
       { score: 2, label: 'Faible', color: 'text-yellow-600', bg: 'bg-yellow-200' },
       { score: 3, label: 'Moyen', color: 'text-yellow-600', bg: 'bg-yellow-300' },
-      { score: 4, label: 'Fort', color: 'text-blue-600', bg: 'bg-blue-200' },
+      { score: 4, label: 'Fort', color: 'text-primary-600', bg: 'bg-primary-200' },
       { score: 5, label: 'Très fort', color: 'text-green-600', bg: 'bg-green-200' }
     ];
     
@@ -42,7 +42,7 @@ export default function PasswordStrength({ password }) {
           <div
             key={i}
             className={`h-1 w-full rounded ${
-              i <= strength.score ? strength.bg : 'bg-slate-200 dark:bg-slate-700'
+              i <= strength.score ? strength.bg : 'bg-secondary-200 dark:bg-secondary-700'
             }`}
           />
         ))}

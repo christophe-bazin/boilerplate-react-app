@@ -68,7 +68,7 @@ export default function SignUp() {
           />
         </div>
         
-        {error && <div className="text-error-600 dark:text-error-400 text-sm bg-error-50 dark:bg-error-900/20 p-3 rounded-lg">{error}</div>}
+        {error && <div className="text-red-600 dark:text-red-400 text-sm bg-red-50 dark:bg-red-900/20 p-3 rounded-lg">{error}</div>}
         
         <button 
           type="submit" 
