@@ -25,8 +25,11 @@ export default function SignIn() {
 
   return (
     <div className="w-full max-w-md mx-auto">
-      <form onSubmit={handleSubmit} className="p-8 bg-white rounded-lg shadow-lg flex flex-col gap-6">
-        <h2 className="text-2xl font-bold text-center text-gray-800 mb-2">{t('signIn.title')}</h2>
+      <form onSubmit={handleSubmit} className="p-8 bg-white rounded-xl shadow-xl flex flex-col gap-6 border border-gray-100">
+        <div className="text-center mb-4">
+          <h2 className="text-3xl font-bold text-gray-900 mb-2">{t('signIn.title')}</h2>
+          <p className="text-gray-600">Connectez-vous à votre compte</p>
+        </div>
         
         <div className="flex flex-col gap-1">
           <input

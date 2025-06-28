@@ -11,7 +11,11 @@ function AuthLayout({ children }) {
   const { user, loading } = useAuth();
   if (loading) return <div className="flex justify-center items-center h-screen">Loading...</div>;
   if (user) return <Navigate to="/app" replace />;
-  return <div className="min-h-screen flex items-center justify-center bg-gray-50">{children}</div>;
+  return (
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100 px-4 sm:px-6 lg:px-8">
+      {children}
+    </div>
+  );
 }
 
 /**
