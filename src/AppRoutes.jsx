@@ -3,6 +3,7 @@ import { useAuth } from './hooks/useAuth';
 import SignIn from './components/SignIn';
 import SignUp from './components/SignUp';
 import ThemeToggle from './components/ThemeToggle';
+import ColorDemo from './components/ColorDemo';
 
 /**
  * AuthLayout component
@@ -13,7 +14,7 @@ function AuthLayout({ children }) {
   if (loading) return <div className="flex justify-center items-center h-screen">Loading...</div>;
   if (user) return <Navigate to="/app" replace />;
   return (
-    <div className="min-h-screen w-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 p-4">
+    <div className="min-h-screen w-screen flex items-center justify-center bg-gradient-to-br from-primary-50 to-primary-100 dark:from-secondary-900 dark:to-secondary-800 p-4">
       <div className="absolute top-4 right-4">
         <ThemeToggle />
       </div>
@@ -43,16 +44,16 @@ function MainLayout({ children }) {
   const { signOut } = useAuth();
   
   return (
-    <div className="min-h-screen bg-gray-100 dark:bg-gray-900">
-      <header className="bg-white dark:bg-gray-800 shadow-sm">
+    <div className="min-h-screen bg-secondary-100 dark:bg-secondary-900">
+      <header className="bg-white dark:bg-secondary-800 shadow-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
-            <h1 className="text-xl font-semibold text-gray-900 dark:text-white">Transcript IA</h1>
+            <h1 className="text-xl font-semibold text-secondary-900 dark:text-white">Transcript IA</h1>
             <div className="flex items-center space-x-4">
               <ThemeToggle />
               <button
                 onClick={signOut}
-                className="text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 px-3 py-2 rounded-md text-sm font-medium"
+                className="text-secondary-500 dark:text-secondary-400 hover:text-secondary-700 dark:hover:text-secondary-200 px-3 py-2 rounded-md text-sm font-medium"
               >
                 Déconnexion
               </button>
@@ -90,7 +91,7 @@ export default function AppRoutes() {
           element={
             <ProtectedRoute>
               <MainLayout>
-                <div className="text-center text-xl">Welcome to the app!</div>
+                <ColorDemo />
               </MainLayout>
             </ProtectedRoute>
           }

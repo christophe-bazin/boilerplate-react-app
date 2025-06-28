@@ -13,9 +13,9 @@ export default function ThemeToggle({ className = '' }) {
     <select
       value={theme}
       onChange={(e) => setTheme(e.target.value)}
-      className={`px-3 py-1 text-sm border border-gray-300 dark:border-gray-600 rounded-md 
-        bg-white dark:bg-gray-700 text-gray-900 dark:text-white 
-        focus:ring-2 focus:ring-blue-500 focus:border-transparent 
+      className={`px-3 py-1 text-sm border border-secondary-300 dark:border-secondary-600 rounded-md 
+        bg-white dark:bg-secondary-700 text-secondary-900 dark:text-white 
+        focus:ring-2 focus:ring-primary-500 focus:border-transparent 
         transition-colors ${className}`}
     >
       <option value="light">☀️ Clair</option>

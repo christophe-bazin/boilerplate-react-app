@@ -1,6 +1,6 @@
 import { useEffect, useState, useCallback } from 'react';
 import { useAuth } from './useAuth';
-import { supabase } from '../lib/supabaseClient';
+import { UserPreferencesService } from '../lib/userPreferences';
 
 /**
  * useTheme hook
@@ -39,14 +39,7 @@ export function useTheme() {
     
     if (user) {
       try {
-        await supabase
-          .from('user_preferences')
-          .upsert({ 
-            user_id: user.id, 
-            theme: newTheme 
-          }, { 
-            onConflict: 'user_id' 
-          });
+        await UserPreferencesService.updateTheme(user.id, newTheme);
       } catch (error) {
         console.warn('Failed to sync theme to Supabase:', error);
       }
@@ -58,18 +51,8 @@ export function useTheme() {
     if (!user) return null;
     
     try {
-      const { data, error } = await supabase
-        .from('user_preferences')
-        .select('theme')
-        .eq('user_id', user.id)
-        .single();
-      
-      if (error && error.code !== 'PGRST116') { // Not found error
-        console.warn('Failed to load theme from Supabase:', error);
-        return null;
-      }
-      
-      return data?.theme || null;
+      const preferences = await UserPreferencesService.getUserPreferences(user.id);
+      return preferences?.theme || null;
     } catch (error) {
       console.warn('Failed to load theme from Supabase:', error);
       return null;
@@ -103,6 +86,22 @@ export function useTheme() {
 
     initTheme();
   }, [user, loadTheme, loadThemeFromSupabase, applyTheme]);
+
+  // Listen for system theme changes
+  useEffect(() => {
+    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+    const handleChange = () => {
+      // Only auto-switch if no explicit theme is set
+      if (!localStorage.getItem('theme')) {
+        const systemTheme = getSystemTheme();
+        setTheme(systemTheme);
+        applyTheme(systemTheme);
+      }
+    };
+
+    mediaQuery.addEventListener('change', handleChange);
+    return () => mediaQuery.removeEventListener('change', handleChange);
+  }, [getSystemTheme, applyTheme]);
 
   return {
     theme,
