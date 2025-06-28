@@ -2,6 +2,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import { useAuth } from './hooks/useAuth';
 import SignIn from './components/SignIn';
 import SignUp from './components/SignUp';
+import ThemeToggle from './components/ThemeToggle';
 
 /**
  * AuthLayout component
@@ -12,7 +13,10 @@ function AuthLayout({ children }) {
   if (loading) return <div className="flex justify-center items-center h-screen">Loading...</div>;
   if (user) return <Navigate to="/app" replace />;
   return (
-    <div className="min-h-screen w-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100 p-4">
+    <div className="min-h-screen w-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 p-4">
+      <div className="absolute top-4 right-4">
+        <ThemeToggle />
+      </div>
       <div className="w-full max-w-md mx-auto">
         {children}
       </div>
@@ -39,17 +43,20 @@ function MainLayout({ children }) {
   const { signOut } = useAuth();
   
   return (
-    <div className="min-h-screen bg-gray-100">
-      <header className="bg-white shadow-sm">
+    <div className="min-h-screen bg-gray-100 dark:bg-gray-900">
+      <header className="bg-white dark:bg-gray-800 shadow-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
-            <h1 className="text-xl font-semibold text-gray-900">Transcript IA</h1>
-            <button
-              onClick={signOut}
-              className="text-gray-500 hover:text-gray-700 px-3 py-2 rounded-md text-sm font-medium"
-            >
-              Déconnexion
-            </button>
+            <h1 className="text-xl font-semibold text-gray-900 dark:text-white">Transcript IA</h1>
+            <div className="flex items-center space-x-4">
+              <ThemeToggle />
+              <button
+                onClick={signOut}
+                className="text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 px-3 py-2 rounded-md text-sm font-medium"
+              >
+                Déconnexion
+              </button>
+            </div>
           </div>
         </div>
       </header>

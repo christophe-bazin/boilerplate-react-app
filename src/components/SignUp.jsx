@@ -28,17 +28,17 @@ export default function SignUp() {
 
   return (
     <div className="w-full">
-      <form onSubmit={handleSubmit} className="p-8 bg-white rounded-xl shadow-xl flex flex-col gap-6 border border-gray-100">
+      <form onSubmit={handleSubmit} className="p-8 bg-white dark:bg-gray-800 rounded-xl shadow-xl flex flex-col gap-6 border border-gray-100 dark:border-gray-700">
         <div className="text-center mb-4">
-          <h2 className="text-3xl font-bold text-gray-900 mb-2">{t('signUp.title')}</h2>
-          <p className="text-gray-600">Créez votre compte</p>
+          <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">{t('signUp.title')}</h2>
+          <p className="text-gray-600 dark:text-gray-400">Créez votre compte</p>
         </div>
         
         <div className="flex flex-col gap-1">
           <input
             type="email"
             placeholder={t('signUp.email')}
-            className="px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
+            className="px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400"
             value={email}
             onChange={e => setEmail(e.target.value)}
             required
@@ -49,7 +49,7 @@ export default function SignUp() {
           <input
             type="password"
             placeholder={t('signUp.password')}
-            className="px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
+            className="px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400"
             value={password}
             onChange={e => setPassword(e.target.value)}
             required
@@ -61,14 +61,14 @@ export default function SignUp() {
           <input
             type="password"
             placeholder={t('signUp.confirmPassword')}
-            className="px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
+            className="px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400"
             value={confirmPassword}
             onChange={e => setConfirmPassword(e.target.value)}
             required
           />
         </div>
         
-        {error && <div className="text-red-600 text-sm bg-red-50 p-3 rounded-lg">{error}</div>}
+        {error && <div className="text-red-600 dark:text-red-400 text-sm bg-red-50 dark:bg-red-900/20 p-3 rounded-lg">{error}</div>}
         
         <button 
           type="submit" 
