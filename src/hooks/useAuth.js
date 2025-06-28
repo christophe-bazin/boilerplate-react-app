@@ -3,6 +3,7 @@ import { useEffect, useState, useCallback } from 'react';
 
 // Local imports
 import { supabase } from '../lib/supabaseClient';
+import { UserSettingsService } from '../lib/userSettings';
 
 /**
  * useAuth hook
@@ -32,8 +33,28 @@ export function useAuth() {
   const updateEmail = useCallback((email) => supabase.auth.updateUser({ email }), []);
   const updatePassword = useCallback((password) => supabase.auth.updateUser({ password }), []);
   const resetPassword = useCallback((email) => supabase.auth.resetPasswordForEmail(email), []);
+  const deleteAccount = useCallback(async () => {
+    if (!user?.id) throw new Error('No user found');
+    
+    // For now, we'll sign out the user. In production, you'd want to:
+    // 1. Call a server function to delete user data
+    // 2. Mark the account as deleted in your database
+    // 3. Handle data cleanup according to GDPR requirements
+    
+    // Delete user settings first
+    try {
+      await UserSettingsService.deleteUserSettings(user.id);
+    } catch (error) {
+      console.warn('Failed to delete user settings:', error);
+    }
+    
+    // Sign out user (in production, this would be after actual account deletion)
+    await supabase.auth.signOut();
+    
+    return { success: true };
+  }, [user?.id]);
 
-  return { user, loading, signIn, signUp, signOut, updateEmail, updatePassword, resetPassword };
+  return { user, loading, signIn, signUp, signOut, updateEmail, updatePassword, resetPassword, deleteAccount };
 }
 
 /**

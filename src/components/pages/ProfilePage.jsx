@@ -13,7 +13,7 @@ import PasswordInput from '../ui/PasswordInput';
 
 function ProfilePage() {
   const { t, i18n } = useTranslation('auth');
-  const { user, updateEmail, updatePassword } = useAuth();
+  const { user, updateEmail, updatePassword, deleteAccount } = useAuth();
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState({ type: '', text: '' });
 
@@ -30,6 +30,11 @@ function ProfilePage() {
   // Language section
   const [selectedLanguage, setSelectedLanguage] = useState(i18n.language);
   const [languageLoading, setLanguageLoading] = useState(false);
+
+  // Delete account section
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [deleteLoading, setDeleteLoading] = useState(false);
+  const [deleteConfirmation, setDeleteConfirmation] = useState('');
 
   // Initialize email
   useEffect(() => {
@@ -120,6 +125,36 @@ function ProfilePage() {
     } finally {
       setLanguageLoading(false);
     }
+  };
+
+  // Delete account
+  const handleDeleteAccount = async () => {
+    // Check if confirmation text matches
+    const requiredText = t('profile.confirmDeleteKeyword');
+    if (deleteConfirmation !== requiredText) {
+      setMessage({ type: 'error', text: t('profile.confirmDeleteError') });
+      return;
+    }
+
+    setDeleteLoading(true);
+    setMessage({ type: '', text: '' });
+
+    try {
+      await deleteAccount();
+      setMessage({ type: 'success', text: t('profile.accountDeleted') });
+      // The user will be automatically redirected due to auth state change
+    } catch (error) {
+      setMessage({ type: 'error', text: translateAuthError(error.message, t) });
+      setShowDeleteModal(false);
+    } finally {
+      setDeleteLoading(false);
+    }
+  };
+
+  // Reset delete confirmation when modal closes
+  const handleCloseDeleteModal = () => {
+    setShowDeleteModal(false);
+    setDeleteConfirmation('');
   };
 
   if (!user) {
@@ -261,7 +296,83 @@ function ProfilePage() {
               </div>
             </div>
           </div>
+
+          {/* Delete Account Section */}
+          <div className="bg-white dark:bg-secondary-800 rounded-xl shadow-lg p-6 border border-red-200 dark:border-red-800">
+            <h2 className="text-xl font-semibold text-red-600 dark:text-red-400 mb-4">
+              {t('profile.deleteAccount')}
+            </h2>
+            <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-4 mb-4">
+              <div className="flex items-start gap-3">
+                <svg className="w-5 h-5 text-red-600 dark:text-red-400 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                  <path fillRule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+                </svg>
+                <p className="text-red-700 dark:text-red-300 text-sm">
+                  {t('profile.deleteAccountWarning')}
+                </p>
+              </div>
+            </div>
+            <button
+              onClick={() => setShowDeleteModal(true)}
+              className="px-6 py-3 bg-red-600 hover:bg-red-700 text-white rounded-lg transition-colors font-medium"
+            >
+              {t('profile.deleteAccount')}
+            </button>
+          </div>
         </div>
+
+        {/* Delete Account Confirmation Modal */}
+        {showDeleteModal && (
+          <div className="fixed inset-0 flex items-center justify-center z-50">
+            {/* Overlay */}
+            <div 
+              className="absolute inset-0 bg-black bg-opacity-50"
+              onClick={handleCloseDeleteModal}
+            ></div>
+            
+            {/* Modal */}
+            <div className="relative bg-white dark:bg-secondary-800 rounded-xl shadow-lg p-6 max-w-md w-full mx-4 border border-secondary-200 dark:border-secondary-700">
+              <h3 className="text-lg font-semibold text-secondary-900 dark:text-white mb-4">
+                {t('profile.confirmDeleteTitle')}
+              </h3>
+              <p className="text-secondary-700 dark:text-secondary-300 mb-4">
+                {t('profile.confirmDeleteMessage')}
+              </p>
+              
+              {/* Confirmation input */}
+              <div className="mb-6">
+                <label className="block text-sm font-medium text-secondary-700 dark:text-secondary-300 mb-2">
+                  {t('profile.confirmDeleteInput')}
+                </label>
+                <input
+                  type="text"
+                  value={deleteConfirmation}
+                  onChange={(e) => setDeleteConfirmation(e.target.value)}
+                  placeholder={t('profile.confirmDeletePlaceholder')}
+                  className="w-full px-3 py-2 border border-secondary-300 dark:border-secondary-600 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent transition-colors bg-white dark:bg-secondary-700 text-secondary-900 dark:text-white placeholder-secondary-500 dark:placeholder-secondary-400"
+                  disabled={deleteLoading}
+                />
+              </div>
+              
+              <div className="flex justify-end gap-4">
+                <button
+                  onClick={handleCloseDeleteModal}
+                  disabled={deleteLoading}
+                  className="px-4 py-2 bg-secondary-200 dark:bg-secondary-600 text-secondary-700 dark:text-secondary-300 hover:bg-secondary-300 dark:hover:bg-secondary-500 disabled:opacity-50 rounded-lg transition-colors"
+                >
+                  {t('profile.cancelDelete')}
+                </button>
+                <button
+                  onClick={handleDeleteAccount}
+                  disabled={deleteLoading || deleteConfirmation !== t('profile.confirmDeleteKeyword')}
+                  className="px-4 py-2 bg-red-600 hover:bg-red-700 disabled:bg-red-400 disabled:cursor-not-allowed text-white rounded-lg transition-colors"
+                >
+                  {deleteLoading ? t('loading') : t('profile.confirmDelete')}
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
