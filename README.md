@@ -16,8 +16,8 @@ A production-ready React application boilerplate with authentication, theming, a
 ## 🚀 Quick Start
 
 ```bash
-git clone <this-repo>
-cd <project-name>
+git https://github.com/christophe-bazin/boilerplate-react-app
+cd boilerplate-react-app
 chmod +x scripts/setup.sh
 ./scripts/setup.sh
 ```
