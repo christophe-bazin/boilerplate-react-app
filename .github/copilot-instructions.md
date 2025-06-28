@@ -44,7 +44,6 @@
 ## Maintenance du projet
 - README.md : Maintenir les étapes d'installation et la description du projet
 - package.json : Ajouter les nouveaux scripts et dépendances
-- scripts/setup-local.sh : Automatiser l'installation des nouvelles dépendances
 - database/setup.sql : Documenter les changements de schéma de base de données
 - .gitignore : Ajouter les nouveaux types de fichiers à ignorer
 
