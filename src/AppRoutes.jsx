@@ -30,10 +30,24 @@ function ProtectedRoute({ children }) {
  * Main app layout for authenticated users
  */
 function MainLayout({ children }) {
+  const { signOut } = useAuth();
+  
   return (
     <div className="min-h-screen bg-gray-100">
-      <header className="bg-white shadow p-4 mb-6">Transcript IA</header>
-      <main className="container mx-auto px-4">{children}</main>
+      <header className="bg-white shadow-sm">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex justify-between items-center h-16">
+            <h1 className="text-xl font-semibold text-gray-900">Transcript IA</h1>
+            <button
+              onClick={signOut}
+              className="text-gray-500 hover:text-gray-700 px-3 py-2 rounded-md text-sm font-medium"
+            >
+              Déconnexion
+            </button>
+          </div>
+        </div>
+      </header>
+      <main className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">{children}</main>
     </div>
   );
 }

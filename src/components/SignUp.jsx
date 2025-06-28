@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '../hooks/useAuth';
+import PasswordStrength from './PasswordStrength';
 
 /**
  * SignUp component
@@ -26,36 +27,54 @@ export default function SignUp() {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="max-w-sm mx-auto p-6 bg-white rounded shadow flex flex-col gap-4">
-      <h2 className="text-xl font-bold mb-2">{t('signUp.title')}</h2>
-      <input
-        type="email"
-        placeholder={t('signUp.email')}
-        className="input input-bordered w-full"
-        value={email}
-        onChange={e => setEmail(e.target.value)}
-        required
-      />
-      <input
-        type="password"
-        placeholder={t('signUp.password')}
-        className="input input-bordered w-full"
-        value={password}
-        onChange={e => setPassword(e.target.value)}
-        required
-      />
-      <input
-        type="password"
-        placeholder={t('signUp.confirmPassword')}
-        className="input input-bordered w-full"
-        value={confirmPassword}
-        onChange={e => setConfirmPassword(e.target.value)}
-        required
-      />
-      {error && <div className="text-red-500 text-sm">{error}</div>}
-      <button type="submit" className="btn btn-primary w-full" disabled={loading}>
-        {loading ? '...' : t('signUp.submit')}
-      </button>
-    </form>
+    <div className="w-full max-w-md mx-auto">
+      <form onSubmit={handleSubmit} className="p-8 bg-white rounded-lg shadow-lg flex flex-col gap-6">
+        <h2 className="text-2xl font-bold text-center text-gray-800 mb-2">{t('signUp.title')}</h2>
+        
+        <div className="flex flex-col gap-1">
+          <input
+            type="email"
+            placeholder={t('signUp.email')}
+            className="px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
+            value={email}
+            onChange={e => setEmail(e.target.value)}
+            required
+          />
+        </div>
+        
+        <div className="flex flex-col gap-1">
+          <input
+            type="password"
+            placeholder={t('signUp.password')}
+            className="px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
+            value={password}
+            onChange={e => setPassword(e.target.value)}
+            required
+          />
+          <PasswordStrength password={password} />
+        </div>
+        
+        <div className="flex flex-col gap-1">
+          <input
+            type="password"
+            placeholder={t('signUp.confirmPassword')}
+            className="px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
+            value={confirmPassword}
+            onChange={e => setConfirmPassword(e.target.value)}
+            required
+          />
+        </div>
+        
+        {error && <div className="text-red-600 text-sm bg-red-50 p-3 rounded-lg">{error}</div>}
+        
+        <button 
+          type="submit" 
+          className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors font-medium"
+          disabled={loading}
+        >
+          {loading ? 'Création...' : t('signUp.submit')}
+        </button>
+      </form>
+    </div>
   );
 }
