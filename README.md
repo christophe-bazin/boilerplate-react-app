@@ -92,9 +92,11 @@ VITE_SUPABASE_ANON_KEY=your_supabase_anon_key
 ```
 
 3. **Database Setup**
-Run the migration in your Supabase SQL editor:
+The `user_preferences` table is already created in Supabase with the following structure:
 ```sql
--- Execute: src/migrations/001_create_user_preferences.sql
+-- Table already exists with theme persistence and RLS enabled
+-- Includes: id, user_id, theme, created_at, updated_at
+-- With proper policies for user data access
 ```
 
 4. **Start Development Server**
