@@ -3,7 +3,7 @@ import { useEffect, useState, useCallback } from 'react';
 
 // Local imports
 import { useAuth } from './useAuth';
-import { UserPreferencesService } from '../lib/userPreferences';
+import { UserSettingsService } from '../lib/userSettings';
 
 /**
  * useTheme hook
@@ -46,7 +46,7 @@ export function useTheme() {
     
     if (user) {
       try {
-        await UserPreferencesService.updateTheme(user.id, newTheme);
+        await UserSettingsService.updateTheme(user.id, newTheme);
       } catch (error) {
         console.warn('Failed to sync theme to Supabase:', error);
       }
@@ -64,8 +64,8 @@ export function useTheme() {
     if (!user) return null;
     
     try {
-      const preferences = await UserPreferencesService.getUserPreferences(user.id);
-      return preferences?.theme || null;
+      const settings = await UserSettingsService.getUserSettings(user.id);
+      return settings?.theme || null;
     } catch (error) {
       console.warn('Failed to load theme from Supabase:', error);
       return null;
@@ -90,6 +90,10 @@ export function useTheme() {
         if (supabaseTheme) {
           themeToUse = supabaseTheme;
           localStorage.setItem('theme', supabaseTheme);
+        } else {
+          // No settings exist yet, create default ones
+          console.log('Creating default user settings...');
+          await saveTheme(themeToUse);
         }
       }
       
@@ -98,7 +102,7 @@ export function useTheme() {
     };
 
     initTheme();
-  }, [user, loadTheme, loadThemeFromSupabase, applyTheme]);
+  }, [user, loadTheme, loadThemeFromSupabase, applyTheme, saveTheme]);
 
   // Listen for system theme changes when theme is set to 'system'
   useEffect(() => {
