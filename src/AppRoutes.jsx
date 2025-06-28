@@ -11,7 +11,7 @@ import { useAuth } from './hooks/useAuth';
 import { ThemeToggle } from './components/ui';
 import { TopBar } from './components/layout';
 import { HomePage, ProfilePage } from './components/pages';
-import { SignIn, SignUp } from './components/auth';
+import { SignIn, SignUp, ResetPassword } from './components/auth';
 
 /**
  * PublicLayout component
@@ -121,6 +121,14 @@ export default function AppRoutes() {
           element={
             <AuthLayout>
               <SignUp />
+            </AuthLayout>
+          }
+        />
+        <Route
+          path="/reset-password"
+          element={
+            <AuthLayout>
+              <ResetPassword />
             </AuthLayout>
           }
         />

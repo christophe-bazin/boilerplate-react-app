@@ -70,7 +70,12 @@ function SignIn() {
         </button>
         
         <div className="flex flex-col sm:flex-row justify-between items-center gap-3 text-sm">
-          <a href="#" className="text-primary-600 dark:text-primary-400 hover:text-primary-800 dark:hover:text-primary-300 hover:underline">{t('signIn.forgot')}</a>
+          <Link 
+            to="/reset-password" 
+            className="text-primary-600 dark:text-primary-400 hover:text-primary-800 dark:hover:text-primary-300 hover:underline"
+          >
+            {t('signIn.forgot')}
+          </Link>
           <Link to="/signup" className="text-secondary-600 dark:text-secondary-400">
             {t('signIn.noAccount')} <span className="text-primary-600 dark:text-primary-400 hover:text-primary-800 dark:hover:text-primary-300 hover:underline">{t('signIn.signUpLink')}</span>
           </Link>
