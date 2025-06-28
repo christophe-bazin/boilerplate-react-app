@@ -8,6 +8,7 @@ import { Link } from 'react-router-dom';
 // Local imports
 import { useAuth } from '../../hooks/useAuth';
 import { translateAuthError } from '../../lib/errorTranslation';
+import PasswordInput from '../ui/PasswordInput';
 
 /**
  * SignIn component
@@ -49,13 +50,12 @@ function SignIn() {
         </div>
         
         <div className="flex flex-col gap-1">
-          <input
-            type="password"
+          <PasswordInput
             placeholder={t('signIn.password')}
-            className="px-4 py-3 border border-secondary-300 dark:border-secondary-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-colors bg-white dark:bg-secondary-700 text-secondary-900 dark:text-white placeholder-secondary-500 dark:placeholder-secondary-400"
             value={password}
             onChange={e => setPassword(e.target.value)}
             required
+            autoComplete="current-password"
           />
         </div>
         

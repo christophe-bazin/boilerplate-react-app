@@ -29,8 +29,10 @@ export function useAuth() {
   const signIn = useCallback((options) => supabase.auth.signInWithPassword(options), []);
   const signUp = useCallback((options) => supabase.auth.signUp(options), []);
   const signOut = useCallback(() => supabase.auth.signOut(), []);
+  const updateEmail = useCallback((email) => supabase.auth.updateUser({ email }), []);
+  const updatePassword = useCallback((password) => supabase.auth.updateUser({ password }), []);
 
-  return { user, loading, signIn, signUp, signOut };
+  return { user, loading, signIn, signUp, signOut, updateEmail, updatePassword };
 }
 
 /**

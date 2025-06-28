@@ -10,7 +10,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import { useAuth } from './hooks/useAuth';
 import { ThemeToggle } from './components/ui';
 import { TopBar } from './components/layout';
-import { HomePage } from './components/pages';
+import { HomePage, ProfilePage } from './components/pages';
 import { SignIn, SignUp } from './components/auth';
 
 /**
@@ -142,6 +142,18 @@ export default function AppRoutes() {
                     Cette section sera bientôt disponible avec toutes les fonctionnalités.
                   </p>
                 </div>
+              </AppLayout>
+            </ProtectedRoute>
+          }
+        />
+        
+        {/* Profile page */}
+        <Route
+          path="/profile"
+          element={
+            <ProtectedRoute>
+              <AppLayout>
+                <ProfilePage />
               </AppLayout>
             </ProtectedRoute>
           }

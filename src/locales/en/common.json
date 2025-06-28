@@ -31,5 +31,19 @@
         "description": "Description of your third competitive advantage"
       }
     }
-  }
+  },
+  "showPassword": "Show password",
+  "hidePassword": "Hide password",
+  "passwordStrength": {
+    "veryWeak": "Very weak",
+    "weak": "Weak",
+    "medium": "Medium", 
+    "strong": "Strong",
+    "veryStrong": "Very strong"
+  },
+  "save": "Save",
+  "cancel": "Cancel",
+  "loading": "Loading...",
+  "success": "Success",
+  "error": "Error"
 }

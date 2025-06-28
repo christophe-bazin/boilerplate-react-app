@@ -3,6 +3,7 @@ import { useState, useRef, useEffect } from 'react';
 
 // External libraries
 import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router-dom';
 
 // Local imports
 import { useAuth } from '../../hooks/useAuth';
@@ -15,6 +16,7 @@ import ThemeToggle from '../ui/ThemeToggle';
 function UserDropdown({ className = '' }) {
   const { user, signOut } = useAuth();
   const { t } = useTranslation('common');
+  const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef(null);
 
@@ -32,6 +34,11 @@ function UserDropdown({ className = '' }) {
 
   const handleSignOut = async () => {
     await signOut();
+    setIsOpen(false);
+  };
+
+  const handleProfileClick = () => {
+    navigate('/profile');
     setIsOpen(false);
   };
 
@@ -61,7 +68,7 @@ function UserDropdown({ className = '' }) {
           
           <div className="py-0">
             <button
-              onClick={() => setIsOpen(false)}
+              onClick={handleProfileClick}
               className="w-full flex items-center gap-3 px-4 py-3 text-sm text-left text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
             >
               <svg className="w-4 h-4 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">

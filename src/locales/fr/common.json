@@ -31,5 +31,19 @@
         "description": "Description de votre troisième avantage concurrentiel"
       }
     }
-  }
+  },
+  "showPassword": "Afficher le mot de passe",
+  "hidePassword": "Masquer le mot de passe",
+  "passwordStrength": {
+    "veryWeak": "Très faible",
+    "weak": "Faible", 
+    "medium": "Moyen",
+    "strong": "Fort",
+    "veryStrong": "Très fort"
+  },
+  "save": "Enregistrer",
+  "cancel": "Annuler",
+  "loading": "Chargement...",
+  "success": "Succès",
+  "error": "Erreur"
 }
