@@ -27,7 +27,7 @@ export default function SignUp() {
   };
 
   return (
-    <div className="w-full max-w-md mx-auto">
+    <div className="w-full">
       <form onSubmit={handleSubmit} className="p-8 bg-white rounded-xl shadow-xl flex flex-col gap-6 border border-gray-100">
         <div className="text-center mb-4">
           <h2 className="text-3xl font-bold text-gray-900 mb-2">{t('signUp.title')}</h2>
