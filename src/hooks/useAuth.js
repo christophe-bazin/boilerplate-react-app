@@ -1,7 +1,13 @@
-// src/hooks/useAuth.js
+// React imports first
 import { useEffect, useState, useCallback } from 'react';
+
+// Local imports
 import { supabase } from '../lib/supabaseClient';
 
+/**
+ * useAuth hook
+ * Manages user authentication state and provides auth methods for Supabase
+ */
 export function useAuth() {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);

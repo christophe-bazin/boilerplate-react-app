@@ -1,5 +1,10 @@
+// React imports first
 import { useState } from 'react';
+
+// External libraries
 import { useTranslation } from 'react-i18next';
+
+// Local imports
 import { useAuth } from '../hooks/useAuth';
 import PasswordStrength from './PasswordStrength';
 
@@ -7,7 +12,7 @@ import PasswordStrength from './PasswordStrength';
  * SignUp component
  * Handles user registration with validation and Supabase integration.
  */
-export default function SignUp() {
+function SignUp() {
   const { t } = useTranslation('auth');
   const { signUp, loading } = useAuth();
   const [email, setEmail] = useState('');
@@ -81,3 +86,5 @@ export default function SignUp() {
     </div>
   );
 }
+
+export default SignUp;

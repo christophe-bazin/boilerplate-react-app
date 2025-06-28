@@ -1,10 +1,11 @@
+// Local imports
 import { useTheme } from '../hooks/useTheme';
 
 /**
  * ThemeToggle component
  * Simple select dropdown to switch between light and dark themes
  */
-export default function ThemeToggle({ className = '' }) {
+function ThemeToggle({ className = '' }) {
   const { theme, setTheme } = useTheme();
 
   if (!theme) return null;

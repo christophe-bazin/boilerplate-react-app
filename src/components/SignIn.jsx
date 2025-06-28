@@ -1,13 +1,18 @@
+// React imports first
 import { useState } from 'react';
+
+// External libraries
 import { useTranslation } from 'react-i18next';
-import { useAuth } from '../hooks/useAuth';
 import { Link } from 'react-router-dom';
+
+// Local imports
+import { useAuth } from '../hooks/useAuth';
 
 /**
  * SignIn component
  * Handles user authentication with validation and Supabase integration.
  */
-export default function SignIn() {
+function SignIn() {
   const { t } = useTranslation('auth');
   const { signIn, loading } = useAuth();
   const [email, setEmail] = useState('');
@@ -73,3 +78,5 @@ export default function SignIn() {
     </div>
   );
 }
+
+export default SignIn;

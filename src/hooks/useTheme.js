@@ -1,4 +1,7 @@
+// React imports first
 import { useEffect, useState, useCallback } from 'react';
+
+// Local imports
 import { useAuth } from './useAuth';
 import { UserPreferencesService } from '../lib/userPreferences';
 

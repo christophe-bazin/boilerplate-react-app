@@ -1,9 +1,11 @@
+// External libraries
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+
+// Local imports
 import { useAuth } from './hooks/useAuth';
 import SignIn from './components/SignIn';
 import SignUp from './components/SignUp';
 import ThemeToggle from './components/ThemeToggle';
-import ColorDemo from './components/ColorDemo';
 
 /**
  * AuthLayout component
@@ -91,7 +93,14 @@ export default function AppRoutes() {
           element={
             <ProtectedRoute>
               <MainLayout>
-                <ColorDemo />
+                <div className="p-8">
+                  <h1 className="text-2xl font-bold text-secondary-900 dark:text-white mb-4">
+                    Bienvenue dans l'application !
+                  </h1>
+                  <p className="text-secondary-600 dark:text-secondary-400">
+                    Votre tableau de bord principal sera bientôt disponible.
+                  </p>
+                </div>
               </MainLayout>
             </ProtectedRoute>
           }

@@ -4,7 +4,7 @@ import { useState } from 'react';
  * PasswordStrength component
  * Displays a visual indicator of password strength based on common criteria
  */
-export default function PasswordStrength({ password }) {
+function PasswordStrength({ password }) {
   const getStrength = (pwd) => {
     if (!pwd) return { score: 0, label: '', color: '' };
     
@@ -51,3 +51,5 @@ export default function PasswordStrength({ password }) {
     </div>
   );
 }
+
+export default PasswordStrength;
