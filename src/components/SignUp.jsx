@@ -8,7 +8,7 @@ import { useAuth } from '../hooks/useAuth';
  */
 export default function SignUp() {
   const { t } = useTranslation('auth');
-  const { signIn, loading } = useAuth();
+  const { signUp, loading } = useAuth();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -21,8 +21,7 @@ export default function SignUp() {
     if (!password) return setError(t('errors.required'));
     if (password.length < 6) return setError(t('errors.passwordShort'));
     if (password !== confirmPassword) return setError(t('errors.passwordMismatch'));
-    // TODO: Replace signIn with signUp when Supabase sign up logic is implemented
-    const { error } = await signIn({ email, password });
+    const { error } = await signUp({ email, password });
     if (error) setError(error.message);
   };
 

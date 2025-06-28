@@ -21,7 +21,8 @@ export function useAuth() {
   }, []);
 
   const signIn = useCallback((options) => supabase.auth.signInWithPassword(options), []);
+  const signUp = useCallback((options) => supabase.auth.signUp(options), []);
   const signOut = useCallback(() => supabase.auth.signOut(), []);
 
-  return { user, loading, signIn, signOut };
+  return { user, loading, signIn, signUp, signOut };
 }
