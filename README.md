@@ -36,7 +36,29 @@ VITE_SUPABASE_ANON_KEY=your-anon-key-here
 
 Execute `database/setup.sql` in your Supabase SQL editor.
 
-### 4. Customize Your App
+### 4. Deploy Edge Functions (Optional)
+
+For user account deletion to work, deploy the Edge Function:
+
+```bash
+# Install Supabase CLI
+npm install -g supabase
+
+# Login to Supabase
+supabase login
+
+# Link your project
+supabase link --project-ref your-project-ref
+
+# Deploy the delete-user function
+supabase functions deploy delete-user
+```
+
+**Environment Variables for Edge Function:**
+Set these in your Supabase dashboard under Settings > Edge Functions:
+- `SUPABASE_SERVICE_ROLE_KEY` - Your service role key
+
+### 5. Customize Your App
 
 **App Name & Logo:**
 Edit `src/config/app.json`:
@@ -49,7 +71,7 @@ Edit `src/config/app.json`:
 }
 ```
 
-### 5. Start Development
+### 6. Start Development
 
 ```bash
 npm run dev
@@ -77,7 +99,59 @@ src/
 
 ## ⚙️ Configuration
 
-### 🛡️ Brute Force Protection
+### � Configuration Files
+
+The project uses different configuration files for different purposes:
+
+#### **Application Configuration** - `src/config/app.json`
+Centralized app settings used in all environments:
+```json
+{
+  "app": {
+    "name": "Your App Name",
+    "logo": "/src/assets/logo.svg"
+  },
+  "auth": {
+    "bruteForce": {
+      "maxAttempts": 5,
+      "lockoutDuration": 900000
+    },
+    "validation": {
+      "passwordMinLength": 6
+    }
+  }
+}
+```
+
+#### **Environment Variables** - `.env.local` (local), `.env.production` (prod)
+Supabase connection settings:
+```env
+VITE_SUPABASE_URL=https://your-project-ref.supabase.co
+VITE_SUPABASE_ANON_KEY=your-anon-key-here
+```
+
+#### **Supabase Local Development** - `supabase/config.toml` (optional)
+Only needed if you use `supabase start` for local development:
+```toml
+[api]
+enabled = true
+port = 54321
+
+[auth]
+enabled = true
+additional_redirect_urls = ["http://localhost:5173"]
+
+[edge_functions]
+enabled = true
+```
+
+**💡 When to use local Supabase:**
+- ✅ Testing Edge Functions locally
+- ✅ Working offline
+- ✅ Avoiding production database during development
+- ❌ Skip if you prefer developing directly against cloud
+
+### �🛡️ Brute Force Protection
 - Automatic account lockout after 5 failed login attempts
 - 15-minute temporary ban with countdown timer
 - Client-side and server-side protection layers

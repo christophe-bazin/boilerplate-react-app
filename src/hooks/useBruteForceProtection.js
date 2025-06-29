@@ -5,16 +5,19 @@
 
 import { useState, useCallback } from 'react';
 import { supabase } from '../lib/supabaseClient';
-
-const MAX_ATTEMPTS = 5;
-const BAN_DURATION_MINUTES = 15;
-const ATTEMPT_WINDOW_MINUTES = 60;
+import { useAppConfig } from './useAppConfig';
 
 export const useBruteForceProtection = () => {
+  const appConfig = useAppConfig();
   const [isBanned, setIsBanned] = useState(false);
   const [banUntil, setBanUntil] = useState(null);
   const [attemptsCount, setAttemptsCount] = useState(0);
   const [isChecking, setIsChecking] = useState(false);
+
+  // Configuration from app config
+  const MAX_ATTEMPTS = appConfig.auth.bruteForce.maxAttempts;
+  const BAN_DURATION_MINUTES = appConfig.auth.bruteForce.banDurationMinutes;
+  const ATTEMPT_WINDOW_MINUTES = 60; // Keep at 60 minutes for attempt tracking
 
   // Simple client-side protection (primary method)
   const getClientProtectionStatus = useCallback((email) => {

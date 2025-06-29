@@ -4,17 +4,24 @@ import { useState, useEffect } from 'react';
 // External libraries
 import { useTranslation } from 'react-i18next';
 
+// Local imports
+import { useAppConfig } from './useAppConfig';
+
 /**
  * usePasswordValidation hook
  * Provides password validation logic for forms
  */
 export function usePasswordValidation() {
   const { t } = useTranslation('auth');
+  const appConfig = useAppConfig();
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState('');
   const [isValid, setIsValid] = useState(false);
   const [passwordsMatch, setPasswordsMatch] = useState(false);
+
+  // Get password requirements from config
+  const minLength = appConfig.auth.password.minLength;
 
   // Validate passwords whenever they change
   useEffect(() => {
@@ -26,7 +33,7 @@ export function usePasswordValidation() {
     if (!password) {
       validationError = '';
       valid = false;
-    } else if (password.length < 6) {
+    } else if (password.length < minLength) {
       validationError = t('errors.passwordShort');
       valid = false;
     } else {
@@ -46,14 +53,14 @@ export function usePasswordValidation() {
     setError(validationError);
     setIsValid(valid && (!confirmPassword || match));
     setPasswordsMatch(match);
-  }, [password, confirmPassword, t]);
+  }, [password, confirmPassword, t, minLength]);
 
   // Validation function for form submission
   const validatePasswords = () => {
     if (!password) {
       return { isValid: false, error: t('errors.required') };
     }
-    if (password.length < 6) {
+    if (password.length < minLength) {
       return { isValid: false, error: t('errors.passwordShort') };
     }
     if (confirmPassword && password !== confirmPassword) {

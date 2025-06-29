@@ -1,6 +1,9 @@
 // React imports first
 import { useEffect, useState, useCallback } from 'react';
 
+// External libraries
+import { useTranslation } from 'react-i18next';
+
 // Local imports
 import { supabase } from '../lib/supabaseClient';
 import { UserSettingsService } from '../lib/userSettings';
@@ -13,6 +16,7 @@ import { useBruteForceProtection } from './useBruteForceProtection';
 export function useAuth() {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
+  const { t } = useTranslation('auth');
   
   // Brute force protection
   const bruteForceProtection = useBruteForceProtection();
@@ -41,7 +45,7 @@ export function useAuth() {
       const timeRemaining = bruteForceProtection.formatBanTime();
       return { 
         error: { 
-          message: `Compte temporairement bloqué. Réessayez dans ${timeRemaining}.` 
+          message: `${t('bruteForce.accountTemporarilyBlocked')}. ${t('bruteForce.tryAgainIn')} ${timeRemaining}.` 
         } 
       };
     }
@@ -67,7 +71,7 @@ export function useAuth() {
         // Override the original error with ban message
         return { 
           error: { 
-            message: `Compte temporairement bloqué suite à plusieurs tentatives échouées. Réessayez dans ${timeRemaining}.` 
+            message: `${t('bruteForce.accountTemporarilyBlocked')} ${t('bruteForce.tooManyFailedAttempts', { count: bruteForceProtection.attemptsCount })}. ${t('bruteForce.tryAgainIn')} ${timeRemaining}.` 
           } 
         };
       }
@@ -180,22 +184,26 @@ export function useAuth() {
   const deleteAccount = useCallback(async () => {
     if (!user?.id) throw new Error('No user found');
     
-    // For now, we'll sign out the user. In production, you'd want to:
-    // 1. Call a server function to delete user data
-    // 2. Mark the account as deleted in your database
-    // 3. Handle data cleanup according to GDPR requirements
-    
-    // Delete user settings first
     try {
-      await UserSettingsService.deleteUserSettings(user.id);
+      // Call the Edge Function to delete the user
+      const { data, error } = await supabase.functions.invoke('delete-user', {
+        headers: {
+          Authorization: `Bearer ${(await supabase.auth.getSession()).data.session?.access_token}`,
+        },
+      });
+
+      if (error) {
+        throw new Error(error.message || 'Failed to delete account');
+      }
+
+      // Sign out the user session locally
+      await supabase.auth.signOut();
+      
+      return { success: true };
     } catch (error) {
-      console.warn('Failed to delete user settings:', error);
+      console.error('Failed to delete account:', error);
+      throw error;
     }
-    
-    // Sign out user (in production, this would be after actual account deletion)
-    await supabase.auth.signOut();
-    
-    return { success: true };
   }, [user?.id]);
 
   return { 

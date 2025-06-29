@@ -2,5 +2,35 @@
   "app": {
     "name": "My App",
     "logo": "/src/assets/logo.svg"
+  },
+  "auth": {
+    "redirectUrls": {
+      "development": [
+        "http://localhost:5173",
+        "http://localhost:5174", 
+        "http://localhost:5175",
+        "http://localhost:5176"
+      ],
+      "production": []
+    },
+    "magicLink": {
+      "enabled": true,
+      "priority": true
+    },
+    "password": {
+      "enabled": true,
+      "minLength": 6,
+      "requireConfirmation": true
+    },
+    "bruteForce": {
+      "maxAttempts": 5,
+      "banDurationMinutes": 15,
+      "enabled": true
+    }
+  },
+  "features": {
+    "deleteAccount": true,
+    "changeLanguage": true,
+    "darkMode": true
   }
 }
