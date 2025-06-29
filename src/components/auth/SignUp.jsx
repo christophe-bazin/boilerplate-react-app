@@ -32,7 +32,8 @@ function SignUp() {
     confirmPassword,
     setConfirmPassword,
     validatePasswords,
-    resetValidation
+    resetValidation,
+    handleSupabaseError
   } = usePasswordValidation();
 
   // Handle magic link submission
@@ -62,8 +63,13 @@ function SignUp() {
     try {
       const { error } = await signUp({ email, password });
       if (error) {
-        const translatedError = translateAuthError(error.message, t);
-        setError(translatedError);
+        // Handle password-related errors with the hook
+        if (error.message.toLowerCase().includes('password')) {
+          handleSupabaseError(error);
+        } else {
+          const translatedError = translateAuthError(error.message, t);
+          setError(translatedError);
+        }
       } else {
         setSuccess(true);
         // Clear form

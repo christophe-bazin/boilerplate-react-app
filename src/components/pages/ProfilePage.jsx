@@ -38,7 +38,9 @@ function ProfilePage() {
     confirmPassword,
     setConfirmPassword,
     isValid: passwordsValid,
-    passwordsMatch
+    passwordsMatch,
+    handleSupabaseError,
+    clearSupabaseError
   } = usePasswordValidation();
 
   // Language section
@@ -98,11 +100,6 @@ function ProfilePage() {
       return;
     }
     
-    if (newPassword.length < 6) {
-      setMessage({ type: 'error', text: tAuth('errors.passwordShort') });
-      return;
-    }
-    
     if (newPassword !== confirmPassword) {
       setMessage({ type: 'error', text: tAuth('errors.passwordMismatch') });
       return;
@@ -122,16 +119,27 @@ function ProfilePage() {
       }
       
       if (result.error) {
-        setMessage({ type: 'error', text: translateAuthError(result.error.message, t) });
+        // Handle password-related errors with the hook
+        if (result.error.message.toLowerCase().includes('password')) {
+          handleSupabaseError(result.error);
+        } else {
+          setMessage({ type: 'error', text: translateAuthError(result.error.message, t) });
+        }
       } else {
         const successMessage = hasPassword ? t('passwordUpdated') : t('passwordSet');
         setMessage({ type: 'success', text: successMessage });
         setCurrentPassword('');
         setNewPassword('');
         setConfirmPassword('');
+        clearSupabaseError(); // Clear any previous password errors
       }
     } catch (error) {
-      setMessage({ type: 'error', text: translateAuthError(error.message, t) });
+      // Handle password-related errors with the hook
+      if (error.message.toLowerCase().includes('password')) {
+        handleSupabaseError(error);
+      } else {
+        setMessage({ type: 'error', text: translateAuthError(error.message, t) });
+      }
     } finally {
       setPasswordLoading(false);
     }

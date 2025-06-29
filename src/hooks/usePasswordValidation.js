@@ -2,6 +2,7 @@
  * usePasswordValidation hook
  * Provides password validation logic for forms (password matching only)
  * Note: Password strength validation is handled by Supabase server-side
+ * The hook reacts to Supabase validation errors rather than duplicating rules
  */
 
 // React imports first
@@ -17,6 +18,7 @@ export function usePasswordValidation() {
   const [error, setError] = useState('');
   const [isValid, setIsValid] = useState(false);
   const [passwordsMatch, setPasswordsMatch] = useState(false);
+  const [supabaseError, setSupabaseError] = useState('');
 
   // Validate passwords whenever they change
   useEffect(() => {
@@ -29,6 +31,7 @@ export function usePasswordValidation() {
       validationError = '';
       valid = false;
     } else {
+      // Password is provided, assume valid until Supabase says otherwise
       valid = true;
     }
 
@@ -42,10 +45,27 @@ export function usePasswordValidation() {
       }
     }
 
-    setError(validationError);
-    setIsValid(valid && (!confirmPassword || match));
+    // Clear Supabase error when password changes (user is fixing it)
+    if (supabaseError && password) {
+      setSupabaseError('');
+    }
+
+    setError(validationError || supabaseError);
+    setIsValid(valid && (!confirmPassword || match) && !supabaseError);
     setPasswordsMatch(match);
-  }, [password, confirmPassword, t]);
+  }, [password, confirmPassword, supabaseError, t]);
+
+  // Function to handle Supabase validation errors
+  const handleSupabaseError = (error) => {
+    if (error?.message) {
+      setSupabaseError(error.message);
+    }
+  };
+
+  // Clear Supabase errors
+  const clearSupabaseError = () => {
+    setSupabaseError('');
+  };
 
   // Validation function for form submission
   const validatePasswords = () => {
@@ -54,6 +74,9 @@ export function usePasswordValidation() {
     }
     if (confirmPassword && password !== confirmPassword) {
       return { isValid: false, error: t('errors.passwordMismatch') };
+    }
+    if (supabaseError) {
+      return { isValid: false, error: supabaseError };
     }
     return { isValid: true, error: '' };
   };
@@ -65,6 +88,7 @@ export function usePasswordValidation() {
     setError('');
     setIsValid(false);
     setPasswordsMatch(false);
+    setSupabaseError('');
   };
 
   return {
@@ -76,6 +100,9 @@ export function usePasswordValidation() {
     isValid,
     passwordsMatch,
     validatePasswords,
-    resetValidation
+    resetValidation,
+    handleSupabaseError,
+    clearSupabaseError,
+    supabaseError
   };
 }
