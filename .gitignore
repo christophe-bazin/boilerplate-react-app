@@ -30,3 +30,27 @@ dist-ssr
 
 # Vite
 .vite
+
+# Supabase
+supabase/.temp/
+supabase/logs/
+supabase/volumes/
+supabase/config.toml
+supabase/.branches/
+supabase/seed.sql
+supabase/.gitignore
+.supabase/
+
+# IDE and OS
+.fleet/
+*.swp
+*.swo
+*~
+
+# Testing
+coverage/
+.nyc_output/
+
+# Build and deploy
+build/
+out/
