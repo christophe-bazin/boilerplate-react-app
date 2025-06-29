@@ -14,7 +14,7 @@ import PasswordInput from '../ui/PasswordInput';
 function ProfilePage() {
   const { t, i18n } = useTranslation('profile');
   const { t: tAuth } = useTranslation('auth');
-  const { user, updateEmail, updatePassword, deleteAccount } = useAuth();
+  const { user, updateEmail, updatePassword, deleteAccount, userHasPassword, setInitialPassword } = useAuth();
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState({ type: '', text: '' });
 
@@ -27,6 +27,7 @@ function ProfilePage() {
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [passwordLoading, setPasswordLoading] = useState(false);
+  const hasPassword = userHasPassword();
 
   // Language section
   const [selectedLanguage, setSelectedLanguage] = useState(i18n.language);
@@ -73,11 +74,23 @@ function ProfilePage() {
   // Update password
   const handlePasswordUpdate = async (e) => {
     e.preventDefault();
-    if (!currentPassword || !newPassword) return;
+    
+    // For users without password (magic link only), currentPassword is not required
+    if (hasPassword && !currentPassword) {
+      setMessage({ type: 'error', text: tAuth('errors.required') });
+      return;
+    }
+    
+    if (!newPassword) {
+      setMessage({ type: 'error', text: tAuth('errors.required') });
+      return;
+    }
+    
     if (newPassword.length < 6) {
       setMessage({ type: 'error', text: tAuth('errors.passwordShort') });
       return;
     }
+    
     if (newPassword !== confirmPassword) {
       setMessage({ type: 'error', text: tAuth('errors.passwordMismatch') });
       return;
@@ -87,11 +100,20 @@ function ProfilePage() {
     setMessage({ type: '', text: '' });
 
     try {
-      const { error } = await updatePassword(newPassword);
-      if (error) {
-        setMessage({ type: 'error', text: translateAuthError(error.message, t) });
+      let result;
+      if (hasPassword) {
+        // User has existing password, use updatePassword
+        result = await updatePassword(newPassword);
       } else {
-        setMessage({ type: 'success', text: t('passwordUpdated') });
+        // User has no password (magic link only), set initial password
+        result = await setInitialPassword(newPassword);
+      }
+      
+      if (result.error) {
+        setMessage({ type: 'error', text: translateAuthError(result.error.message, t) });
+      } else {
+        const successMessage = hasPassword ? t('passwordUpdated') : t('passwordSet');
+        setMessage({ type: 'success', text: successMessage });
         setCurrentPassword('');
         setNewPassword('');
         setConfirmPassword('');
@@ -224,18 +246,29 @@ function ProfilePage() {
           {/* Password Section */}
           <div className="bg-white dark:bg-secondary-800 rounded-xl shadow-lg p-6 border border-secondary-100 dark:border-secondary-700">
             <h2 className="text-xl font-semibold text-secondary-900 dark:text-white mb-4">
-              {t('updatePassword')}
+              {hasPassword ? t('updatePassword') : t('setPassword')}
             </h2>
-            <form onSubmit={handlePasswordUpdate} className="space-y-4">
-              <div>
-                <PasswordInput
-                  placeholder={t('currentPassword')}
-                  value={currentPassword}
-                  onChange={e => setCurrentPassword(e.target.value)}
-                  required
-                  autoComplete="current-password"
-                />
+            
+            {!hasPassword && (
+              <div className="mb-4 p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-200 dark:border-blue-800">
+                <p className="text-blue-800 dark:text-blue-200 text-sm">
+                  {t('noPasswordInfo')}
+                </p>
               </div>
+            )}
+            
+            <form onSubmit={handlePasswordUpdate} className="space-y-4">
+              {hasPassword && (
+                <div>
+                  <PasswordInput
+                    placeholder={t('currentPassword')}
+                    value={currentPassword}
+                    onChange={e => setCurrentPassword(e.target.value)}
+                    required
+                    autoComplete="current-password"
+                  />
+                </div>
+              )}
               <div>
                 <PasswordInput
                   placeholder={t('newPassword')}

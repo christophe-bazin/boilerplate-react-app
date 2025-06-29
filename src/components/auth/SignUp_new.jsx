@@ -116,7 +116,7 @@ function SignUp() {
           
           <div className="text-center text-sm">
             <Link to="/signin" className="text-secondary-600 dark:text-secondary-400">
-              {t('signUp.hasAccount')} <span className="text-primary-600 dark:text-primary-400 hover:text-primary-800 dark:hover:text-primary-300 hover:underline">{t('signUp.signInLink')}</span>
+              Déjà un compte ? <span className="text-primary-600 dark:text-primary-400 hover:text-primary-800 dark:hover:text-primary-300 hover:underline">Se connecter</span>
             </Link>
           </div>
         </form>

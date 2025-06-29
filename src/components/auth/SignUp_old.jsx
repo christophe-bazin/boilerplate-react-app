@@ -1,23 +1,23 @@
 // React imports first
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 // External libraries
 import { useTranslation } from 'react-i18next';
-import { Link } from 'react-router-dom';
 
 // Local imports
 import { useAuth } from '../../hooks/useAuth';
 import { translateAuthError } from '../../lib/errorTranslation';
 import PasswordInput from '../ui/PasswordInput';
+import { BanWarning } from './BanWarning';
 import MagicLinkForm from './MagicLinkForm';
 
 /**
  * SignUp component
- * Handles user registration with magic link priority and password fallback
+ * Handles user registration with validation and Supabase integration.
  */
 function SignUp() {
   const { t } = useTranslation('auth');
-  const { signUp, signUpWithMagicLink, loading } = useAuth();
+  const { signUp, signUpWithMagicLink, loading, bruteForceProtection } = useAuth();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -33,17 +33,12 @@ function SignUp() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
-    
     if (!email) return setError(t('errors.required'));
     if (!password) return setError(t('errors.required'));
     if (password.length < 6) return setError(t('errors.passwordShort'));
     if (password !== confirmPassword) return setError(t('errors.passwordMismatch'));
-    
     const { error } = await signUp({ email, password });
-    if (error) {
-      const translatedError = translateAuthError(error.message, t);
-      setError(translatedError);
-    }
+    if (error) setError(translateAuthError(error.message, t));
   };
 
   return (
@@ -112,12 +107,6 @@ function SignUp() {
             >
               {t('signUp.useMagicLink')}
             </button>
-          </div>
-          
-          <div className="text-center text-sm">
-            <Link to="/signin" className="text-secondary-600 dark:text-secondary-400">
-              {t('signUp.hasAccount')} <span className="text-primary-600 dark:text-primary-400 hover:text-primary-800 dark:hover:text-primary-300 hover:underline">{t('signUp.signInLink')}</span>
-            </Link>
           </div>
         </form>
       )}

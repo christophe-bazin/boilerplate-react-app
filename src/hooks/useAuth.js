@@ -81,8 +81,18 @@ export function useAuth() {
   const signUp = useCallback(async (options) => {
     const { email } = options;
     
+    // Add metadata to mark user as having password
+    const enhancedOptions = {
+      ...options,
+      options: {
+        data: {
+          has_password: true
+        }
+      }
+    };
+    
     // Attempt signup with Supabase
-    const result = await supabase.auth.signUp(options);
+    const result = await supabase.auth.signUp(enhancedOptions);
     
     // Log the attempt
     await bruteForceProtection.logAttempt(email, 'signup', !result.error);
@@ -91,9 +101,59 @@ export function useAuth() {
   }, [bruteForceProtection]);
 
   const signOut = useCallback(() => supabase.auth.signOut(), []);
+  
+  // Magic Link authentication functions
+  const signInWithMagicLink = useCallback(async (email) => {
+    // For sign in, we want to check if user exists first
+    // Supabase will send magic link even for non-existent users for security
+    // But we can detect this by the response structure
+    const { data, error } = await supabase.auth.signInWithOtp({
+      email,
+      options: {
+        shouldCreateUser: false, // Only allow existing users for sign in
+      }
+    });
+    
+    // If no error but also no session data, user probably doesn't exist
+    // However, Supabase still sends the email for security reasons
+    // We'll let the front-end show success but the user won't receive the link
+    return { data, error };
+  }, []);
+
+  const signUpWithMagicLink = useCallback(async (email) => {
+    const { data, error } = await supabase.auth.signInWithOtp({
+      email,
+      options: {
+        shouldCreateUser: true, // Allow new user creation for sign up
+        data: {
+          has_password: false // Mark user as magic link only
+        }
+      }
+    });
+    return { data, error };
+  }, []);
+  
   const updateEmail = useCallback((email) => supabase.auth.updateUser({ email }), []);
   const updatePassword = useCallback((password) => supabase.auth.updateUser({ password }), []);
   
+  // Check if user has a password (vs magic link only)
+  const userHasPassword = useCallback(() => {
+    if (!user) return false;
+    
+    // Check user metadata for has_password flag
+    // This will be false for magic link users, true for password users
+    return user.user_metadata?.has_password !== false;
+  }, [user]);
+
+  // Set password for magic link users
+  const setInitialPassword = useCallback(async (password) => {
+    const { data, error } = await supabase.auth.updateUser({ 
+      password,
+      data: { has_password: true }
+    });
+    return { data, error };
+  }, []);
+
   // Enhanced resetPassword with protection
   const resetPassword = useCallback(async (email) => {
     // Attempt password reset with Supabase
@@ -131,8 +191,12 @@ export function useAuth() {
     signIn, 
     signUp, 
     signOut, 
+    signInWithMagicLink,
+    signUpWithMagicLink,
     updateEmail, 
-    updatePassword, 
+    updatePassword,
+    userHasPassword,
+    setInitialPassword,
     resetPassword, 
     deleteAccount,
     // Brute force protection methods
