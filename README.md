@@ -49,13 +49,6 @@ Edit `src/config/app.json`:
 }
 ```
 
-**Content & Translations:**
-Update files in `src/locales/`:
-- `src/locales/en/common.json` - English translations
-- `src/locales/fr/common.json` - French translations
-- `src/locales/en/auth.json` - English auth texts
-- `src/locales/fr/auth.json` - French auth texts
-
 ### 5. Start Development
 
 ```bash
@@ -82,93 +75,36 @@ src/
 └── assets/             # Static assets (logo, images)
 ```
 
-## ⚙️ Advanced Configuration
+## ⚙️ Configuration
 
-### 🛡️ Security Features
-
-**Brute Force Protection:**
+### 🛡️ Brute Force Protection
 - Automatic account lockout after 5 failed login attempts
 - 15-minute temporary ban with countdown timer
 - Client-side and server-side protection layers
-- IP-based and email-based tracking
-- Visual warnings before account lockout
 
-**Password Security:**
-- bcrypt hashing with random salt
-- Password strength indicator
-- Protection against leaked passwords (HaveIBeenPwned integration)
-- Configurable password requirements
+### 🎨 Theme System
+- **Light/Dark/System modes** - Automatically follows OS preference
+- Themes persisted in localStorage and synced with user preferences
 
-**Authentication Security:**
-- JWT-based sessions with automatic refresh
-- Row Level Security (RLS) on database
-- Rate limiting on auth endpoints
-- Optional CAPTCHA protection
-
-### Theme System
-The app includes a complete theme system with:
-- **Light mode** - Clean white interface
-- **Dark mode** - Dark interface for low-light environments  
-- **System mode** - Automatically follows OS preference
-
-Themes are persisted in localStorage and synced with Supabase user preferences.
-
-### Internationalization (i18n)
-Built-in support for French and English:
-- **Default language:** French (`fr`)
-- **Fallback language:** English (`en`)
+### 🌍 Internationalization
+- **Languages:** French (default) and English
 - **Translation files:** `src/locales/{lang}/{namespace}.json`
+- Easy to extend with additional languages
 
-Add new languages by:
-1. Creating new folders in `src/locales/`
-2. Adding translation files
-3. Updating `src/i18n.js`
+## 🏗️ Customization
 
-### Authentication Flow
-Complete authentication system with:
-- **Sign Up** - Email/password registration with strength validation
-- **Sign In** - Email/password login with brute force protection
-- **Password Reset** - Secure email-based password recovery
-- **Profile Management** - Email, password, language, account deletion
-- **Protected Routes** - Automatic redirects
-- **User Session** - Persistent login state
-- **Brute Force Protection** - Account lockout after failed attempts
-
-## 🏗️ Building Your App
-
-### Customizing Content
-1. **App Name:** Update `src/config/app.json`
-2. **Logo:** Replace `src/assets/logo.svg`
-3. **Homepage:** Edit `src/locales/*/common.json`
-4. **Features:** Modify `src/components/HomePage.jsx`
-
-### Adding New Pages
-1. Create component in `src/components/`
-2. Add route in `src/AppRoutes.jsx`
-3. Add translations in `src/locales/`
-
-### Styling
-Uses Tailwind CSS with:
-- **Responsive design** - Mobile-first approach
-- **Utility classes** - No custom CSS needed
-- **Theme support** - Dark/light mode ready
+Update `src/config/app.json` for app name and logo, then modify translation files in `src/locales/` for content.
 
 ## 📦 Production
 
-### Deploy to Production
-
-1. **Create Supabase Project**
-   - Go to [supabase.com](https://supabase.com)
-   - Create new project
-   - Execute `database/setup.sql` in SQL editor
-
-2. **Set Environment Variables**
+1. **Create Supabase Project** at [supabase.com](https://supabase.com)
+2. **Execute** `database/setup.sql` in SQL editor
+3. **Set Environment Variables**
    ```env
    VITE_SUPABASE_URL=https://your-project-ref.supabase.co
    VITE_SUPABASE_ANON_KEY=your-anon-key-here
    ```
-
-3. **Build and Deploy**
+4. **Build and Deploy**
    ```bash
    npm run build
    ```
