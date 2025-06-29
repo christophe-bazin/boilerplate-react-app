@@ -19,7 +19,6 @@
     },
     "password": {
       "enabled": true,
-      "minLength": 6,
       "requireConfirmation": true
     },
     "bruteForce": {

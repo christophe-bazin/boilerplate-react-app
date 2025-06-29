@@ -1,6 +1,7 @@
 /**
  * usePasswordValidation hook
- * Provides password validation logic for forms
+ * Provides password validation logic for forms (password matching only)
+ * Note: Password strength validation is handled by Supabase server-side
  */
 
 // React imports first
@@ -9,19 +10,13 @@ import { useState, useEffect } from 'react';
 // External libraries
 import { useTranslation } from 'react-i18next';
 
-// Local imports
-import { useAppConfig } from './useAppConfig';
 export function usePasswordValidation() {
   const { t } = useTranslation('auth');
-  const appConfig = useAppConfig();
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState('');
   const [isValid, setIsValid] = useState(false);
   const [passwordsMatch, setPasswordsMatch] = useState(false);
-
-  // Get password requirements from config
-  const minLength = appConfig.auth.password.minLength;
 
   // Validate passwords whenever they change
   useEffect(() => {
@@ -33,14 +28,11 @@ export function usePasswordValidation() {
     if (!password) {
       validationError = '';
       valid = false;
-    } else if (password.length < minLength) {
-      validationError = t('errors.passwordShort');
-      valid = false;
     } else {
       valid = true;
     }
 
-    // Check if passwords match
+    // Check if passwords match (only if confirmation is required)
     if (password && confirmPassword) {
       if (password === confirmPassword) {
         match = true;
@@ -53,15 +45,12 @@ export function usePasswordValidation() {
     setError(validationError);
     setIsValid(valid && (!confirmPassword || match));
     setPasswordsMatch(match);
-  }, [password, confirmPassword, t, minLength]);
+  }, [password, confirmPassword, t]);
 
   // Validation function for form submission
   const validatePasswords = () => {
     if (!password) {
       return { isValid: false, error: t('errors.required') };
-    }
-    if (password.length < minLength) {
-      return { isValid: false, error: t('errors.passwordShort') };
     }
     if (confirmPassword && password !== confirmPassword) {
       return { isValid: false, error: t('errors.passwordMismatch') };

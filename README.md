@@ -2,9 +2,22 @@
 
 A production-ready React application boilerplate with authentication, theming, and internationalization.
 
-## ✨ Features
+## ✨ Feature### 🛡️ Brute Force Protection
+- Automatic account lockout after 5 failed login attempts
+- 15-minute temporary ban with countdown timer
+- Client-side and server-side protection layers
 
-- 🚀 **React 18** + **Vite** - Lightning fast development
+### 🔐 Supabase Auth Configuration
+**Recommended Auth settings in Supabase Dashboard > Authentication > Settings:**
+- ✅ **Confirm email** - Enable email confirmation
+- ✅ **Secure email change** - Require confirmation on both emails
+- ✅ **Secure password change** - Require recent login for password changes
+- ✅ **Prevent use of leaked passwords** - Enable HaveIBeenPwned integration
+- **Minimum password length**: 8+ characters (recommended over default 6)
+- **Email OTP Expiration**: 3600 seconds (1 hour)
+- **Email OTP Length**: 6 digits
+
+> ⚠️ **Note**: Password validation is handled by Supabase server-side. The client validates password confirmation matching and implements brute force protection. 🚀 **React 18** + **Vite** - Lightning fast development
 - 🎨 **Tailwind CSS** - Utility-first CSS with dark/light/system themes
 - 🔐 **Supabase Auth** - Complete authentication system (sign up, sign in, logout)
 - 🛡️ **Brute Force Protection** - Account lockout after failed login attempts
@@ -115,9 +128,6 @@ Centralized app settings used in all environments:
     "bruteForce": {
       "maxAttempts": 5,
       "lockoutDuration": 900000
-    },
-    "validation": {
-      "passwordMinLength": 6
     }
   }
 }
@@ -130,26 +140,8 @@ VITE_SUPABASE_URL=https://your-project-ref.supabase.co
 VITE_SUPABASE_ANON_KEY=your-anon-key-here
 ```
 
-#### **Supabase Local Development** - `supabase/config.toml` (optional)
-Only needed if you use `supabase start` for local development:
-```toml
-[api]
-enabled = true
-port = 54321
-
-[auth]
-enabled = true
-additional_redirect_urls = ["http://localhost:5173"]
-
-[edge_functions]
-enabled = true
-```
-
-**💡 When to use local Supabase:**
-- ✅ Testing Edge Functions locally
-- ✅ Working offline
-- ✅ Avoiding production database during development
-- ❌ Skip if you prefer developing directly against cloud
+#### **Supabase Local Development** (optional)
+For local Supabase development, use the example configuration provided in `supabase/config.example.toml`.
 
 ### �🛡️ Brute Force Protection
 - Automatic account lockout after 5 failed login attempts
