@@ -139,20 +139,33 @@ export function useAuth() {
   // Check if user has a password (vs magic link only)
   const userHasPassword = useCallback(() => {
     if (!user) return false;
+    // Check if user has password based on app_metadata or auth providers
+    // If user only has email provider and has_password is false, they don't have password
+    const hasPasswordFlag = user.app_metadata?.has_password;
+    if (hasPasswordFlag === false) return false;
+    if (hasPasswordFlag === true) return true;
     
-    // Check user metadata for has_password flag
-    // This will be false for magic link users, true for password users
-    return user.user_metadata?.has_password !== false;
+    // Fallback: check auth providers - if only email and no password set during signup
+    const authProviders = user.app_metadata?.providers || [];
+    return authProviders.includes('email') && user.user_metadata?.has_password !== false;
   }, [user]);
 
-  // Set password for magic link users
-  const setInitialPassword = useCallback(async (password) => {
-    const { data, error } = await supabase.auth.updateUser({ 
-      password,
-      data: { has_password: true }
-    });
-    return { data, error };
-  }, []);
+  // Set initial password for magic link users
+  const setInitialPassword = useCallback(async (newPassword) => {
+    if (!user) return { error: { message: 'No user found' } };
+    
+    try {
+      // Update password and mark user as having password
+      const { data, error } = await supabase.auth.updateUser({ 
+        password: newPassword,
+        data: { has_password: true }
+      });
+      
+      return { data, error };
+    } catch (err) {
+      return { error: { message: err.message } };
+    }
+  }, [user]);
 
   // Enhanced resetPassword with protection
   const resetPassword = useCallback(async (email) => {
