@@ -1,17 +1,13 @@
-// External libraries
-import { Link } from 'react-router-dom';
-import { useTranslation } from 'react-i18next';
-
-// Local imports
-import { useAppConfig } from '../../hooks/useAppConfig';
-
 /**
  * HomePage component
  * Landing page for unauthenticated users with app presentation and CTA buttons
  */
+
+// External libraries
+import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 function HomePage() {
   const { t } = useTranslation('common');
-  const config = useAppConfig();
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800">

@@ -3,7 +3,7 @@
  * Main application component with authentication and theme providers
  */
 
-// External libraries
+// React imports first
 import { Suspense } from 'react';
 
 // Local imports
@@ -11,10 +11,7 @@ import { AuthProvider } from './hooks/useAuth';
 import { ThemeProvider } from './hooks/useTheme';
 import AppRoutes from './AppRoutes';
 
-/**
- * Loading component
- * Displays a loading spinner while the app initializes
- */
+// Loading component
 function AppLoading() {
   return (
     <div className="flex justify-center items-center h-screen bg-white dark:bg-gray-900">
@@ -22,11 +19,6 @@ function AppLoading() {
     </div>
   );
 }
-
-/**
- * App component
- * Root component with all necessary providers
- */
 function App() {
   return (
     <ThemeProvider>

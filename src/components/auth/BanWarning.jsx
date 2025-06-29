@@ -3,16 +3,14 @@
  * Displays warning message when user is banned or has multiple failed attempts
  */
 
+// React imports first
 import { useEffect, useState } from 'react';
-import { useTranslation } from 'react-i18next';
 
-export function BanWarning({ 
+function BanWarning({ 
   isBanned, 
-  banUntil, 
   formatBanTime, 
   onBanExpired 
 }) {
-  const { t } = useTranslation('auth');
   const [timeRemaining, setTimeRemaining] = useState('');
 
   useEffect(() => {
@@ -69,3 +67,5 @@ export function BanWarning({
 
   return null;
 }
+
+export default BanWarning;

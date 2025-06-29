@@ -2,7 +2,11 @@
  * PasswordInput component
  * Password input with toggle visibility feature and optional strength indicator
  */
+
+// React imports first
 import { useState } from 'react';
+
+// External libraries
 import { useTranslation } from 'react-i18next';
 
 function PasswordInput({ 

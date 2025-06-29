@@ -1,6 +1,13 @@
+/**
+ * Internationalization configuration
+ * Sets up react-i18next with French and English translations
+ */
+
+// External libraries
 import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
 
+// Local imports - Translation files
 import frAuth from './locales/fr/auth.json';
 import enAuth from './locales/en/auth.json';
 import frCommon from './locales/fr/common.json';

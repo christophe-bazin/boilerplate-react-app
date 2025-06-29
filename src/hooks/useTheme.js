@@ -1,15 +1,15 @@
+/**
+ * useTheme hook
+ * Manages theme state with localStorage and system preference detection
+ * Supports 'light', 'dark', and 'system' themes with automatic system detection
+ */
+
 // React imports first
 import { useEffect, useState, useCallback } from 'react';
 
 // Local imports
 import { useAuth } from './useAuth';
 import { UserSettingsService } from '../lib/userSettings';
-
-/**
- * useTheme hook
- * Manages theme state with localStorage and system preference detection
- * Supports 'light', 'dark', and 'system' themes with automatic system detection
- */
 export function useTheme() {
   const { user } = useAuth(); // Get current user
   const [theme, setTheme] = useState('system'); // Current theme setting

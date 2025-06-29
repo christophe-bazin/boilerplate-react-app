@@ -3,19 +3,11 @@
  * Main dashboard for authenticated users
  */
 
-// React imports first
-import React from 'react';
-
 // External libraries
 import { useTranslation } from 'react-i18next';
 
 // Local imports
 import { useAuth } from '../../hooks/useAuth';
-
-/**
- * DashboardPage component
- * Displays the main dashboard with user information and navigation
- */
 function DashboardPage() {
   const { t } = useTranslation('dashboard');
   const { user } = useAuth();

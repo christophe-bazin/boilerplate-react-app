@@ -31,7 +31,6 @@ function SignUp() {
     setPassword,
     confirmPassword,
     setConfirmPassword,
-    isValid: passwordsValid,
     validatePasswords,
     resetValidation
   } = usePasswordValidation();
@@ -71,7 +70,7 @@ function SignUp() {
         setEmail('');
         resetValidation();
       }
-    } catch (err) {
+    } catch {
       setError(t('errors.unexpected'));
     } finally {
       setSubmitting(false);

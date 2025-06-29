@@ -1,5 +1,10 @@
+/**
+ * ResetPassword component
+ * Handles password reset request with email sending
+ */
+
 // React imports first
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 
 // External libraries
 import { useTranslation } from 'react-i18next';
@@ -7,16 +12,10 @@ import { Link } from 'react-router-dom';
 
 // Local imports
 import { useAuth } from '../../hooks/useAuth';
-import { translateAuthError } from '../../lib/errorTranslation';
-import { BanWarning } from './BanWarning';
-
-/**
- * ResetPassword component
- * Handles password reset request with email sending
- */
+import BanWarning from './BanWarning';
 function ResetPassword() {
   const { t } = useTranslation('auth');
-  const { resetPassword, bruteForceProtection } = useAuth();
+  const { resetPassword } = useAuth();
   const [email, setEmail] = useState('');
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
@@ -37,7 +36,7 @@ function ResetPassword() {
       // Supabase always sends the reset email if the email format is valid
       await resetPassword(email);
       setSuccess(true);
-    } catch (error) {
+    } catch {
       // Even on "error", Supabase likely sent the email for security reasons
       setSuccess(true);
     } finally {

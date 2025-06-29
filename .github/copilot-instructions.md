@@ -17,6 +17,7 @@
 - Puis les libs externes
 - Puis les imports locaux
 - Export default à la fin
+- Ne pas laisser d'imports vides ou inutilisés
 
 ## Styling
 - Utiliser Tailwind uniquement

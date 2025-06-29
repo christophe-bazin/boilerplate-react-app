@@ -13,10 +13,7 @@ import { TopBar } from './components/layout';
 import { HomePage, ProfilePage, DashboardPage } from './components/pages';
 import { SignIn, SignUp, ResetPassword } from './components/auth';
 
-/**
- * PublicLayout component
- * Layout for public pages (homepage, sign in, sign up) with adaptive navigation
- */
+// PublicLayout component
 function PublicLayout({ children }) {
   const { user, loading } = useAuth();
   

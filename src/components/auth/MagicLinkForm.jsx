@@ -38,7 +38,7 @@ function MagicLinkForm({ onSubmit, mode = 'signin', loading, onToggleMode }) {
       } else {
         setSuccess(true);
       }
-    } catch (err) {
+    } catch {
       setError(t('errors.unexpected'));
     } finally {
       setSubmitting(false);

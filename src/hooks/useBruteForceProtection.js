@@ -60,7 +60,7 @@ export const useBruteForceProtection = () => {
       banUntil: null,
       attemptsCount: recentAttempts.length
     };
-  }, []);
+  }, [MAX_ATTEMPTS, BAN_DURATION_MINUTES, ATTEMPT_WINDOW_MINUTES]);
 
   // Log a failed attempt
   const logFailedAttempt = useCallback((email) => {
@@ -207,7 +207,7 @@ export const useBruteForceProtection = () => {
     }
     
     return `${BAN_DURATION_MINUTES}m 0s`; // Default fallback
-  }, [formatBanTime, banUntil]);
+  }, [formatBanTime, banUntil, BAN_DURATION_MINUTES]);
 
   // Reset ban status (called when ban expires)
   const resetBanStatus = useCallback(() => {

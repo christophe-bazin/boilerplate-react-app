@@ -2,6 +2,8 @@
  * User Settings Service
  * Handles all user settings operations with Supabase
  */
+
+// Local imports
 import { supabase } from './supabaseClient';
 
 export class UserSettingsService {

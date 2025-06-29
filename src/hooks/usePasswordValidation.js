@@ -1,3 +1,8 @@
+/**
+ * usePasswordValidation hook
+ * Provides password validation logic for forms
+ */
+
 // React imports first
 import { useState, useEffect } from 'react';
 
@@ -6,11 +11,6 @@ import { useTranslation } from 'react-i18next';
 
 // Local imports
 import { useAppConfig } from './useAppConfig';
-
-/**
- * usePasswordValidation hook
- * Provides password validation logic for forms
- */
 export function usePasswordValidation() {
   const { t } = useTranslation('auth');
   const appConfig = useAppConfig();

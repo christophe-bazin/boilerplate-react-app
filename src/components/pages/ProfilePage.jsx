@@ -2,7 +2,11 @@
  * ProfilePage component
  * User profile management with email, password and language settings
  */
+
+// React imports first
 import { useState, useEffect } from 'react';
+
+// External libraries
 import { useTranslation } from 'react-i18next';
 
 // Local imports
@@ -16,7 +20,6 @@ function ProfilePage() {
   const { t, i18n } = useTranslation('profile');
   const { t: tAuth } = useTranslation('auth');
   const { user, updateEmail, updatePassword, deleteAccount, userHasPassword, setInitialPassword } = useAuth();
-  const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState({ type: '', text: '' });
 
   // Email section
@@ -35,8 +38,7 @@ function ProfilePage() {
     confirmPassword,
     setConfirmPassword,
     isValid: passwordsValid,
-    passwordsMatch,
-    validatePasswords
+    passwordsMatch
   } = usePasswordValidation();
 
   // Language section
@@ -74,7 +76,7 @@ function ProfilePage() {
     try {
       await updateEmail(newEmail);
       setMessage({ type: 'success', text: t('emailUpdated') });
-    } catch (error) {
+    } catch {
       setMessage({ type: 'success', text: t('emailUpdated') });
     } finally {
       setEmailLoading(false);
@@ -153,7 +155,7 @@ function ProfilePage() {
       }
 
       setMessage({ type: 'success', text: t('languageUpdated') });
-    } catch (error) {
+    } catch {
       setMessage({ type: 'error', text: tAuth('errors.unknownError') });
     } finally {
       setLanguageLoading(false);
@@ -163,9 +165,9 @@ function ProfilePage() {
   // Delete account
   const handleDeleteAccount = async () => {
     // Check if confirmation text matches
-    const requiredText = tProfile('confirmDeleteKeyword');
+    const requiredText = t('confirmDeleteKeyword');
     if (deleteConfirmation !== requiredText) {
-      setMessage({ type: 'error', text: tProfile('confirmDeleteError') });
+      setMessage({ type: 'error', text: t('confirmDeleteError') });
       return;
     }
 
@@ -174,10 +176,10 @@ function ProfilePage() {
 
     try {
       await deleteAccount();
-      setMessage({ type: 'success', text: tProfile('accountDeleted') });
+      setMessage({ type: 'success', text: t('accountDeleted') });
       // The user will be automatically redirected due to auth state change
-    } catch (error) {
-      setMessage({ type: 'error', text: translateAuthError(error.message, tAuth) });
+    } catch {
+      setMessage({ type: 'error', text: tAuth('errors.unknownError') });
       setShowDeleteModal(false);
     } finally {
       setDeleteLoading(false);

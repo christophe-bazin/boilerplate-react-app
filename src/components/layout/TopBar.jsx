@@ -1,3 +1,9 @@
+/**
+ * TopBar component
+ * Navigation bar that adapts based on authentication status
+ * Shows logo, user menu for authenticated users, or sign in/up buttons for guests
+ */
+
 // External libraries
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
@@ -7,12 +13,6 @@ import { useAuth } from '../../hooks/useAuth';
 import { useAppConfig } from '../../hooks/useAppConfig';
 import UserDropdown from './UserDropdown';
 import ThemeToggle from '../ui/ThemeToggle';
-
-/**
- * TopBar component
- * Navigation bar that adapts based on authentication status
- * Shows logo, user menu for authenticated users, or sign in/up buttons for guests
- */
 function TopBar() {
   const { user } = useAuth();
   const { t } = useTranslation('common');

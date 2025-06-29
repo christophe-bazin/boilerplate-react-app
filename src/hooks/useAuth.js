@@ -22,7 +22,7 @@ export function useAuth() {
   const bruteForceProtection = useBruteForceProtection();
 
   useEffect(() => {
-    const session = supabase.auth.getSession().then(({ data: { session } }) => {
+    supabase.auth.getSession().then(({ data: { session } }) => {
       setUser(session?.user ?? null);
       setLoading(false);
     });
@@ -79,7 +79,7 @@ export function useAuth() {
     
     // Return the original Supabase result if no ban
     return result;
-  }, [bruteForceProtection]);
+  }, [bruteForceProtection, t]);
 
   // Enhanced signUp with protection
   const signUp = useCallback(async (options) => {
@@ -108,19 +108,19 @@ export function useAuth() {
   
   // Magic Link authentication functions
   const signInWithMagicLink = useCallback(async (email) => {
-    // For sign in, we want to check if user exists first
-    // Supabase will send magic link even for non-existent users for security
-    // But we can detect this by the response structure
+    // For magic link, we always allow user creation for security and UX reasons:
+    // 1. Security: Don't reveal if user exists or not
+    // 2. UX: Magic link should work seamlessly regardless of account existence
     const { data, error } = await supabase.auth.signInWithOtp({
       email,
       options: {
-        shouldCreateUser: false, // Only allow existing users for sign in
+        shouldCreateUser: true, // Always allow user creation
+        data: {
+          has_password: false // Mark as magic link user
+        }
       }
     });
     
-    // If no error but also no session data, user probably doesn't exist
-    // However, Supabase still sends the email for security reasons
-    // We'll let the front-end show success but the user won't receive the link
     return { data, error };
   }, []);
 
@@ -186,7 +186,7 @@ export function useAuth() {
     
     try {
       // Call the Edge Function to delete the user
-      const { data, error } = await supabase.functions.invoke('delete-user', {
+      const { error } = await supabase.functions.invoke('delete-user', {
         headers: {
           Authorization: `Bearer ${(await supabase.auth.getSession()).data.session?.access_token}`,
         },
@@ -230,7 +230,8 @@ export function useAuth() {
       checkBanStatus: bruteForceProtection.checkBanStatus,
       getBanTimeRemaining: bruteForceProtection.getBanTimeRemaining,
       formatBanTime: bruteForceProtection.formatBanTime,
-      resetBanStatus: bruteForceProtection.resetBanStatus
+      resetBanStatus: bruteForceProtection.resetBanStatus,
+      clearAllAttempts: bruteForceProtection.clearAllAttempts // Development helper
     }
   };
 }

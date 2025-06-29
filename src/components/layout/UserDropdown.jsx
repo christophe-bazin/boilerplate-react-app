@@ -1,3 +1,8 @@
+/**
+ * UserDropdown component
+ * Profile dropdown for authenticated users with profile, settings and sign out options
+ */
+
 // React imports first
 import { useState, useRef, useEffect } from 'react';
 
@@ -8,11 +13,6 @@ import { useNavigate } from 'react-router-dom';
 // Local imports
 import { useAuth } from '../../hooks/useAuth';
 import ThemeToggle from '../ui/ThemeToggle';
-
-/**
- * UserDropdown component
- * Profile dropdown for authenticated users with profile, settings and sign out options
- */
 function UserDropdown({ className = '' }) {
   const { user, signOut } = useAuth();
   const { t } = useTranslation('common');

@@ -1,4 +1,9 @@
-// src/lib/supabaseClient.js
+/**
+ * Supabase client configuration
+ * Creates and exports the Supabase client instance
+ */
+
+// External libraries
 import { createClient } from '@supabase/supabase-js';
 
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;

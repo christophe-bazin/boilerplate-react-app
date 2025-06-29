@@ -9,7 +9,7 @@ import { Link } from 'react-router-dom';
 import { useAuth } from '../../hooks/useAuth';
 import { translateAuthError } from '../../lib/errorTranslation';
 import PasswordInput from '../ui/PasswordInput';
-import { BanWarning } from './BanWarning';
+import BanWarning from './BanWarning';
 import MagicLinkForm from './MagicLinkForm';
 
 /**
@@ -60,7 +60,7 @@ function SignIn() {
         const translatedError = translateAuthError(error.message, t);
         setError(translatedError);
       }
-    } catch (err) {
+    } catch {
       setError(t('errors.unexpected'));
     } finally {
       setAuthAttempting(false);

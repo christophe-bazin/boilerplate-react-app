@@ -1,3 +1,9 @@
+/**
+ * ThemeToggle component
+ * Dropdown selector for theme switching with light/dark/system options
+ * Includes proper accessibility and best practices for theme switching
+ */
+
 // React imports first
 import { useState, useRef, useEffect } from 'react';
 
@@ -6,17 +12,9 @@ import { useTranslation } from 'react-i18next';
 
 // Local imports
 import { useTheme } from '../../hooks/useTheme';
-import { useAppConfig } from '../../hooks/useAppConfig';
-
-/**
- * ThemeToggle component
- * Dropdown selector for theme switching with light/dark/system options
- * Includes proper accessibility and best practices for theme switching
- */
 function ThemeToggle({ className = '' }) {
   const { theme, setTheme, themes } = useTheme();
   const { t } = useTranslation('common');
-  const config = useAppConfig();
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef(null);
 
