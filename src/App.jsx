@@ -7,7 +7,7 @@
 import { Suspense } from 'react';
 
 // Local imports
-import { AuthProvider } from './hooks/useAuth';
+import { AuthProvider } from './contexts/AuthContext';
 import { ThemeProvider } from './hooks/useTheme';
 import AppRoutes from './AppRoutes';
 

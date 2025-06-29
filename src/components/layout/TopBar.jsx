@@ -9,12 +9,13 @@ import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 
 // Local imports
-import { useAuth } from '../../hooks/useAuth';
+import { useAuthContext } from '../../contexts/AuthContext';
 import { useAppConfig } from '../../hooks/useAppConfig';
 import UserDropdown from './UserDropdown';
 import ThemeToggle from '../ui/ThemeToggle';
+
 function TopBar() {
-  const { user } = useAuth();
+  const { user, signOut } = useAuthContext();
   const { t } = useTranslation('common');
   const config = useAppConfig();
 

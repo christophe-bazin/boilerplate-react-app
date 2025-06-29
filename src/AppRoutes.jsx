@@ -7,7 +7,7 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 
 // Local imports
-import { useAuth } from './hooks/useAuth';
+import { useAuthContext } from './contexts/AuthContext';
 import { ThemeToggle } from './components/ui';
 import { TopBar } from './components/layout';
 import { HomePage, ProfilePage, DashboardPage } from './components/pages';
@@ -15,16 +15,7 @@ import { SignIn, SignUp, ResetPassword } from './components/auth';
 
 // PublicLayout component
 function PublicLayout({ children }) {
-  const { user, loading } = useAuth();
-  
-  // Show loading spinner while checking authentication
-  if (loading) {
-    return (
-      <div className="flex justify-center items-center h-screen">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
-      </div>
-    );
-  }
+  const { user } = useAuthContext();
   
   // Redirect logged users to dashboard
   if (user) return <Navigate to="/dashboard" replace />;
@@ -42,15 +33,7 @@ function PublicLayout({ children }) {
  * Layout specifically for authentication pages (sign in/up)
  */
 function AuthLayout({ children }) {
-  const { user, loading } = useAuth();
-  
-  if (loading) {
-    return (
-      <div className="flex justify-center items-center h-screen">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
-      </div>
-    );
-  }
+  const { user } = useAuthContext();
   
   if (user) return <Navigate to="/dashboard" replace />;
   
@@ -71,15 +54,7 @@ function AuthLayout({ children }) {
  * Renders children only if user is authenticated, otherwise redirects to homepage
  */
 function ProtectedRoute({ children }) {
-  const { user, loading } = useAuth();
-  
-  if (loading) {
-    return (
-      <div className="flex justify-center items-center h-screen">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
-      </div>
-    );
-  }
+  const { user } = useAuthContext();
   
   if (!user) return <Navigate to="/" replace />;
   return children;
@@ -105,6 +80,17 @@ function AppLayout({ children }) {
  * Main routing configuration with authentication-based navigation
  */
 export default function AppRoutes() {
+  const { loading } = useAuthContext();
+
+  // Show global loading screen while authentication state is being determined
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center h-screen bg-white dark:bg-gray-900">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+      </div>
+    );
+  }
+
   return (
     <Router>
       <Routes>

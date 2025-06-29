@@ -22,14 +22,21 @@ export function useAuth() {
   const bruteForceProtection = useBruteForceProtection();
 
   useEffect(() => {
-    supabase.auth.getSession().then(({ data: { session } }) => {
+    // Get initial session synchronously if possible
+    const getInitialSession = async () => {
+      const { data: { session } } = await supabase.auth.getSession();
       setUser(session?.user ?? null);
       setLoading(false);
-    });
+    };
+    
+    getInitialSession();
+    
+    // Listen for auth state changes
     const { data: listener } = supabase.auth.onAuthStateChange((_event, session) => {
       setUser(session?.user ?? null);
       setLoading(false);
     });
+    
     return () => {
       listener.subscription.unsubscribe();
     };
@@ -234,13 +241,4 @@ export function useAuth() {
       clearAllAttempts: bruteForceProtection.clearAllAttempts // Development helper
     }
   };
-}
-
-/**
- * AuthProvider component
- * Simple provider component that initializes the authentication system
- */
-export function AuthProvider({ children }) {
-  useAuth(); // Initialize auth system
-  return children;
 }

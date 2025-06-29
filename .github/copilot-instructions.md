@@ -30,6 +30,14 @@
 - Validation côté client ET serveur pour toutes les données
 - Utiliser Supabase pour l'auth et la base de données
 
+## Authentication (AuthContext)
+- Utiliser `useAuthContext()` pour accéder à l'état d'authentification
+- Ne jamais utiliser directement `useAuth()` dans les composants
+- L'AuthContext centralise l'état auth dans toute l'application
+- Utiliser `withLoadingProtection()` HOC pour les composants sensibles
+- Éviter le props drilling avec `user={user}` - le context gère tout
+- L'état loading global est géré par AppRoutes + protections locales
+
 ## Code quality
 - Commentaires toujours en anglais
 - Commentaire de présentation obligatoire en début de fichier

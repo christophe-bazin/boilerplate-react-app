@@ -6,7 +6,7 @@ import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 
 // Local imports
-import { useAuth } from '../../hooks/useAuth';
+import { useAuthContext } from '../../contexts/AuthContext';
 import { translateAuthError } from '../../lib/errorTranslation';
 import PasswordInput from '../ui/PasswordInput';
 import BanWarning from './BanWarning';
@@ -18,7 +18,7 @@ import MagicLinkForm from './MagicLinkForm';
  */
 function SignIn() {
   const { t } = useTranslation('auth');
-  const { signIn, signInWithMagicLink, loading, bruteForceProtection } = useAuth();
+  const { signIn, signInWithMagicLink, loading, bruteForceProtection } = useAuthContext();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');

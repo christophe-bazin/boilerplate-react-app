@@ -11,10 +11,11 @@ import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 
 // Local imports
-import { useAuth } from '../../hooks/useAuth';
+import { useAuthContext } from '../../contexts/AuthContext';
 import ThemeToggle from '../ui/ThemeToggle';
+
 function UserDropdown({ className = '' }) {
-  const { user, signOut } = useAuth();
+  const { user, signOut } = useAuthContext();
   const { t } = useTranslation('common');
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);

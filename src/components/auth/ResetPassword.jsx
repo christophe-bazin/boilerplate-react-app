@@ -11,11 +11,11 @@ import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 
 // Local imports
-import { useAuth } from '../../hooks/useAuth';
+import { useAuthContext } from '../../contexts/AuthContext';
 import BanWarning from './BanWarning';
 function ResetPassword() {
   const { t } = useTranslation('auth');
-  const { resetPassword } = useAuth();
+  const { resetPassword } = useAuthContext();
   const [email, setEmail] = useState('');
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);

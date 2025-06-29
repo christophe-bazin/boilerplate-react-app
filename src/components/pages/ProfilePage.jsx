@@ -10,7 +10,7 @@ import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 
 // Local imports
-import { useAuth } from '../../hooks/useAuth';
+import { useAuthContext, withLoadingProtection } from '../../contexts/AuthContext';
 import { usePasswordValidation } from '../../hooks/usePasswordValidation';
 import { UserSettingsService } from '../../lib/userSettings';
 import { translateAuthError } from '../../lib/errorTranslation';
@@ -19,7 +19,7 @@ import PasswordInput from '../ui/PasswordInput';
 function ProfilePage() {
   const { t, i18n } = useTranslation('profile');
   const { t: tAuth } = useTranslation('auth');
-  const { user, updateEmail, updatePassword, deleteAccount, userHasPassword, setInitialPassword } = useAuth();
+  const { user, updateEmail, updatePassword, deleteAccount, userHasPassword, setInitialPassword } = useAuthContext();
   const [message, setMessage] = useState({ type: '', text: '' });
 
   // Email section
@@ -453,4 +453,5 @@ function ProfilePage() {
   );
 }
 
-export default ProfilePage;
+// Export with loading protection to prevent showing "Access denied" during auth state loading
+export default withLoadingProtection(ProfilePage);
