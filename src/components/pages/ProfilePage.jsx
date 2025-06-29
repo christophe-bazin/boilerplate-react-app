@@ -24,7 +24,7 @@ function ProfilePage() {
   const [message, setMessage] = useState({ type: '', text: '' });
 
   // Email section
-  const [newEmail, setNewEmail] = useState('');
+  const [newEmail, setNewEmail] = useState(user?.email || '');
   const [emailLoading, setEmailLoading] = useState(false);
 
   // Password section
@@ -51,12 +51,12 @@ function ProfilePage() {
   const [deleteLoading, setDeleteLoading] = useState(false);
   const [deleteConfirmation, setDeleteConfirmation] = useState('');
 
-  // Initialize email
+  // Sync email field with user data
   useEffect(() => {
     if (user?.email) {
       setNewEmail(user.email);
     }
-  }, [user]);
+  }, [user?.email]);
 
   // Clear message after 5 seconds
   useEffect(() => {
