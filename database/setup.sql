@@ -1,6 +1,11 @@
 -- Database Setup for Transcript IA Frontend
 -- Execute this in your Supabase SQL Editor for production deployment
 
+-- SECURITY NOTES:
+-- 1. Enable "Leaked Password Protection" in Supabase Auth settings for enhanced security
+-- 2. All functions use SET search_path = public for security (prevents injection attacks)
+-- 3. Functions use SECURITY DEFINER to run with elevated privileges safely
+
 -- Create user_settings table
 -- Note: auth.users is automatically managed by Supabase
 CREATE TABLE IF NOT EXISTS user_settings (
@@ -37,12 +42,14 @@ CREATE POLICY "Users can delete own settings" ON user_settings
 
 -- Create trigger function for updated_at
 CREATE OR REPLACE FUNCTION update_updated_at_column()
-RETURNS TRIGGER AS $$
+RETURNS TRIGGER 
+SET search_path = public
+AS $$
 BEGIN
   NEW.updated_at = now();
   RETURN NEW;
 END;
-$$ language 'plpgsql';
+$$ LANGUAGE plpgsql;
 
 -- Drop existing trigger if it exists
 DROP TRIGGER IF EXISTS update_user_settings_updated_at ON user_settings;
@@ -80,7 +87,9 @@ CREATE POLICY "System can manage login attempts" ON login_attempts
 
 -- Create function to check if IP/email is banned
 CREATE OR REPLACE FUNCTION is_banned(check_ip inet, check_email text DEFAULT NULL)
-RETURNS TABLE(banned boolean, ban_until timestamptz, attempts_count bigint) AS $$
+RETURNS TABLE(banned boolean, ban_until timestamptz, attempts_count bigint) 
+SET search_path = public
+AS $$
 DECLARE
   max_attempts integer := 5; -- Maximum failed attempts
   ban_duration interval := '15 minutes'; -- Ban duration
@@ -118,7 +127,9 @@ CREATE OR REPLACE FUNCTION log_login_attempt(
   is_success boolean DEFAULT false,
   attempt_user_agent text DEFAULT NULL
 )
-RETURNS void AS $$
+RETURNS void 
+SET search_path = public
+AS $$
 BEGIN
   INSERT INTO login_attempts (ip_address, email, attempt_type, success, user_agent)
   VALUES (attempt_ip, attempt_email, attempt_type, is_success, attempt_user_agent);
