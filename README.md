@@ -2,24 +2,6 @@
 
 A production-ready React application boilerplate with authentication, theming, and internationalization.
 
-## ✨ Feature### 🛡️ Brute Force Protection
-- Automatic account lockout after 5 failed login attempts
-- 15-minute temporary ban with countdown timer
-- Client-side and server-side protection layers
-
-### 🔐 Supabase Auth Configuration
-**Required Auth settings in Supabase Dashboard > Authentication > Settings:**
-- ✅ **Confirm email** - Enable email confirmation
-- ✅ **Secure email change** - Require confirmation on both emails
-- ✅ **Secure password change** - Require recent login for password changes
-- ✅ **Prevent use of leaked passwords** - Enable HaveIBeenPwned integration
-- **Minimum password length**: 8+ characters (recommended over default 6)
-- **Password Requirements**: **"Lowercase, uppercase letters, digits and symbols"** ⚠️ **REQUIRED**
-- **Email OTP Expiration**: 3600 seconds (1 hour)
-- **Email OTP Length**: 6 digits
-
-> ⚠️ **Important**: This app's password validation is specifically coded for the **"Lowercase, uppercase letters, digits and symbols"** option in Supabase. You must select this option for the client-side validation to work correctly.
-
 ## ✨ Features
 
 - 🚀 **React 18** + **Vite** - Lightning fast development
@@ -31,6 +13,19 @@ A production-ready React application boilerplate with authentication, theming, a
 - 📱 **Responsive** - Mobile-first design
 - 🎯 **TypeScript Ready** - Easy migration to TypeScript
 - 🔧 **ESLint** - Code quality and consistency
+
+###  Supabase Auth Configuration
+**Required Auth settings in Supabase Dashboard > Authentication > Settings:**
+- ✅ **Confirm email** - Enable email confirmation
+- ✅ **Secure email change** - Require confirmation on both emails
+- ✅ **Secure password change** - Require recent login for password changes
+- ✅ **Prevent use of leaked passwords** - Enable HaveIBeenPwned integration
+- **Minimum password length**: 8+ characters (recommended over default 6)
+- **Password Requirements**: **"Lowercase, uppercase letters, digits and symbols"** ⚠️ **REQUIRED**
+- **Email OTP Expiration**: 3600 seconds (1 hour)
+- **Email OTP Length**: 6 digits
+
+> ⚠️ **Important**: This app's password validation is specifically coded for the **"Lowercase, uppercase letters, digits and symbols"** option in Supabase. You must select this option for the client-side validation to work correctly.
 
 ## 🚀 Quick Start
 
@@ -147,11 +142,6 @@ VITE_SUPABASE_ANON_KEY=your-anon-key-here
 
 #### **Supabase Local Development** (optional)
 For local Supabase development, use the example configuration provided in `supabase/config.example.toml`.
-
-### �🛡️ Brute Force Protection
-- Automatic account lockout after 5 failed login attempts
-- 15-minute temporary ban with countdown timer
-- Client-side and server-side protection layers
 
 ### 🎨 Theme System
 - **Light/Dark/System modes** - Automatically follows OS preference
