@@ -32,14 +32,14 @@ VITE_SUPABASE_URL=https://your-project-ref.supabase.co
 VITE_SUPABASE_ANON_KEY=your-anon-key-here
 ```
 
-### 3. Setup Database
+### 3. Setup Database & Edge Functions
 
-Execute `database/setup.sql` in your Supabase SQL editor.
+**Execute SQL in your Supabase SQL editor:**
+```sql
+-- Execute database/setup.sql
+```
 
-### 4. Deploy Edge Functions (Optional)
-
-For user account deletion to work, deploy the Edge Function:
-
+**Deploy Edge Functions (Required for user deletion):**
 ```bash
 # Install Supabase CLI
 npm install -g supabase
@@ -54,11 +54,11 @@ supabase link --project-ref your-project-ref
 supabase functions deploy delete-user
 ```
 
-**Environment Variables for Edge Function:**
-Set these in your Supabase dashboard under Settings > Edge Functions:
-- `SUPABASE_SERVICE_ROLE_KEY` - Your service role key
+**Set Environment Variables for Edge Function:**
+In your Supabase dashboard, go to Settings > Edge Functions and add:
+- `SUPABASE_SERVICE_ROLE_KEY` - Your service role key (from Settings > API)
 
-### 5. Customize Your App
+### 4. Customize Your App
 
 **App Name & Logo:**
 Edit `src/config/app.json`:
@@ -71,7 +71,7 @@ Edit `src/config/app.json`:
 }
 ```
 
-### 6. Start Development
+### 5. Start Development
 
 ```bash
 npm run dev

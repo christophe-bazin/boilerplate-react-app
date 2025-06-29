@@ -22,6 +22,7 @@
   "confirmDeleteError": "Please type \"Delete\" to confirm",
   "cancelDelete": "Cancel",
   "accountDeleted": "Your account has been successfully deleted.",
+  "deleteAccountError": "Unable to delete account. Please contact support or check Edge Function configuration.",
   "emailUpdated": "A confirmation email has been sent to your new address. Please check your inbox.",
   "passwordUpdated": "Password updated successfully",
   "passwordsMatch": "Passwords match",

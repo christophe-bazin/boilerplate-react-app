@@ -22,6 +22,7 @@
   "confirmDeleteError": "Veuillez taper \"Supprimer\" pour confirmer",
   "cancelDelete": "Annuler",
   "accountDeleted": "Votre compte a été supprimé avec succès.",
+  "deleteAccountError": "Impossible de supprimer le compte. Veuillez contacter le support ou vérifier la configuration des fonctions Edge.",
   "emailUpdated": "Un e-mail de confirmation a été envoyé à votre nouvelle adresse. Veuillez vérifier votre boîte de réception.",
   "passwordUpdated": "Mot de passe mis à jour avec succès",
   "passwordsMatch": "Les mots de passe correspondent",

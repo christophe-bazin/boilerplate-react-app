@@ -196,13 +196,14 @@ export function useAuth() {
         throw new Error(error.message || 'Failed to delete account');
       }
 
-      // Sign out the user session locally
+      // Sign out the user session locally after successful deletion
       await supabase.auth.signOut();
       
       return { success: true };
     } catch (error) {
       console.error('Failed to delete account:', error);
-      throw error;
+      // Don't fall back to sign out - let the error bubble up
+      throw new Error('Unable to delete user account. Please contact support or check Edge Function deployment.');
     }
   }, [user?.id]);
 
