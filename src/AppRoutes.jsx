@@ -10,7 +10,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import { useAuth } from './hooks/useAuth';
 import { ThemeToggle } from './components/ui';
 import { TopBar } from './components/layout';
-import { HomePage, ProfilePage } from './components/pages';
+import { HomePage, ProfilePage, DashboardPage } from './components/pages';
 import { SignIn, SignUp, ResetPassword } from './components/auth';
 
 /**
@@ -18,6 +18,20 @@ import { SignIn, SignUp, ResetPassword } from './components/auth';
  * Layout for public pages (homepage, sign in, sign up) with adaptive navigation
  */
 function PublicLayout({ children }) {
+  const { user, loading } = useAuth();
+  
+  // Show loading spinner while checking authentication
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+      </div>
+    );
+  }
+  
+  // Redirect logged users to dashboard
+  if (user) return <Navigate to="/dashboard" replace />;
+  
   return (
     <div className="min-h-screen bg-white dark:bg-gray-900">
       <TopBar />
@@ -41,7 +55,7 @@ function AuthLayout({ children }) {
     );
   }
   
-  if (user) return <Navigate to="/app" replace />;
+  if (user) return <Navigate to="/dashboard" replace />;
   
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800">
@@ -57,7 +71,7 @@ function AuthLayout({ children }) {
 
 /**
  * ProtectedRoute component
- * Renders children only if user is authenticated, otherwise redirects to /signin
+ * Renders children only if user is authenticated, otherwise redirects to homepage
  */
 function ProtectedRoute({ children }) {
   const { user, loading } = useAuth();
@@ -70,7 +84,7 @@ function ProtectedRoute({ children }) {
     );
   }
   
-  if (!user) return <Navigate to="/signin" replace />;
+  if (!user) return <Navigate to="/" replace />;
   return children;
 }
 
@@ -133,26 +147,22 @@ export default function AppRoutes() {
           }
         />
         
-        {/* Protected app routes */}
+        {/* Protected dashboard route */}
         <Route
-          path="/app"
+          path="/dashboard"
           element={
             <ProtectedRoute>
               <AppLayout>
-                <div className="text-center py-12">
-                  <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">
-                    Tableau de bord
-                  </h1>
-                  <p className="text-lg text-gray-600 dark:text-gray-400">
-                    Bienvenue dans votre espace personnel !
-                  </p>
-                  <p className="text-sm text-gray-500 dark:text-gray-500 mt-2">
-                    Cette section sera bientôt disponible avec toutes les fonctionnalités.
-                  </p>
-                </div>
+                <DashboardPage />
               </AppLayout>
             </ProtectedRoute>
           }
+        />
+        
+        {/* Legacy route redirect */}
+        <Route
+          path="/app"
+          element={<Navigate to="/dashboard" replace />}
         />
         
         {/* Profile page */}

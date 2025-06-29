@@ -1,0 +1,5 @@
+{
+  "title": "Dashboard",
+  "welcome": "Welcome, {{email}}!",
+  "subtitle": "Here is your personal workspace."
+}
