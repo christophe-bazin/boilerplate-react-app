@@ -54,18 +54,11 @@ VITE_SUPABASE_ANON_KEY=your-anon-key-here
 
 **Deploy Edge Functions (Required for user deletion):**
 ```bash
-# Install Supabase CLI
-npm install -g supabase
-
-# Login to Supabase
-supabase login
-
-# Link your project
-supabase link --project-ref your-project-ref
-
-# Deploy the delete-user function
-supabase functions deploy delete-user
+npx supabase login
+npx supabase functions deploy delete-user --project-ref your-project-ref
 ```
+
+> 💡 **Note**: No local `config.toml` needed! You can deploy Edge Functions directly to your Supabase project using the `--project-ref` flag.
 
 **Set Environment Variables for Edge Function:**
 In your Supabase dashboard, go to Settings > Edge Functions and add:
@@ -141,7 +134,9 @@ VITE_SUPABASE_ANON_KEY=your-anon-key-here
 ```
 
 #### **Supabase Local Development** (optional)
-For local Supabase development, use the example configuration provided in `supabase/config.example.toml`.
+For local Supabase development with `npx supabase start`, you can optionally create a `supabase/config.toml` file. Use the example configuration provided in `supabase/config.example.toml` as a starting point.
+
+> **Note**: Local Supabase setup is only needed if you want to develop offline or test migrations locally. Most development can be done directly against your Supabase project.
 
 ### 🎨 Theme System
 - **Light/Dark/System modes** - Automatically follows OS preference
