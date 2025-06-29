@@ -21,23 +21,42 @@ function SignIn() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const [authAttempting, setAuthAttempting] = useState(false);
 
   // Check ban status when email changes
   useEffect(() => {
     if (email) {
       bruteForceProtection.checkBanStatus(email);
+    } else {
+      bruteForceProtection.resetBanStatus(); // Clear ban status when no email
     }
   }, [email, bruteForceProtection]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
+    setAuthAttempting(true);
     
-    if (!email) return setError(t('errors.required'));
-    if (!password) return setError(t('errors.required'));
+    if (!email) {
+      setAuthAttempting(false);
+      return setError(t('errors.required'));
+    }
+    if (!password) {
+      setAuthAttempting(false);
+      return setError(t('errors.required'));
+    }
     
-    const { error } = await signIn({ email, password });
-    if (error) setError(translateAuthError(error.message, t));
+    try {
+      const { error } = await signIn({ email, password });
+      if (error) {
+        const translatedError = translateAuthError(error.message, t);
+        setError(translatedError);
+      }
+    } catch (err) {
+      setError(t('errors.unexpected'));
+    } finally {
+      setAuthAttempting(false);
+    }
   };
 
   return (
@@ -48,14 +67,8 @@ function SignIn() {
           <p className="text-secondary-600 dark:text-secondary-400">{t('signIn.subtitle')}</p>
         </div>
         
-        {/* Brute force protection warning */}
-        <BanWarning
-          isBanned={bruteForceProtection.isBanned}
-          banUntil={bruteForceProtection.banUntil}
-          attemptsCount={bruteForceProtection.attemptsCount}
-          formatBanTime={bruteForceProtection.formatBanTime}
-          onBanExpired={bruteForceProtection.resetBanStatus}
-        />
+        {/* Authentication error (includes ban messages) */}
+        {error && <div className="text-red-600 dark:text-red-400 text-sm bg-red-50 dark:bg-red-900/20 p-3 rounded-lg">{error}</div>}
         
         <div className="flex flex-col gap-1">
           <input
@@ -78,14 +91,12 @@ function SignIn() {
           />
         </div>
         
-        {error && <div className="text-red-600 dark:text-red-400 text-sm bg-red-50 dark:bg-red-900/20 p-3 rounded-lg">{error}</div>}
-        
         <button 
           type="submit" 
           className="px-6 py-3 bg-primary-600 hover:bg-primary-700 disabled:bg-secondary-400 disabled:cursor-not-allowed text-white rounded-lg transition-colors font-medium"
-          disabled={loading}
+          disabled={loading || authAttempting}
         >
-          {loading ? t('signIn.loading') : t('signIn.submit')}
+          {(loading || authAttempting) ? t('signIn.loading') : t('signIn.submit')}
         </button>
         
         <div className="flex flex-col sm:flex-row justify-between items-center gap-3 text-sm">

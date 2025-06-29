@@ -35,26 +35,45 @@ export function useAuth() {
   const signIn = useCallback(async (options) => {
     const { email } = options;
     
-    // TODO: Temporarily disable brute force for debugging
-    // Check if user is banned before attempting login
-    // const banStatus = await bruteForceProtection.checkBanStatus(email);
-    // if (banStatus.banned) {
-    //   const timeRemaining = bruteForceProtection.formatBanTime();
-    //   return { 
-    //     error: { 
-    //       message: `Trop de tentatives échouées. Réessayez dans ${timeRemaining}.` 
-    //     } 
-    //   };
-    // }
+    // Check if user is currently banned before attempting login
+    const banStatus = await bruteForceProtection.checkBanStatus(email);
+    if (banStatus.banned) {
+      const timeRemaining = bruteForceProtection.formatBanTime();
+      return { 
+        error: { 
+          message: `Compte temporairement bloqué. Réessayez dans ${timeRemaining}.` 
+        } 
+      };
+    }
 
-    // Attempt login with Supabase
+    // Attempt login with Supabase - this will give us the real auth error
     const result = await supabase.auth.signInWithPassword(options);
     
-    // TODO: Temporarily disable brute force logging
-    // Log the attempt (success or failure)
-    // await bruteForceProtection.logAttempt(email, 'signin', !result.error);
+    // Log the attempt for brute force tracking
+    // Only log as failed if it's an actual authentication error (not network/server errors)
+    const isAuthFailure = result.error && (
+      result.error.message.includes('Invalid login credentials') ||
+      result.error.message.includes('Email not confirmed') ||
+      result.error.message.includes('Invalid email or password')
+    );
     
-    // Return the original Supabase result (with potential errors)
+    await bruteForceProtection.logAttempt(email, 'signin', !result.error);
+    
+    // If login failed due to auth reasons, check if user should now be banned
+    if (isAuthFailure) {
+      const newBanStatus = await bruteForceProtection.checkBanStatus(email);
+      if (newBanStatus.banned) {
+        const timeRemaining = bruteForceProtection.formatBanTime();
+        // Override the original error with ban message
+        return { 
+          error: { 
+            message: `Compte temporairement bloqué suite à plusieurs tentatives échouées. Réessayez dans ${timeRemaining}.` 
+          } 
+        };
+      }
+    }
+    
+    // Return the original Supabase result if no ban
     return result;
   }, [bruteForceProtection]);
 

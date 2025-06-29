@@ -10,6 +10,11 @@
  * @returns {string} - The translated error message
  */
 export function translateAuthError(errorMessage, t) {
+  // Don't translate custom brute force messages
+  if (errorMessage?.includes('Compte temporairement bloqué')) {
+    return errorMessage;
+  }
+
   // Common Supabase error patterns
   const errorMappings = {
     'Invalid login credentials': 'errors.invalidCredentials',
