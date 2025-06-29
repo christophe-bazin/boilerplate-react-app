@@ -81,6 +81,9 @@ ALTER TABLE login_attempts ENABLE ROW LEVEL SECURITY;
 CREATE INDEX IF NOT EXISTS idx_login_attempts_ip_email ON login_attempts(ip_address, email, created_at DESC);
 CREATE INDEX IF NOT EXISTS idx_login_attempts_expires ON login_attempts(expires_at);
 
+-- Drop existing policies if they exist
+DROP POLICY IF EXISTS "System can manage login attempts" ON login_attempts;
+
 -- RLS policies for login_attempts (only system can manage these)
 CREATE POLICY "System can manage login attempts" ON login_attempts
   FOR ALL USING (false); -- No direct user access
