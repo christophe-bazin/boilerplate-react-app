@@ -8,16 +8,21 @@ A production-ready React application boilerplate with authentication, theming, a
 - Client-side and server-side protection layers
 
 ### 🔐 Supabase Auth Configuration
-**Recommended Auth settings in Supabase Dashboard > Authentication > Settings:**
+**Required Auth settings in Supabase Dashboard > Authentication > Settings:**
 - ✅ **Confirm email** - Enable email confirmation
 - ✅ **Secure email change** - Require confirmation on both emails
 - ✅ **Secure password change** - Require recent login for password changes
 - ✅ **Prevent use of leaked passwords** - Enable HaveIBeenPwned integration
 - **Minimum password length**: 8+ characters (recommended over default 6)
+- **Password Requirements**: **"Lowercase, uppercase letters, digits and symbols"** ⚠️ **REQUIRED**
 - **Email OTP Expiration**: 3600 seconds (1 hour)
 - **Email OTP Length**: 6 digits
 
-> ⚠️ **Note**: Password validation is handled by Supabase server-side. The client validates password confirmation matching and implements brute force protection. 🚀 **React 18** + **Vite** - Lightning fast development
+> ⚠️ **Important**: This app's password validation is specifically coded for the **"Lowercase, uppercase letters, digits and symbols"** option in Supabase. You must select this option for the client-side validation to work correctly.
+
+## ✨ Features
+
+- 🚀 **React 18** + **Vite** - Lightning fast development
 - 🎨 **Tailwind CSS** - Utility-first CSS with dark/light/system themes
 - 🔐 **Supabase Auth** - Complete authentication system (sign up, sign in, logout)
 - 🛡️ **Brute Force Protection** - Account lockout after failed login attempts

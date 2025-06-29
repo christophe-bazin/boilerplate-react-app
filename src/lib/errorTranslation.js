@@ -22,6 +22,7 @@ export function translateAuthError(errorMessage, t) {
     'User not found': 'errors.userNotFound',
     'Invalid email': 'errors.invalidEmail',
     'Password should be at least': 'errors.passwordShort',
+    'Password should contain at least': 'errors.weakPassword',
     'User already registered': 'errors.emailAlreadyExists',
     'Email address not authorized': 'errors.emailNotAuthorized',
     'Signup is disabled': 'errors.signupDisabled',

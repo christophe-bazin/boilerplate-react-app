@@ -120,7 +120,9 @@ function ProfilePage() {
       
       if (result.error) {
         // Handle password-related errors with the hook
-        if (result.error.message.toLowerCase().includes('password')) {
+        if (result.error.message.toLowerCase().includes('password') || 
+            result.error.code === 'weak_password' ||
+            result.error.code === 'password_requirements_not_met') {
           handleSupabaseError(result.error);
         } else {
           setMessage({ type: 'error', text: translateAuthError(result.error.message, t) });
@@ -135,7 +137,9 @@ function ProfilePage() {
       }
     } catch (error) {
       // Handle password-related errors with the hook
-      if (error.message.toLowerCase().includes('password')) {
+      if (error.message.toLowerCase().includes('password') || 
+          error.code === 'weak_password' ||
+          error.code === 'password_requirements_not_met') {
         handleSupabaseError(error);
       } else {
         setMessage({ type: 'error', text: translateAuthError(error.message, t) });
@@ -296,7 +300,7 @@ function ProfilePage() {
                   onChange={e => setNewPassword(e.target.value)}
                   required
                   autoComplete="new-password"
-                  showStrength={true}
+                  showRequirements={true}
                 />
               </div>
               <div>

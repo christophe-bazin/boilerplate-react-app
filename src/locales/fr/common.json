@@ -34,12 +34,12 @@
   },
   "showPassword": "Afficher le mot de passe",
   "hidePassword": "Masquer le mot de passe",
-  "passwordStrength": {
-    "veryWeak": "Très faible",
-    "weak": "Faible", 
-    "medium": "Moyen",
-    "strong": "Fort",
-    "veryStrong": "Très fort"
+  "passwordRequirements": {
+    "length": "Au moins {{count}} caractères",
+    "lowercase": "Au moins une lettre minuscule (a-z)",
+    "uppercase": "Au moins une lettre majuscule (A-Z)",
+    "digit": "Au moins un chiffre (0-9)",
+    "symbol": "Au moins un symbole (!@#$%^&*...)"
   },
   "save": "Enregistrer",
   "cancel": "Annuler",

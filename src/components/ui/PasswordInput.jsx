@@ -16,7 +16,8 @@ function PasswordInput({
   required = false, 
   className = '', 
   autoComplete = 'current-password',
-  showStrength = false,
+  showRequirements = false,
+  showErrors = false,
   ...props 
 }) {
   const { t } = useTranslation('common');
@@ -26,34 +27,52 @@ function PasswordInput({
     setShowPassword(!showPassword);
   };
 
-  // Password strength calculation
-  const getPasswordStrength = (password) => {
-    if (!password) return { score: 0, label: '', color: '', bg: '' };
+  // Password validation based on Supabase requirements
+  const validatePassword = (password) => {
+    if (!password) return { isValid: true, errors: [] };
     
-    let score = 0;
-    const checks = {
-      length: password.length >= 8,
+    const errors = [];
+    
+    // Length check (should match your Supabase minimum password length setting)
+    const minLength = 8; // Update this to match your Supabase setting
+    if (password.length < minLength) {
+      errors.push(t('passwordRequirements.length', { count: minLength }));
+    }
+    
+    // Character requirements for Supabase option:
+    // "Lowercase, uppercase letters, digits and symbols" (recommended)
+    // 
+    // IMPORTANT: This component is configured for this specific Supabase option.
+    // If you use a different option in Supabase settings, update the validation below.
+    
+    const requirements = {
       lowercase: /[a-z]/.test(password),
-      uppercase: /[A-Z]/.test(password),
-      number: /\d/.test(password),
-      special: /[!@#$%^&*(),.?":{}|<>]/.test(password)
+      uppercase: /[A-Z]/.test(password), 
+      digit: /[0-9]/.test(password),
+      symbol: /[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?`~]/.test(password)
     };
     
-    score = Object.values(checks).filter(Boolean).length;
+    if (!requirements.lowercase) {
+      errors.push(t('passwordRequirements.lowercase'));
+    }
+    if (!requirements.uppercase) {
+      errors.push(t('passwordRequirements.uppercase'));
+    }
+    if (!requirements.digit) {
+      errors.push(t('passwordRequirements.digit'));
+    }
+    if (!requirements.symbol) {
+      errors.push(t('passwordRequirements.symbol'));
+    }
     
-    const levels = [
-      { score: 0, label: '', color: '', bg: '' },
-      { score: 1, label: t('passwordStrength.veryWeak'), color: 'text-red-600', bg: 'bg-red-200' },
-      { score: 2, label: t('passwordStrength.weak'), color: 'text-yellow-600', bg: 'bg-yellow-200' },
-      { score: 3, label: t('passwordStrength.medium'), color: 'text-yellow-600', bg: 'bg-yellow-300' },
-      { score: 4, label: t('passwordStrength.strong'), color: 'text-primary-600', bg: 'bg-primary-200' },
-      { score: 5, label: t('passwordStrength.veryStrong'), color: 'text-green-600', bg: 'bg-green-200' }
-    ];
-    
-    return levels[score];
+    return {
+      isValid: errors.length === 0,
+      errors,
+      requirements
+    };
   };
 
-  const strength = getPasswordStrength(value);
+  const validation = validatePassword(value);
 
   return (
     <div className="w-full">
@@ -89,20 +108,52 @@ function PasswordInput({
         </button>
       </div>
       
-      {/* Password strength indicator */}
-      {showStrength && value && (
-        <div className="mt-2">
-          <div className="flex space-x-1 mb-1">
-            {[1, 2, 3, 4, 5].map((i) => (
-              <div
-                key={i}
-                className={`h-1 w-full rounded ${
-                  i <= strength.score ? strength.bg : 'bg-secondary-200 dark:bg-secondary-700'
-                }`}
-              />
-            ))}
+      {/* Password requirements indicator */}
+      {showRequirements && value && (
+        <div className="mt-2 space-y-1">
+          <div className="text-xs space-y-1">
+            <div className={`flex items-center gap-2 ${
+              value.length >= 8 ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'
+            }`}>
+              <span className="text-xs">{value.length >= 8 ? '✓' : '✗'}</span>
+              <span>{t('passwordRequirements.length', { count: 8 })}</span>
+            </div>
+            <div className={`flex items-center gap-2 ${
+              validation.requirements.lowercase ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'
+            }`}>
+              <span className="text-xs">{validation.requirements.lowercase ? '✓' : '✗'}</span>
+              <span>{t('passwordRequirements.lowercase')}</span>
+            </div>
+            <div className={`flex items-center gap-2 ${
+              validation.requirements.uppercase ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'
+            }`}>
+              <span className="text-xs">{validation.requirements.uppercase ? '✓' : '✗'}</span>
+              <span>{t('passwordRequirements.uppercase')}</span>
+            </div>
+            <div className={`flex items-center gap-2 ${
+              validation.requirements.digit ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'
+            }`}>
+              <span className="text-xs">{validation.requirements.digit ? '✓' : '✗'}</span>
+              <span>{t('passwordRequirements.digit')}</span>
+            </div>
+            <div className={`flex items-center gap-2 ${
+              validation.requirements.symbol ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'
+            }`}>
+              <span className="text-xs">{validation.requirements.symbol ? '✓' : '✗'}</span>
+              <span>{t('passwordRequirements.symbol')}</span>
+            </div>
           </div>
-          <p className={`text-xs ${strength.color}`}>{strength.label}</p>
+        </div>
+      )}
+      
+      {/* Error messages on validation attempt */}
+      {showErrors && validation.errors.length > 0 && (
+        <div className="mt-2">
+          {validation.errors.map((error, index) => (
+            <p key={index} className="text-xs text-red-600 dark:text-red-400">
+              {error}
+            </p>
+          ))}
         </div>
       )}
     </div>

@@ -64,7 +64,9 @@ function SignUp() {
       const { error } = await signUp({ email, password });
       if (error) {
         // Handle password-related errors with the hook
-        if (error.message.toLowerCase().includes('password')) {
+        if (error.message.toLowerCase().includes('password') || 
+            error.code === 'weak_password' ||
+            error.code === 'password_requirements_not_met') {
           handleSupabaseError(error);
         } else {
           const translatedError = translateAuthError(error.message, t);
@@ -142,7 +144,7 @@ function SignUp() {
               onChange={e => setPassword(e.target.value)}
               required
               autoComplete="new-password"
-              showStrength={true}
+              showRequirements={true}
             />
           </div>
           

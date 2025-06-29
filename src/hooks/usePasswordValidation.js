@@ -11,6 +11,9 @@ import { useState, useEffect } from 'react';
 // External libraries
 import { useTranslation } from 'react-i18next';
 
+// Local imports
+import { translateAuthError } from '../lib/errorTranslation';
+
 export function usePasswordValidation() {
   const { t } = useTranslation('auth');
   const [password, setPassword] = useState('');
@@ -58,7 +61,9 @@ export function usePasswordValidation() {
   // Function to handle Supabase validation errors
   const handleSupabaseError = (error) => {
     if (error?.message) {
-      setSupabaseError(error.message);
+      // Translate the Supabase error before setting it
+      const translatedError = translateAuthError(error.message, t);
+      setSupabaseError(translatedError);
     }
   };
 
