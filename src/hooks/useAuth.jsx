@@ -1,5 +1,5 @@
 // React imports first
-import { useEffect, useState, useCallback, createContext, useContext } from 'react';
+import { useEffect, useState, useCallback, createContext, useContext, useMemo } from 'react';
 
 // External libraries
 import { useTranslation } from 'react-i18next';
@@ -22,20 +22,19 @@ function useAuthInternal() {
   const [mfaChallenge, setMfaChallenge] = useState(null);
   const { t } = useTranslation('auth');
   
+  // Debug: observe mfaChallenge changes in the auth hook
+  useEffect(() => {
+    console.log('🔐 AUTH HOOK - mfaChallenge changed:', mfaChallenge);
+  }, [mfaChallenge]);
+  
   // Brute force protection
   const bruteForceProtection = useBruteForceProtection();
 
   useEffect(() => {
-    // Get initial session synchronously if possible
-    const getInitialSession = async () => {
-      const { data: { session } } = await supabase.auth.getSession();
+    supabase.auth.getSession().then(({ data: { session } }) => {
       setUser(session?.user ?? null);
       setLoading(false);
-    };
-    
-    getInitialSession();
-    
-    // Listen for auth state changes
+    });
     const { data: listener } = supabase.auth.onAuthStateChange(async (event, session) => {
       if (event === 'MFA_CHALLENGE_VERIFIED') {
         setMfaChallenge(null);
@@ -45,7 +44,6 @@ function useAuthInternal() {
       }
       setLoading(false);
     });
-    
     return () => {
       listener.subscription.unsubscribe();
     };
@@ -364,8 +362,26 @@ function useAuthInternal() {
  */
 export function AuthProvider({ children }) {
   const authValue = useAuthInternal();
+  
+  // Debug: log when the provider value changes
+  useEffect(() => {
+    console.log('🔐 PROVIDER - authValue.mfaChallenge changed:', authValue.mfaChallenge);
+  }, [authValue.mfaChallenge]);
+  
+  // Memoize the context value to prevent unnecessary re-renders
+  // Only recreate when key values actually change
+  const memoizedAuthValue = useMemo(() => authValue, [
+    authValue.user,
+    authValue.loading,
+    authValue.mfaChallenge,
+    authValue.bruteForceProtection.isBanned,
+    authValue.bruteForceProtection.banUntil,
+    authValue.bruteForceProtection.attemptsCount,
+    authValue.bruteForceProtection.isChecking
+  ]);
+  
   return (
-    <AuthContext.Provider value={authValue}>
+    <AuthContext.Provider value={memoizedAuthValue}>
       {children}
     </AuthContext.Provider>
   );

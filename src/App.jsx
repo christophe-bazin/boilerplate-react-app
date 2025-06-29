@@ -21,13 +21,13 @@ function AppLoading() {
 }
 function App() {
   return (
-    <ThemeProvider>
-      <AuthProvider>
+    <AuthProvider>
+      <ThemeProvider>
         <Suspense fallback={<AppLoading />}>
           <AppRoutes />
         </Suspense>
-      </AuthProvider>
-    </ThemeProvider>
+      </ThemeProvider>
+    </AuthProvider>
   );
 }
 

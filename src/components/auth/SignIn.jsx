@@ -11,19 +11,34 @@ import { translateAuthError } from '../../lib/errorTranslation';
 import PasswordInput from '../ui/PasswordInput';
 import BanWarning from './BanWarning';
 import MagicLinkForm from './MagicLinkForm';
+import MFAChallenge from './MFAChallenge';
 
 /**
  * SignIn component
  * Handles user authentication with validation and Supabase integration.
  */
 function SignIn() {
+  console.log('🔑 SignIn component RENDER - mfaChallenge:', arguments);
+  
   const { t } = useTranslation('auth');
-  const { signIn, signInWithMagicLink, loading, bruteForceProtection } = useAuthContext();
+  const { signIn, signInWithMagicLink, loading, bruteForceProtection, mfaChallenge, verifyMfa, upgradeMfaSession } = useAuthContext();
+  
+  console.log('🔑 SignIn component RENDER - received mfaChallenge:', mfaChallenge);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [authAttempting, setAuthAttempting] = useState(false);
   const [useMagicLink, setUseMagicLink] = useState(true); // Magic link by default
+
+  // Debug: observe mfaChallenge changes
+  useEffect(() => {
+    console.log('🔑 SignIn.jsx - mfaChallenge changed:', mfaChallenge);
+    console.log('🔑 SignIn.jsx - mfaChallenge reference:', mfaChallenge ? JSON.stringify(mfaChallenge) : 'null');
+    // Force re-render if needed
+    if (mfaChallenge) {
+      console.log('🔑 MFA Challenge detected, component should re-render');
+    }
+  }, [mfaChallenge]);
 
   // Check ban status when email changes
   useEffect(() => {
@@ -55,17 +70,56 @@ function SignIn() {
     }
     
     try {
-      const { error } = await signIn({ email, password });
-      if (error) {
-        const translatedError = translateAuthError(error.message, t);
+      console.log('🔑 Attempting sign in with password for:', email);
+      const result = await signIn({ email, password });
+      console.log('🔑 Sign in result:', result);
+      if (result?.error) {
+        const translatedError = translateAuthError(result.error.message, t);
         setError(translatedError);
+      } else if (result?.mfaRequired) {
+        console.log('🔑 MFA required - showing challenge UI');
+        // MFA challenge is active, component will show challenge UI
+        setError('');
+      } else if (result?.mfaUpgradeRequired) {
+        console.log('🔑 MFA upgrade required - user has AAL1 but needs AAL2');
+        // Automatically trigger MFA upgrade
+        const upgradeResult = await upgradeMfaSession(result.availableFactors[0].id);
+        console.log('🔑 MFA upgrade result:', upgradeResult);
+        if (upgradeResult?.error) {
+          const translatedError = translateAuthError(upgradeResult.error.message, t);
+          setError(translatedError);
+        } else if (upgradeResult?.success) {
+          console.log('🔑 MFA upgrade successful - challenge should now be active');
+        }
+        // The MFA challenge UI will appear automatically
+      } else {
+        console.log('🔑 Sign in successful');
       }
-    } catch {
+    } catch (err) {
+      console.error('🔑 Sign in error:', err);
       setError(t('errors.unexpected'));
     } finally {
       setAuthAttempting(false);
     }
   };
+
+  // Handle MFA verification
+  const handleMfaSuccess = () => {
+    // User is now authenticated, auth state will update automatically
+    setError('');
+  };
+
+  const handleMfaCancel = () => {
+    // Reset to login form
+    setUseMagicLink(true);
+    setError('');
+  };
+
+  // If MFA challenge is active, show MFA challenge component
+  if (mfaChallenge) {
+    console.log('🔑 Showing MFA Challenge component');
+    return <MFAChallenge onSuccess={handleMfaSuccess} onCancel={handleMfaCancel} />;
+  }
 
   return (
     <div className="w-full">

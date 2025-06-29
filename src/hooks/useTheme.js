@@ -8,7 +8,7 @@
 import { useEffect, useState, useCallback } from 'react';
 
 // Local imports
-import { useAuth } from './useAuth';
+import { useAuth } from './useAuth.jsx';
 import { UserSettingsService } from '../lib/userSettings';
 export function useTheme() {
   const { user } = useAuth(); // Get current user

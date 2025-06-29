@@ -15,6 +15,7 @@ import { usePasswordValidation } from '../../hooks/usePasswordValidation';
 import { UserSettingsService } from '../../lib/userSettings';
 import { translateAuthError } from '../../lib/errorTranslation';
 import PasswordInput from '../ui/PasswordInput';
+import TwoFactorAuth from '../auth/TwoFactorAuth';
 
 function ProfilePage() {
   const { t, i18n } = useTranslation('profile');
@@ -370,6 +371,11 @@ function ProfilePage() {
                 </button>
               </div>
             </div>
+          </div>
+
+          {/* Security Section */}
+          <div className="bg-white dark:bg-gray-800 shadow rounded-lg p-6">
+            <TwoFactorAuth />
           </div>
 
           {/* Delete Account Section */}
