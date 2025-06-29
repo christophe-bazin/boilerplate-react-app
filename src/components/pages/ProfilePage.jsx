@@ -12,7 +12,7 @@ import { useTranslation } from 'react-i18next';
 // Local imports
 import { useAuthContext, withLoadingProtection } from '../../contexts/AuthContext';
 import { usePasswordValidation } from '../../hooks/usePasswordValidation';
-import { UserSettingsService } from '../../lib/userSettings';
+import { useLanguage } from '../../hooks/useLanguage';
 import { translateAuthError } from '../../lib/errorTranslation';
 import PasswordInput from '../ui/PasswordInput';
 
@@ -20,6 +20,7 @@ function ProfilePage() {
   const { t, i18n } = useTranslation('profile');
   const { t: tAuth } = useTranslation('auth');
   const { user, updateEmail, updatePassword, deleteAccount, userHasPassword, setInitialPassword } = useAuthContext();
+  const { currentLanguage, changeLanguage, isLoading: languageLoading } = useLanguage();
   const [message, setMessage] = useState({ type: '', text: '' });
 
   // Email section
@@ -43,9 +44,7 @@ function ProfilePage() {
     clearSupabaseError
   } = usePasswordValidation();
 
-  // Language section
-  const [selectedLanguage, setSelectedLanguage] = useState(i18n.language);
-  const [languageLoading, setLanguageLoading] = useState(false);
+  // Language section - handled by useLanguage hook
 
   // Delete account section
   const [showDeleteModal, setShowDeleteModal] = useState(false);
@@ -151,26 +150,19 @@ function ProfilePage() {
 
   // Update language
   const handleLanguageUpdate = async (newLanguage) => {
-    if (newLanguage === selectedLanguage) return;
+    if (newLanguage === currentLanguage) return;
 
-    setLanguageLoading(true);
     setMessage({ type: '', text: '' });
 
     try {
-      // Update language in i18n
-      await i18n.changeLanguage(newLanguage);
-      setSelectedLanguage(newLanguage);
-
-      // Save to user settings if authenticated
-      if (user) {
-        await UserSettingsService.updateLanguage(user.id, newLanguage);
+      const success = await changeLanguage(newLanguage);
+      if (success) {
+        setMessage({ type: 'success', text: t('languageUpdated') });
+      } else {
+        setMessage({ type: 'error', text: tAuth('errors.unknownError') });
       }
-
-      setMessage({ type: 'success', text: t('languageUpdated') });
     } catch {
       setMessage({ type: 'error', text: tAuth('errors.unknownError') });
-    } finally {
-      setLanguageLoading(false);
     }
   };
 
@@ -350,7 +342,7 @@ function ProfilePage() {
                   onClick={() => handleLanguageUpdate('fr')}
                   disabled={languageLoading}
                   className={`px-4 py-2 rounded-lg font-medium transition-colors ${
-                    selectedLanguage === 'fr'
+                    currentLanguage === 'fr'
                       ? 'bg-primary-600 text-white'
                       : 'bg-secondary-200 dark:bg-secondary-600 text-secondary-700 dark:text-secondary-300 hover:bg-secondary-300 dark:hover:bg-secondary-500'
                   }`}
@@ -361,7 +353,7 @@ function ProfilePage() {
                   onClick={() => handleLanguageUpdate('en')}
                   disabled={languageLoading}
                   className={`px-4 py-2 rounded-lg font-medium transition-colors ${
-                    selectedLanguage === 'en'
+                    currentLanguage === 'en'
                       ? 'bg-primary-600 text-white'
                       : 'bg-secondary-200 dark:bg-secondary-600 text-secondary-700 dark:text-secondary-300 hover:bg-secondary-300 dark:hover:bg-secondary-500'
                   }`}

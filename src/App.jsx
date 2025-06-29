@@ -9,6 +9,7 @@ import { Suspense } from 'react';
 // Local imports
 import { AuthProvider } from './contexts/AuthContext';
 import { ThemeProvider } from './hooks/useTheme';
+import { LanguageProvider } from './hooks/useLanguage';
 import AppRoutes from './AppRoutes';
 
 // Loading component
@@ -22,11 +23,13 @@ function AppLoading() {
 function App() {
   return (
     <ThemeProvider>
-      <AuthProvider>
-        <Suspense fallback={<AppLoading />}>
-          <AppRoutes />
-        </Suspense>
-      </AuthProvider>
+      <LanguageProvider>
+        <AuthProvider>
+          <Suspense fallback={<AppLoading />}>
+            <AppRoutes />
+          </Suspense>
+        </AuthProvider>
+      </LanguageProvider>
     </ThemeProvider>
   );
 }
