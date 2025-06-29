@@ -24,6 +24,7 @@
   "accountDeleted": "Your account has been successfully deleted.",
   "emailUpdated": "A confirmation email has been sent to your new address. Please check your inbox.",
   "passwordUpdated": "Password updated successfully",
+  "passwordsMatch": "Passwords match",
   "languageUpdated": "Language updated successfully",
   "loading": "Loading..."
 }

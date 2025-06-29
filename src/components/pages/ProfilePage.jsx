@@ -7,6 +7,7 @@ import { useTranslation } from 'react-i18next';
 
 // Local imports
 import { useAuth } from '../../hooks/useAuth';
+import { usePasswordValidation } from '../../hooks/usePasswordValidation';
 import { UserSettingsService } from '../../lib/userSettings';
 import { translateAuthError } from '../../lib/errorTranslation';
 import PasswordInput from '../ui/PasswordInput';
@@ -24,10 +25,19 @@ function ProfilePage() {
 
   // Password section
   const [currentPassword, setCurrentPassword] = useState('');
-  const [newPassword, setNewPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
   const [passwordLoading, setPasswordLoading] = useState(false);
   const hasPassword = userHasPassword();
+  
+  // Use password validation hook for new password
+  const {
+    password: newPassword,
+    setPassword: setNewPassword,
+    confirmPassword,
+    setConfirmPassword,
+    isValid: passwordsValid,
+    passwordsMatch,
+    validatePasswords
+  } = usePasswordValidation();
 
   // Language section
   const [selectedLanguage, setSelectedLanguage] = useState(i18n.language);
@@ -287,13 +297,30 @@ function ProfilePage() {
                   required
                   autoComplete="new-password"
                 />
+                {/* Password match indicator */}
+                {confirmPassword && (
+                  <div className={`mt-2 text-sm ${
+                    passwordsMatch 
+                      ? 'text-green-600 dark:text-green-400' 
+                      : 'text-red-600 dark:text-red-400'
+                  }`}>
+                    {passwordsMatch 
+                      ? '✓ ' + t('passwordsMatch')
+                      : '✗ ' + tAuth('errors.passwordMismatch')
+                    }
+                  </div>
+                )}
               </div>
               <button
                 type="submit"
-                disabled={passwordLoading || !currentPassword || !newPassword || !confirmPassword}
+                disabled={
+                  passwordLoading || 
+                  (hasPassword && !currentPassword) || 
+                  !passwordsValid
+                }
                 className="px-6 py-3 bg-primary-600 hover:bg-primary-700 disabled:bg-secondary-400 disabled:cursor-not-allowed text-white rounded-lg transition-colors font-medium"
               >
-                {passwordLoading ? t('loading') : t('updatePassword')}
+                {passwordLoading ? t('loading') : (hasPassword ? t('updatePassword') : t('setPassword'))}
               </button>
             </form>
           </div>

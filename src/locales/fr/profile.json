@@ -24,6 +24,7 @@
   "accountDeleted": "Votre compte a été supprimé avec succès.",
   "emailUpdated": "Un e-mail de confirmation a été envoyé à votre nouvelle adresse. Veuillez vérifier votre boîte de réception.",
   "passwordUpdated": "Mot de passe mis à jour avec succès",
+  "passwordsMatch": "Les mots de passe correspondent",
   "languageUpdated": "Langue mise à jour avec succès",
   "loading": "Chargement..."
 }

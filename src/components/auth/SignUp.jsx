@@ -7,6 +7,7 @@ import { Link } from 'react-router-dom';
 
 // Local imports
 import { useAuth } from '../../hooks/useAuth';
+import { usePasswordValidation } from '../../hooks/usePasswordValidation';
 import { translateAuthError } from '../../lib/errorTranslation';
 import PasswordInput from '../ui/PasswordInput';
 import MagicLinkForm from './MagicLinkForm';
@@ -19,10 +20,21 @@ function SignUp() {
   const { t } = useTranslation('auth');
   const { signUp, signUpWithMagicLink, loading } = useAuth();
   const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState('');
+  const [success, setSuccess] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
   const [useMagicLink, setUseMagicLink] = useState(true); // Magic link by default
+  
+  // Use password validation hook
+  const {
+    password,
+    setPassword,
+    confirmPassword,
+    setConfirmPassword,
+    isValid: passwordsValid,
+    validatePasswords,
+    resetValidation
+  } = usePasswordValidation();
 
   // Handle magic link submission
   const handleMagicLinkSubmit = async (email) => {
@@ -33,16 +45,36 @@ function SignUp() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
+    setSuccess(false);
+    setSubmitting(true);
     
-    if (!email) return setError(t('errors.required'));
-    if (!password) return setError(t('errors.required'));
-    if (password.length < 6) return setError(t('errors.passwordShort'));
-    if (password !== confirmPassword) return setError(t('errors.passwordMismatch'));
+    if (!email) {
+      setSubmitting(false);
+      return setError(t('errors.required'));
+    }
     
-    const { error } = await signUp({ email, password });
-    if (error) {
-      const translatedError = translateAuthError(error.message, t);
-      setError(translatedError);
+    // Use password validation hook
+    const validation = validatePasswords();
+    if (!validation.isValid) {
+      setSubmitting(false);
+      return setError(validation.error);
+    }
+    
+    try {
+      const { error } = await signUp({ email, password });
+      if (error) {
+        const translatedError = translateAuthError(error.message, t);
+        setError(translatedError);
+      } else {
+        setSuccess(true);
+        // Clear form
+        setEmail('');
+        resetValidation();
+      }
+    } catch (err) {
+      setError(t('errors.unexpected'));
+    } finally {
+      setSubmitting(false);
     }
   };
 
@@ -55,6 +87,29 @@ function SignUp() {
           loading={loading}
           onToggleMode={() => setUseMagicLink(false)}
         />
+      ) : success ? (
+        // Success state for password signup
+        <div className="w-full p-8 bg-white dark:bg-secondary-800 rounded-xl shadow-xl border border-secondary-100 dark:border-secondary-700">
+          <div className="text-center">
+            <div className="w-16 h-16 mx-auto mb-4 bg-green-100 dark:bg-green-900/20 rounded-full flex items-center justify-center">
+              <svg className="w-8 h-8 text-green-600 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+              </svg>
+            </div>
+            <h3 className="text-2xl font-bold text-secondary-900 dark:text-white mb-2">
+              {t('signUp.successTitle')}
+            </h3>
+            <p className="text-secondary-600 dark:text-secondary-400 mb-6">
+              {t('signUp.successMessage')}
+            </p>
+            <Link
+              to="/signin"
+              className="inline-block px-6 py-3 bg-primary-600 hover:bg-primary-700 text-white rounded-lg transition-colors font-medium"
+            >
+              {t('signUp.goToSignIn')}
+            </Link>
+          </div>
+        </div>
       ) : (
         <form onSubmit={handleSubmit} className="p-8 bg-white dark:bg-secondary-800 rounded-xl shadow-xl flex flex-col gap-6 border border-secondary-100 dark:border-secondary-700">
           <div className="text-center mb-4">
@@ -82,6 +137,7 @@ function SignUp() {
               onChange={e => setPassword(e.target.value)}
               required
               autoComplete="new-password"
+              showStrength={true}
             />
           </div>
           
@@ -98,9 +154,9 @@ function SignUp() {
           <button 
             type="submit" 
             className="px-6 py-3 bg-primary-600 hover:bg-primary-700 disabled:bg-secondary-400 disabled:cursor-not-allowed text-white rounded-lg transition-colors font-medium"
-            disabled={loading}
+            disabled={submitting}
           >
-            {loading ? t('signUp.loading') : t('signUp.submit')}
+            {submitting ? t('signUp.loading') : t('signUp.submit')}
           </button>
           
           {/* Switch to magic link option */}
