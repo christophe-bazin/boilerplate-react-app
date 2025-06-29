@@ -3,43 +3,12 @@
  * Provides authentication state and methods to the entire application
  */
 
-// React imports first
-import { createContext, useContext } from 'react';
+// Import the useAuth hook directly to avoid circular dependencies
+import { useAuth } from '../hooks/useAuth.jsx';
 
-// Local imports
-import { useAuth } from '../hooks/useAuth';
-
-// Create the context
-const AuthContext = createContext(undefined);
-
-/**
- * AuthProvider component
- * Wraps the app and provides authentication state to all children
- */
-export function AuthProvider({ children }) {
-  const authState = useAuth();
-
-  return (
-    <AuthContext.Provider value={authState}>
-      {children}
-    </AuthContext.Provider>
-  );
-}
-
-/**
- * useAuthContext hook
- * Custom hook to consume the AuthContext
- * Replaces direct useAuth() calls in components
- */
-export function useAuthContext() {
-  const context = useContext(AuthContext);
-  
-  if (context === undefined) {
-    throw new Error('useAuthContext must be used within an AuthProvider');
-  }
-  
-  return context;
-}
+// Re-export everything from useAuth.jsx which contains the full MFA implementation
+export { AuthProvider } from '../hooks/useAuth.jsx';
+export { useAuth as useAuthContext } from '../hooks/useAuth.jsx';
 
 /**
  * withLoadingProtection HOC
@@ -48,7 +17,7 @@ export function useAuthContext() {
  */
 export function withLoadingProtection(Component, LoadingComponent = null) {
   return function ProtectedComponent(props) {
-    const { loading } = useAuthContext();
+    const { loading } = useAuth();
     
     if (loading) {
       return LoadingComponent || (
