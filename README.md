@@ -42,8 +42,8 @@ This boilerplate is designed with a modular architecture in mind:
 ### 1. Clone and Install
 
 ```bash
-git clone https://github.com/christophe-bazin/saas-boilerplate-nextjs
-cd saas-boilerplate-nextjs
+git clone https://github.com/christophe-bazin/boilerplate-react-app
+cd boilerplate-react-app
 npm install
 ```
 
@@ -158,8 +158,8 @@ Centralized app settings used in all environments:
 #### **Environment Variables** - `.env.local` (local), `.env.production` (prod)
 Supabase connection settings:
 ```env
-VITE_SUPABASE_URL=https://your-project-ref.supabase.co
-VITE_SUPABASE_ANON_KEY=your-anon-key-here
+NEXT_PUBLIC_SUPABASE_URL=https://your-project-ref.supabase.co
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key-here
 ```
 
 #### **Supabase Local Development** (optional)
@@ -186,8 +186,8 @@ Update `src/config/app.json` for app name and logo, then modify translation file
 2. **Execute** `database/setup.sql` in SQL editor
 3. **Set Environment Variables**
    ```env
-   VITE_SUPABASE_URL=https://your-project-ref.supabase.co
-   VITE_SUPABASE_ANON_KEY=your-anon-key-here
+   NEXT_PUBLIC_SUPABASE_URL=https://your-project-ref.supabase.co
+   NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key-here
    ```
 4. **Build and Deploy**
    ```bash
