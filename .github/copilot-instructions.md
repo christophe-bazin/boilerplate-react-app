@@ -2,7 +2,7 @@
 
 ## Stack technique
 - Next.js 14+ avec App Router
-- React 18 + TypeScript
+- TypeScript
 - Tailwind CSS v3
 - Supabase (auth + database)
 - react-i18next (FR/EN)
@@ -11,7 +11,7 @@
 - Composants en PascalCase
 - Hooks customs avec préfixe "use"
 - Fichiers en camelCase ou kebab-case
-- Utiliser les hooks React modernes (useState, useEffect, etc.)
+- Utiliser les hooks modernes (useState, useEffect, etc.)
 - Extensions .tsx pour les composants TypeScript
 
 ## Structure des composants
@@ -24,7 +24,7 @@
 ## Next.js App Router
 - Utiliser App Router exclusivement (pas Pages Router)
 - Variables d'env : NEXT_PUBLIC_SUPABASE_URL, NEXT_PUBLIC_SUPABASE_ANON_KEY
-- 'use client' obligatoire pour : hooks, états, événements, contextes React
+- 'use client' obligatoire pour : hooks, états, événements, contextes
 - Server Components par défaut pour les pages et layouts
 - Route groups : (auth) pour auth, (protected) pour pages protégées
 - Utiliser next/link et next/navigation (useRouter, redirect, notFound)
