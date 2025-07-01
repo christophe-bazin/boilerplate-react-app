@@ -1,18 +1,28 @@
-# React + Supabase Boilerplate
+# Next.js + Supabase SaaS Boilerplate
 
-A production-ready React application boilerplate with authentication, theming, and internationalization.
+A production-ready Next.js application boilerplate with authentication, theming, and internationalization. Designed for rapid SaaS development with modular architecture.
 
 ## ✨ Features
 
-- 🚀 **React 18** + **Vite** - Lightning fast development
+- 🚀 **Next.js 14+** + **App Router** - Modern React framework with SSR/SSG
 - 🎨 **Tailwind CSS** - Utility-first CSS with dark/light/system themes
 - 🔐 **Supabase Auth** - Complete authentication system (sign up, sign in, logout)
 - 🛡️ **Brute Force Protection** - Account lockout after failed login attempts
 - 🌍 **i18n** - French/English internationalization with react-i18next
-- 🛡️ **Protected Routes** - Authentication-based routing
+- 🛡️ **Protected Routes** - Authentication-based routing with App Router layouts
 - 📱 **Responsive** - Mobile-first design
-- 🎯 **TypeScript Ready** - Easy migration to TypeScript
+- 🎯 **TypeScript Ready** - Full TypeScript support with strict mode
 - 🔧 **ESLint** - Code quality and consistency
+- 📦 **Modular Architecture** - Prepared for core package extraction
+
+## 🏗️ Architecture
+
+This boilerplate is designed with a modular architecture in mind:
+
+- **Core Components** (`src/components`): Reusable UI components
+- **Business Logic** (`src/hooks`, `src/contexts`): Custom hooks and contexts
+- **App Router Pages** (`app/`): Next.js app structure with route groups
+- **Configuration** (`src/config`, `src/lib`): App configuration and utilities
 
 ###  Supabase Auth Configuration
 **Required Auth settings in Supabase Dashboard > Authentication > Settings:**
@@ -32,20 +42,27 @@ A production-ready React application boilerplate with authentication, theming, a
 ### 1. Clone and Install
 
 ```bash
-git clone https://github.com/christophe-bazin/boilerplate-react-app
-cd boilerplate-react-app
+git clone https://github.com/christophe-bazin/saas-boilerplate-nextjs
+cd saas-boilerplate-nextjs
 npm install
 ```
 
-### 2. Configure Supabase
+### 2. Configure Environment
+
+```bash
+cp .env.example .env.local
+# Edit .env.local with your Supabase credentials
+```
+
+### 3. Configure Supabase
 
 Create a `.env.local` file:
 ```env
-VITE_SUPABASE_URL=https://your-project-ref.supabase.co
-VITE_SUPABASE_ANON_KEY=your-anon-key-here
+NEXT_PUBLIC_SUPABASE_URL=https://your-project-ref.supabase.co
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key-here
 ```
 
-### 3. Setup Database & Edge Functions
+### 4. Setup Database & Edge Functions
 
 **Execute SQL in your Supabase SQL editor:**
 ```sql
@@ -83,14 +100,26 @@ Edit `src/config/app.json`:
 npm run dev
 ```
 
-Your app will be available at `http://localhost:5173`
+Your app will be available at `http://localhost:3000`
 
 ## 📁 Project Structure
 
 ```
+app/                     # Next.js App Router structure
+├── (auth)/             # Route group for authentication pages
+│   ├── sign-in/        # Sign in page
+│   ├── sign-up/        # Sign up page
+│   └── reset-password/ # Password reset page
+├── (protected)/        # Route group for protected pages
+│   ├── dashboard/      # Dashboard page
+│   └── profile/        # Profile page
+├── layout.tsx          # Root layout with providers
+└── page.tsx            # Home page
+
 src/
 ├── components/          # React components organized by feature
 │   ├── auth/           # Authentication components (SignIn, SignUp, etc.)
+│   ├── providers/      # Next.js providers wrapper
 │   ├── layout/         # Layout components (TopBar, UserDropdown, etc.)
 │   ├── ui/             # Reusable UI components (ThemeToggle, etc.)
 │   ├── pages/          # Page components (HomePage, etc.)
@@ -166,6 +195,13 @@ Update `src/config/app.json` for app name and logo, then modify translation file
    ```
 
 **Recommended hosting:** Netlify, Vercel, or Cloudflare Pages
+
+## 📚 Documentation
+
+For detailed information about the project:
+
+- 📖 **[Migration Guide](docs/MIGRATION.md)** - Complete migration documentation from React+Vite to Next.js
+- 🚀 **[Next Steps](docs/NEXT_STEPS.md)** - Roadmap for modular architecture and SaaS platform development
 
 ## 🤝 Contributing
 

@@ -39,6 +39,11 @@ const resources = {
 
 // Language detection function with priority: localStorage > OS > Browser > Default
 const detectLanguage = () => {
+  // Check if we're on the client side
+  if (typeof window === 'undefined') {
+    return DEFAULT_LANGUAGE;
+  }
+  
   // Priority 1: localStorage
   try {
     const stored = localStorage.getItem(STORAGE_KEY);
@@ -62,9 +67,11 @@ const detectLanguage = () => {
   
   // Priority 3: Browser language
   try {
-    const browserLang = navigator.language?.split('-')[0];
-    if (browserLang && SUPPORTED_LANGUAGES.includes(browserLang)) {
-      return browserLang;
+    if (typeof navigator !== 'undefined') {
+      const browserLang = navigator.language?.split('-')[0];
+      if (browserLang && SUPPORTED_LANGUAGES.includes(browserLang)) {
+        return browserLang;
+      }
     }
   } catch (error) {
     console.warn('Failed to detect browser language:', error);

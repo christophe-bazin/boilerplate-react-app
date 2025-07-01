@@ -3,6 +3,8 @@
  * User profile management with email, password and language settings
  */
 
+'use client';
+
 // React imports first
 import { useState, useEffect } from 'react';
 
@@ -17,7 +19,7 @@ import { translateAuthError } from '../../lib/errorTranslation';
 import PasswordInput from '../ui/PasswordInput';
 
 function ProfilePage() {
-  const { t, i18n } = useTranslation('profile');
+  const { t } = useTranslation('profile');
   const { t: tAuth } = useTranslation('auth');
   const { user, updateEmail, updatePassword, deleteAccount, userHasPassword, setInitialPassword } = useAuthContext();
   const { currentLanguage, changeLanguage, isLoading: languageLoading } = useLanguage();

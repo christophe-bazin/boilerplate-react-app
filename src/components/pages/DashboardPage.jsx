@@ -3,6 +3,8 @@
  * Main dashboard for authenticated users
  */
 
+'use client';
+
 // External libraries
 import { useTranslation } from 'react-i18next';
 

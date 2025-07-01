@@ -1,10 +1,12 @@
 # Instructions GitHub Copilot
 
 ## Stack technique
-- React 18 + Vite
+- Next.js 14+ + App Router
+- React 18
 - Tailwind CSS v3
 - Supabase (auth + database)
 - react-i18next (FR/EN)
+- TypeScript ready
 
 ## Conventions de code
 - Composants en PascalCase
@@ -14,10 +16,19 @@
 
 ## Structure des composants
 - Imports React en premier
-- Puis les libs externes
+- Puis les libs externes  
 - Puis les imports locaux
 - Export default à la fin
 - Ne pas laisser d'imports vides ou inutilisés
+
+## Next.js App Router
+- App Router (pas Pages Router)
+- Variables d'env : NEXT_PUBLIC_SUPABASE_URL, NEXT_PUBLIC_SUPABASE_ANON_KEY
+- Client Components : auth, hooks, i18n (avec 'use client')
+- Server Components : pages statiques
+- Route groups : (auth) pour auth, (protected) pour pages protégées
+- Utiliser next/link au lieu de react-router-dom
+- Utiliser next/navigation (useRouter, redirect) pour la navigation
 
 ## Styling
 - Utiliser Tailwind uniquement
@@ -36,7 +47,7 @@
 - L'AuthContext centralise l'état auth dans toute l'application
 - Utiliser `withLoadingProtection()` HOC pour les composants sensibles
 - Éviter le props drilling avec `user={user}` - le context gère tout
-- L'état loading global est géré par AppRoutes + protections locales
+- L'état loading global est géré par les layouts App Router + protections locales
 
 ## Code quality
 - Commentaires toujours en anglais

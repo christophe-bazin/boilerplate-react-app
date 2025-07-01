@@ -4,6 +4,8 @@
  * Supports 'light', 'dark', and 'system' themes with automatic system detection
  */
 
+'use client';
+
 // React imports first
 import { useEffect, useState, useCallback } from 'react';
 
@@ -14,9 +16,11 @@ export function useTheme() {
   const { user } = useAuth(); // Get current user
   const [theme, setTheme] = useState('system'); // Current theme setting
   const [resolvedTheme, setResolvedTheme] = useState('light'); // Actual applied theme
+  const [isClient, setIsClient] = useState(false); // Track if we're on the client side
 
-  // Get system theme preference
+  // Get system theme preference (client-side only)
   const getSystemTheme = useCallback(() => {
+    if (typeof window === 'undefined') return 'light';
     return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
   }, []);
 
@@ -28,8 +32,10 @@ export function useTheme() {
     return currentTheme;
   }, [getSystemTheme]);
 
-  // Apply theme to document
+  // Apply theme to document (client-side only)
   const applyTheme = useCallback((themeValue) => {
+    if (typeof window === 'undefined' || typeof document === 'undefined') return;
+    
     const effectiveTheme = getEffectiveTheme(themeValue);
     setResolvedTheme(effectiveTheme);
     
@@ -40,9 +46,15 @@ export function useTheme() {
     }
   }, [getEffectiveTheme]);
 
-  // Save theme to localStorage and optionally Supabase
+  // Save theme to localStorage and optionally Supabase (client-side only)
   const saveTheme = useCallback(async (newTheme) => {
-    localStorage.setItem('theme', newTheme);
+    if (typeof window === 'undefined') return;
+    
+    try {
+      localStorage.setItem('theme', newTheme);
+    } catch (error) {
+      console.warn('Failed to save theme to localStorage:', error);
+    }
     
     if (user) {
       try {
@@ -53,10 +65,17 @@ export function useTheme() {
     }
   }, [user]);
 
-  // Load theme from localStorage or default to system
+  // Load theme from localStorage or default to system (client-side only)
   const loadTheme = useCallback(() => {
-    const savedTheme = localStorage.getItem('theme');
-    return savedTheme || 'system';
+    if (typeof window === 'undefined') return 'system';
+    
+    try {
+      const savedTheme = localStorage.getItem('theme');
+      return savedTheme || 'system';
+    } catch (error) {
+      console.warn('Failed to load theme from localStorage:', error);
+      return 'system';
+    }
   }, []);
 
   // Load theme from Supabase for authenticated users
@@ -81,6 +100,9 @@ export function useTheme() {
 
   // Initialize theme on mount
   useEffect(() => {
+    // Mark as client-side
+    setIsClient(true);
+    
     const initTheme = async () => {
       let themeToUse = loadTheme();
       
@@ -89,7 +111,13 @@ export function useTheme() {
         const supabaseTheme = await loadThemeFromSupabase();
         if (supabaseTheme) {
           themeToUse = supabaseTheme;
-          localStorage.setItem('theme', supabaseTheme);
+          if (typeof window !== 'undefined') {
+            try {
+              localStorage.setItem('theme', supabaseTheme);
+            } catch (error) {
+              console.warn('Failed to save theme to localStorage:', error);
+            }
+          }
         } else {
           // No settings exist yet, create default ones
           console.log('Creating default user settings...');
@@ -104,8 +132,10 @@ export function useTheme() {
     initTheme();
   }, [user, loadTheme, loadThemeFromSupabase, applyTheme, saveTheme]);
 
-  // Listen for system theme changes when theme is set to 'system'
+  // Listen for system theme changes when theme is set to 'system' (client-side only)
   useEffect(() => {
+    if (typeof window === 'undefined') return;
+    
     const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
     const handleChange = () => {
       if (theme === 'system') {
@@ -121,8 +151,9 @@ export function useTheme() {
     theme, // Current theme setting ('light', 'dark', 'system')
     resolvedTheme, // Actual applied theme ('light', 'dark')
     setTheme: setThemeValue,
-    isSystemDark: getSystemTheme() === 'dark',
-    themes: ['light', 'dark', 'system']
+    isSystemDark: isClient ? getSystemTheme() === 'dark' : false,
+    themes: ['light', 'dark', 'system'],
+    isClient // Expose client-side status
   };
 }
 

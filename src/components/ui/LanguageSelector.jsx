@@ -3,6 +3,8 @@
  * Simple language selector component for TopBar or other locations
  */
 
+'use client';
+
 // React imports first
 import { useState } from 'react';
 

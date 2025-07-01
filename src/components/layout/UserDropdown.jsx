@@ -3,12 +3,14 @@
  * Profile dropdown for authenticated users with profile, settings and sign out options
  */
 
+'use client';
+
 // React imports first
 import { useState, useRef, useEffect } from 'react';
 
 // External libraries
 import { useTranslation } from 'react-i18next';
-import { useNavigate } from 'react-router-dom';
+import { useRouter } from 'next/navigation';
 
 // Local imports
 import { useAuthContext } from '../../contexts/AuthContext';
@@ -17,7 +19,7 @@ import ThemeToggle from '../ui/ThemeToggle';
 function UserDropdown({ className = '' }) {
   const { user, signOut } = useAuthContext();
   const { t } = useTranslation('common');
-  const navigate = useNavigate();
+  const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef(null);
 
@@ -39,7 +41,7 @@ function UserDropdown({ className = '' }) {
   };
 
   const handleProfileClick = () => {
-    navigate('/profile');
+    router.push('/profile');
     setIsOpen(false);
   };
 

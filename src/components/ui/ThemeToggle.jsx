@@ -4,6 +4,8 @@
  * Includes proper accessibility and best practices for theme switching
  */
 
+'use client';
+
 // React imports first
 import { useState, useRef, useEffect } from 'react';
 

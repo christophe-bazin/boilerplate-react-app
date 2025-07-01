@@ -3,6 +3,8 @@
  * Provides authentication state and methods to the entire application
  */
 
+'use client';
+
 // React imports first
 import { createContext, useContext } from 'react';
 

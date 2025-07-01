@@ -3,8 +3,10 @@
  * Landing page for unauthenticated users with app presentation and CTA buttons
  */
 
+'use client';
+
 // External libraries
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
 import { useTranslation } from 'react-i18next';
 function HomePage() {
   const { t } = useTranslation('common');
@@ -42,13 +44,13 @@ function HomePage() {
           {/* CTA Buttons */}
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
             <Link
-              to="/signup"
+              href="/sign-up"
               className="px-8 py-4 text-lg font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-lg transition-colors shadow-lg hover:shadow-xl"
             >
               {t('navigation.signUp')}
             </Link>
             <Link
-              to="/signin"
+              href="/sign-in"
               className="px-8 py-4 text-lg font-medium text-blue-600 dark:text-blue-400 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 border border-blue-200 dark:border-gray-600 rounded-lg transition-colors"
             >
               {t('navigation.signIn')}

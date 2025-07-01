@@ -4,6 +4,8 @@
  * Priority: User settings > localStorage > OS locale > Browser language > Default (fr)
  */
 
+'use client';
+
 // React imports first
 import { useEffect, useState, useCallback } from 'react';
 
@@ -22,25 +24,37 @@ export function useLanguage() {
   const { i18n } = useTranslation();
   const { user } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
+  const [isClient, setIsClient] = useState(false);
 
-  // Get system/OS language preference
+  // Get system/OS language preference (client-side only)
   const getSystemLanguage = useCallback(() => {
-    // Get system locale first (OS preference)
-    const systemLocale = Intl.DateTimeFormat().resolvedOptions().locale;
-    let systemLang = systemLocale.split('-')[0]; // Extract language code
-    
-    // If system language not supported, try browser language
-    if (!SUPPORTED_LANGUAGES.includes(systemLang)) {
-      const browserLang = navigator.language?.split('-')[0];
-      systemLang = browserLang;
+    if (typeof window === 'undefined' || typeof navigator === 'undefined') {
+      return DEFAULT_LANGUAGE;
     }
     
-    // Return if supported, otherwise default
-    return SUPPORTED_LANGUAGES.includes(systemLang) ? systemLang : DEFAULT_LANGUAGE;
+    try {
+      // Get system locale first (OS preference)
+      const systemLocale = Intl.DateTimeFormat().resolvedOptions().locale;
+      let systemLang = systemLocale.split('-')[0]; // Extract language code
+      
+      // If system language not supported, try browser language
+      if (!SUPPORTED_LANGUAGES.includes(systemLang)) {
+        const browserLang = navigator.language?.split('-')[0];
+        systemLang = browserLang;
+      }
+      
+      // Return if supported, otherwise default
+      return SUPPORTED_LANGUAGES.includes(systemLang) ? systemLang : DEFAULT_LANGUAGE;
+    } catch (error) {
+      console.warn('Failed to detect system language:', error);
+      return DEFAULT_LANGUAGE;
+    }
   }, []);
 
-  // Get language from localStorage
+  // Get language from localStorage (client-side only)
   const getStoredLanguage = useCallback(() => {
+    if (typeof window === 'undefined') return null;
+    
     try {
       const stored = localStorage.getItem(STORAGE_KEY);
       return stored && SUPPORTED_LANGUAGES.includes(stored) ? stored : null;
@@ -50,8 +64,10 @@ export function useLanguage() {
     }
   }, []);
 
-  // Save language to localStorage
+  // Save language to localStorage (client-side only)
   const saveToStorage = useCallback((language) => {
+    if (typeof window === 'undefined') return;
+    
     try {
       localStorage.setItem(STORAGE_KEY, language);
     } catch (error) {
@@ -141,6 +157,9 @@ export function useLanguage() {
 
   // Initialize language on mount and user changes
   useEffect(() => {
+    // Mark as client-side
+    setIsClient(true);
+    
     const initializeLanguage = async () => {
       setIsLoading(true);
       
@@ -180,7 +199,8 @@ export function useLanguage() {
     supportedLanguages: SUPPORTED_LANGUAGES,
     isLoading,
     changeLanguage,
-    isLanguageSupported: (lang) => SUPPORTED_LANGUAGES.includes(lang)
+    isLanguageSupported: (lang) => SUPPORTED_LANGUAGES.includes(lang),
+    isClient // Expose client-side status
   };
 }
 

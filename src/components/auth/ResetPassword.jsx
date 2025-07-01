@@ -3,16 +3,17 @@
  * Handles password reset request with email sending
  */
 
+'use client';
+
 // React imports first
 import { useState } from 'react';
 
 // External libraries
 import { useTranslation } from 'react-i18next';
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
 
 // Local imports
 import { useAuthContext } from '../../contexts/AuthContext';
-import BanWarning from './BanWarning';
 function ResetPassword() {
   const { t } = useTranslation('auth');
   const { resetPassword } = useAuthContext();
@@ -63,7 +64,7 @@ function ResetPassword() {
           </p>
           
           <Link
-            to="/signin"
+            href="/signin"
             className="inline-flex items-center gap-2 px-6 py-3 bg-primary-600 hover:bg-primary-700 text-white rounded-lg transition-colors font-medium"
           >
             <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
@@ -116,7 +117,7 @@ function ResetPassword() {
         
         <div className="text-center">
           <Link 
-            to="/signin" 
+            href="/signin" 
             className="text-secondary-600 dark:text-secondary-400 hover:text-primary-600 dark:hover:text-primary-400 hover:underline"
           >
             {t('resetPassword.backToSignIn')}

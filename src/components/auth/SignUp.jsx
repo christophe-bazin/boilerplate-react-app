@@ -1,9 +1,16 @@
+/**
+ * SignUp component
+ * User registration form with email/password validation and magic link option
+ */
+
+'use client';
+
 // React imports first
 import { useState } from 'react';
 
 // External libraries
 import { useTranslation } from 'react-i18next';
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
 
 // Local imports
 import { useAuthContext } from '../../contexts/AuthContext';
@@ -110,7 +117,7 @@ function SignUp() {
               {t('signUp.successMessage')}
             </p>
             <Link
-              to="/signin"
+              href="/sign-in"
               className="inline-block px-6 py-3 bg-primary-600 hover:bg-primary-700 text-white rounded-lg transition-colors font-medium"
             >
               {t('signUp.goToSignIn')}
@@ -178,7 +185,7 @@ function SignUp() {
           </div>
           
           <div className="text-center text-sm">
-            <Link to="/signin" className="text-secondary-600 dark:text-secondary-400">
+            <Link href="/sign-in" className="text-secondary-600 dark:text-secondary-400">
               {t('signUp.hasAccount')} <span className="text-primary-600 dark:text-primary-400 hover:text-primary-800 dark:hover:text-primary-300 hover:underline">{t('signUp.signInLink')}</span>
             </Link>
           </div>

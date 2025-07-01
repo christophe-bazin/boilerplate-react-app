@@ -1,3 +1,10 @@
+/**
+ * useAuth hook
+ * Manages user authentication state and provides auth methods for Supabase
+ */
+
+'use client';
+
 // React imports first
 import { useEffect, useState, useCallback } from 'react';
 
@@ -6,7 +13,6 @@ import { useTranslation } from 'react-i18next';
 
 // Local imports
 import { supabase } from '../lib/supabaseClient';
-import { UserSettingsService } from '../lib/userSettings';
 import { useBruteForceProtection } from './useBruteForceProtection';
 
 /**

@@ -4,8 +4,10 @@
  * Shows logo, user menu for authenticated users, or sign in/up buttons for guests
  */
 
+'use client';
+
 // External libraries
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
 import { useTranslation } from 'react-i18next';
 
 // Local imports
@@ -15,7 +17,7 @@ import UserDropdown from './UserDropdown';
 import ThemeToggle from '../ui/ThemeToggle';
 
 function TopBar() {
-  const { user, signOut } = useAuthContext();
+  const { user } = useAuthContext();
   const { t } = useTranslation('common');
   const config = useAppConfig();
 
@@ -24,7 +26,7 @@ function TopBar() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Logo and brand */}
-          <Link to={user ? "/app" : "/"} className="flex items-center gap-3">
+          <Link href={user ? "/dashboard" : "/"} className="flex items-center gap-3">
             <div className="w-8 h-8 text-primary-600 dark:text-primary-400">
               <svg viewBox="0 0 40 40" fill="currentColor">
                 <rect width="40" height="40" rx="8"/>
@@ -48,13 +50,13 @@ function TopBar() {
                 <ThemeToggle />
                 <div className="flex items-center gap-2">
                   <Link
-                    to="/signin"
+                    href="/sign-in"
                     className="px-4 py-2 text-sm font-medium text-secondary-700 dark:text-secondary-300 hover:text-primary-600 dark:hover:text-primary-400 transition-colors"
                   >
                     {t('navigation.signIn')}
                   </Link>
                   <Link
-                    to="/signup"
+                    href="/sign-up"
                     className="px-4 py-2 text-sm font-medium text-white bg-primary-600 hover:bg-primary-700 rounded-lg transition-colors"
                   >
                     {t('navigation.signUp')}

@@ -21,59 +21,93 @@ export const useBruteForceProtection = () => {
 
   // Simple client-side protection (primary method)
   const getClientProtectionStatus = useCallback((email) => {
-    const key = `auth_attempts_${email}`;
-    const attempts = JSON.parse(localStorage.getItem(key) || '[]');
-    const now = Date.now();
-    
-    // Clean old attempts (older than ATTEMPT_WINDOW_MINUTES)
-    const recentAttempts = attempts.filter(
-      attempt => now - attempt < (ATTEMPT_WINDOW_MINUTES * 60 * 1000)
-    );
-    
-    // Update localStorage with cleaned attempts
-    localStorage.setItem(key, JSON.stringify(recentAttempts));
-    
-    // Check if should be banned
-    if (recentAttempts.length >= MAX_ATTEMPTS) {
-      const lastAttempt = Math.max(...recentAttempts);
-      const banUntil = lastAttempt + (BAN_DURATION_MINUTES * 60 * 1000);
-      
-      if (now < banUntil) {
-        return {
-          banned: true,
-          banUntil: new Date(banUntil),
-          attemptsCount: recentAttempts.length
-        };
-      } else {
-        // Ban has expired, clear attempts
-        localStorage.removeItem(key);
-        return {
-          banned: false,
-          banUntil: null,
-          attemptsCount: 0
-        };
-      }
+    // Check if we're on the client side
+    if (typeof window === 'undefined' || typeof localStorage === 'undefined') {
+      return {
+        banned: false,
+        banUntil: null,
+        attemptsCount: 0
+      };
     }
     
-    return {
-      banned: false,
-      banUntil: null,
-      attemptsCount: recentAttempts.length
-    };
+    try {
+      const key = `auth_attempts_${email}`;
+      const attempts = JSON.parse(localStorage.getItem(key) || '[]');
+      const now = Date.now();
+      
+      // Clean old attempts (older than ATTEMPT_WINDOW_MINUTES)
+      const recentAttempts = attempts.filter(
+        attempt => now - attempt < (ATTEMPT_WINDOW_MINUTES * 60 * 1000)
+      );
+      
+      // Update localStorage with cleaned attempts
+      localStorage.setItem(key, JSON.stringify(recentAttempts));
+      
+      // Check if should be banned
+      if (recentAttempts.length >= MAX_ATTEMPTS) {
+        const lastAttempt = Math.max(...recentAttempts);
+        const banUntil = lastAttempt + (BAN_DURATION_MINUTES * 60 * 1000);
+        
+        if (now < banUntil) {
+          return {
+            banned: true,
+            banUntil: new Date(banUntil),
+            attemptsCount: recentAttempts.length
+          };
+        } else {
+          // Ban has expired, clear attempts
+          localStorage.removeItem(key);
+          return {
+            banned: false,
+            banUntil: null,
+            attemptsCount: 0
+          };
+        }
+      }
+      
+      return {
+        banned: false,
+        banUntil: null,
+        attemptsCount: recentAttempts.length
+      };
+    } catch (error) {
+      console.warn('Failed to access localStorage for brute force protection:', error);
+      return {
+        banned: false,
+        banUntil: null,
+        attemptsCount: 0
+      };
+    }
   }, [MAX_ATTEMPTS, BAN_DURATION_MINUTES, ATTEMPT_WINDOW_MINUTES]);
 
   // Log a failed attempt
   const logFailedAttempt = useCallback((email) => {
-    const key = `auth_attempts_${email}`;
-    const attempts = JSON.parse(localStorage.getItem(key) || '[]');
-    attempts.push(Date.now());
-    localStorage.setItem(key, JSON.stringify(attempts));
+    if (typeof window === 'undefined' || typeof localStorage === 'undefined') {
+      return;
+    }
+    
+    try {
+      const key = `auth_attempts_${email}`;
+      const attempts = JSON.parse(localStorage.getItem(key) || '[]');
+      attempts.push(Date.now());
+      localStorage.setItem(key, JSON.stringify(attempts));
+    } catch (error) {
+      console.warn('Failed to log failed attempt to localStorage:', error);
+    }
   }, []);
 
   // Clear attempts on success
   const clearAttempts = useCallback((email) => {
-    const key = `auth_attempts_${email}`;
-    localStorage.removeItem(key);
+    if (typeof window === 'undefined' || typeof localStorage === 'undefined') {
+      return;
+    }
+    
+    try {
+      const key = `auth_attempts_${email}`;
+      localStorage.removeItem(key);
+    } catch (error) {
+      console.warn('Failed to clear attempts from localStorage:', error);
+    }
   }, []);
 
   // Check ban status

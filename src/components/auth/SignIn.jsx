@@ -1,15 +1,21 @@
+/**
+ * SignIn component
+ * User authentication form with email/password and magic link options
+ */
+
+'use client';
+
 // React imports first
 import { useState, useEffect } from 'react';
 
 // External libraries
 import { useTranslation } from 'react-i18next';
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
 
 // Local imports
 import { useAuthContext } from '../../contexts/AuthContext';
 import { translateAuthError } from '../../lib/errorTranslation';
 import PasswordInput from '../ui/PasswordInput';
-import BanWarning from './BanWarning';
 import MagicLinkForm from './MagicLinkForm';
 
 /**
@@ -128,12 +134,12 @@ function SignIn() {
           
           <div className="flex flex-col sm:flex-row justify-between items-center gap-3 text-sm">
             <Link 
-              to="/reset-password" 
+              href="/reset-password" 
               className="text-primary-600 dark:text-primary-400 hover:text-primary-800 dark:hover:text-primary-300 hover:underline"
             >
               {t('signIn.forgot')}
             </Link>
-            <Link to="/signup" className="text-secondary-600 dark:text-secondary-400">
+            <Link href="/sign-up" className="text-secondary-600 dark:text-secondary-400">
               {t('signIn.noAccount')} <span className="text-primary-600 dark:text-primary-400 hover:text-primary-800 dark:hover:text-primary-300 hover:underline">{t('signIn.signUpLink')}</span>
             </Link>
           </div>
