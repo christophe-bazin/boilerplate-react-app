@@ -4,7 +4,12 @@
  */
 
 import HomePage from '../src/components/pages/HomePage';
+import { PublicPageLayout } from '../src/components/layout';
 
 export default function Home() {
-  return <HomePage />;
+  return (
+    <PublicPageLayout>
+      <HomePage />
+    </PublicPageLayout>
+  );
 }

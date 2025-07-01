@@ -18,6 +18,29 @@ export default function RootLayout({
 }) {
   return (
     <html lang="fr" suppressHydrationWarning>
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              (function() {
+                function getTheme() {
+                  const stored = localStorage.getItem('theme');
+                  if (stored && ['light', 'dark', 'system'].includes(stored)) {
+                    if (stored === 'system') {
+                      return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+                    }
+                    return stored;
+                  }
+                  return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+                }
+                
+                const theme = getTheme();
+                document.documentElement.classList.toggle('dark', theme === 'dark');
+              })();
+            `,
+          }}
+        />
+      </head>
       <body className="antialiased">
         <Providers>
           {children}
