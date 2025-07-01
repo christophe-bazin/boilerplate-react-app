@@ -27,8 +27,14 @@ dist-ssr
 # Env files
 .env
 .env.*
+!.env.example
 
-# Vite
+# Next.js
+.next/
+out/
+*.tsbuildinfo
+
+# Vite (legacy)
 .vite
 
 # Supabase
