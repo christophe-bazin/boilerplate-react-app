@@ -1,39 +1,50 @@
 # Instructions GitHub Copilot
 
 ## Stack technique
-- Next.js 14+ + App Router
-- React 18
+- Next.js 14+ avec App Router
+- React 18 + TypeScript
 - Tailwind CSS v3
 - Supabase (auth + database)
 - react-i18next (FR/EN)
-- TypeScript ready
 
 ## Conventions de code
 - Composants en PascalCase
 - Hooks customs avec préfixe "use"
-- Fichiers en camelCase
+- Fichiers en camelCase ou kebab-case
 - Utiliser les hooks React modernes (useState, useEffect, etc.)
+- Extensions .tsx pour les composants TypeScript
 
 ## Structure des composants
-- Imports React en premier
+- Imports React en premier (optionnel avec Next.js 14)
 - Puis les libs externes  
 - Puis les imports locaux
 - Export default à la fin
 - Ne pas laisser d'imports vides ou inutilisés
 
 ## Next.js App Router
-- App Router (pas Pages Router)
+- Utiliser App Router exclusivement (pas Pages Router)
 - Variables d'env : NEXT_PUBLIC_SUPABASE_URL, NEXT_PUBLIC_SUPABASE_ANON_KEY
-- Client Components : auth, hooks, i18n (avec 'use client')
-- Server Components : pages statiques
+- 'use client' obligatoire pour : hooks, états, événements, contextes React
+- Server Components par défaut pour les pages et layouts
 - Route groups : (auth) pour auth, (protected) pour pages protégées
-- Utiliser next/link au lieu de react-router-dom
-- Utiliser next/navigation (useRouter, redirect) pour la navigation
+- Utiliser next/link et next/navigation (useRouter, redirect, notFound)
+- Layouts imbriqués pour structurer l'application
+
+## Architecture App Router
+- app/ : Pages et layouts Next.js
+- app/layout.tsx : Layout racine avec métadonnées
+- app/page.tsx : Page d'accueil
+- app/(auth)/ : Route group pour l'authentification
+- app/(protected)/ : Route group pour les pages protégées
+- src/ : Code source (composants, hooks, utils)
+- Providers centralisés dans src/components/providers/Providers.tsx
 
 ## Styling
-- Utiliser Tailwind uniquement
+- Utiliser Tailwind CSS uniquement
 - Responsive first (mobile-first)
 - Classes utilitaires plutôt que CSS custom
+- Dark mode géré par Tailwind CSS
+- Styles globaux dans src/styles/global.css
 
 ## Data management
 - Utiliser les hooks customs pour la logique métier
