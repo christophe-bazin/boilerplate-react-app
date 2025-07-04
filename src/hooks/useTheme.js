@@ -17,6 +17,7 @@ export function useTheme() {
   const [theme, setTheme] = useState('system'); // Current theme setting
   const [resolvedTheme, setResolvedTheme] = useState('light'); // Actual applied theme
   const [isClient, setIsClient] = useState(false); // Track if we're on the client side
+  const [isLoading, setIsLoading] = useState(true); // Track loading state
 
   // Get system theme preference (client-side only)
   const getSystemTheme = useCallback(() => {
@@ -104,6 +105,8 @@ export function useTheme() {
     setIsClient(true);
     
     const initTheme = async () => {
+      setIsLoading(true);
+      
       let themeToUse = loadTheme();
       
       // If user is authenticated, try to load from Supabase
@@ -127,6 +130,7 @@ export function useTheme() {
       
       setTheme(themeToUse);
       applyTheme(themeToUse);
+      setIsLoading(false);
     };
 
     initTheme();
@@ -153,7 +157,8 @@ export function useTheme() {
     setTheme: setThemeValue,
     isSystemDark: isClient ? getSystemTheme() === 'dark' : false,
     themes: ['light', 'dark', 'system'],
-    isClient // Expose client-side status
+    isClient, // Expose client-side status
+    isLoading // Expose loading state
   };
 }
 

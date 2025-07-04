@@ -15,7 +15,7 @@ import { useTranslation } from 'react-i18next';
 // Local imports
 import { useTheme } from '../../hooks/useTheme';
 function ThemeToggle({ className = '' }) {
-  const { theme, setTheme, themes } = useTheme();
+  const { theme, setTheme, themes, isClient, isLoading } = useTheme();
   const { t } = useTranslation('common');
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef(null);
@@ -31,6 +31,13 @@ function ThemeToggle({ className = '' }) {
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
+
+  // Don't render theme toggle during SSR or loading
+  if (!isClient || isLoading) {
+    return (
+      <div className={`w-10 h-10 rounded-lg bg-gray-100 dark:bg-gray-800 animate-pulse ${className}`} />
+    );
+  }
 
   const handleThemeChange = (newTheme) => {
     setTheme(newTheme);

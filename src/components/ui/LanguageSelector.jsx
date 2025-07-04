@@ -16,8 +16,15 @@ import { useLanguage } from '../../hooks/useLanguage';
 
 function LanguageSelector({ className = '' }) {
   const { t } = useTranslation('common');
-  const { currentLanguage, changeLanguage, isLoading } = useLanguage();
+  const { currentLanguage, changeLanguage, isLoading, isClient } = useLanguage();
   const [isOpen, setIsOpen] = useState(false);
+
+  // Don't render language selector during SSR
+  if (!isClient) {
+    return (
+      <div className={`w-16 h-10 rounded-lg bg-gray-100 dark:bg-gray-800 animate-pulse ${className}`} />
+    );
+  }
 
   const languages = [
     { code: 'fr', name: 'Français', flag: '🇫🇷' },
