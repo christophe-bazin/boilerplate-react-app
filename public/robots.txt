@@ -1,0 +1,13 @@
+# Next.js Boilerplate - Robots.txt
+User-agent: *
+Allow: /
+
+# Sitemap location
+Sitemap: /sitemap.xml
+
+# Block admin/auth pages from indexing
+Disallow: /dashboard
+Disallow: /profile
+Disallow: /sign-in
+Disallow: /sign-up
+Disallow: /reset-password

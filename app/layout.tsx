@@ -7,8 +7,30 @@ import '../src/styles/global.css';
 import { Providers } from '../src/components/providers/Providers';
 
 export const metadata = {
-  title: 'SaaS Boilerplate',
-  description: 'Modern SaaS boilerplate with Next.js, Supabase and Tailwind CSS',
+  title: 'Next.js SaaS Boilerplate',
+  description: 'Modern SaaS boilerplate with Next.js 14, Supabase, Tailwind CSS, and i18n',
+  keywords: ['Next.js', 'SaaS', 'Boilerplate', 'Supabase', 'Tailwind CSS', 'TypeScript'],
+  authors: [{ name: 'SaaS Team' }],
+  creator: 'Next.js SaaS Boilerplate',
+  robots: 'index, follow',
+  manifest: '/manifest.json',
+  icons: {
+    icon: '/favicon.svg',
+    shortcut: '/favicon.svg',
+    apple: '/favicon.svg',
+  },
+  openGraph: {
+    type: 'website',
+    locale: 'fr_FR',
+    title: 'Next.js SaaS Boilerplate',
+    description: 'Modern SaaS boilerplate with Next.js 14, Supabase, and Tailwind CSS',
+    siteName: 'Next.js SaaS Boilerplate',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Next.js SaaS Boilerplate',
+    description: 'Modern SaaS boilerplate with Next.js 14, Supabase, and Tailwind CSS',
+  },
 };
 
 export default function RootLayout({

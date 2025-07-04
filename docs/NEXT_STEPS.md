@@ -36,6 +36,9 @@ Transformer ce boilerplate Next.js en une **plateforme de création rapide de Sa
   - useTheme.js: Améliorer protection `window.matchMedia` 
   - ThemeToggle.jsx: Optimiser `document.addEventListener`
   - Ajouter commentaires `// SSR-safe` pour patterns validés
+- [ ] **Générer sitemap.xml automatiquement**
+  - Utiliser `next-sitemap` ou génération statique
+  - Configurer pour toutes les pages publiques
 
 ### 1.2 Configuration Production
 - [ ] **Variables d'environnement production**
@@ -43,10 +46,12 @@ Transformer ce boilerplate Next.js en une **plateforme de création rapide de Sa
   - Variables Supabase production
   - Configuration domaine
 
-- [ ] **Performance & SEO**
-  - Optimisation images Next.js
-  - Métadonnées dynamiques
-  - Sitemap et robots.txt
+- [x] **Performance & SEO**
+  - ✅ Métadonnées dynamiques optimisées (OpenGraph, Twitter Cards)
+  - ✅ Sitemap et robots.txt configurés
+  - ✅ Manifest.json pour PWA
+  - ✅ Favicon SVG moderne
+  - [ ] Optimisation images Next.js avec next/image
 
 **Livrable**: Application déployée et accessible
 
@@ -282,7 +287,7 @@ CLI:
 
 ## 🚀 Quick Wins (Prochains 7 jours)
 
-1. **Fixer le build production** (Jour 1-2)
+1. **✅ Fixer le build production** (Jour 1-2) - TERMINÉ
 2. **Déployer sur Vercel** (Jour 3)
 3. **Créer structure monorepo** (Jour 4-5)
 4. **Extraire premier composant en package** (Jour 6-7)
