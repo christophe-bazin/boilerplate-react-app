@@ -100,3 +100,19 @@
 - Commits fréquents avec messages courts et précis
 - Messages en anglais
 - Utiliser `git commit --amend` pour les corrections/améliorations mineures
+
+## Gestion du Backlog
+- **Emplacement** : Toutes les tâches du projet sont documentées dans `docs/BACKLOG.md`
+- **Sélection des tâches** : Prioriser les tâches marquées 🔴 P0 (Critique) ou 🟠 P1 (Priorité haute)
+- **Processus d'implémentation** :
+  1. Lire les détails et critères d'acceptation dans `docs/BACKLOG.md`
+  2. Créer un plan d'implémentation si la tâche est complexe
+  3. Implémenter la tâche en suivant tous les standards de code ci-dessus
+  4. Tester l'implémentation (`npm run type-check`, `npm run build`)
+  5. Commit avec le format : `[type-tâche]: [TASK-XXX] [description]`
+     - Exemple : `feat: [TASK-032] add reset password for magic link accounts`
+     - Exemple : `fix: [TASK-004] migrate all components to TypeScript`
+  6. Mettre à jour le statut de la tâche dans le backlog si nécessaire
+- **Stratégie de commit** : Un commit par tâche terminée
+- **Types de tâches** : Utiliser les types de commit conventionnels (feat, fix, refactor, docs, etc.)
+- **Références** : Toujours inclure le numéro TASK-XXX dans le message de commit pour la traçabilité
