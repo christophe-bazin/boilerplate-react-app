@@ -109,17 +109,19 @@
 - **Test**: `npm run test`
 
 ## Backlog Management
-- **Location**: All project tasks are documented in `docs/BACKLOG.md`
+- **Location**: Individual task files in `docs/tasks/` directory
+- **Overview**: General roadmap in `docs/BACKLOG.md`
 - **Task Selection**: Choose tasks marked as 🔴 P0 (Critical) or 🟠 P1 (High Priority) first
 - **Implementation Process**:
-  1. Read task details and acceptance criteria in `docs/BACKLOG.md`
+  1. Read task file `docs/tasks/TASK-XXX.md` for full details and acceptance criteria
   2. Create implementation plan if task is complex
   3. Implement the task following all coding standards above
   4. Test the implementation (`npm run type-check`, `npm run build`)
   5. Commit with format: `[task-type]: [TASK-XXX] [description]`
      - Example: `feat: [TASK-032] add reset password for magic link accounts`
      - Example: `fix: [TASK-004] migrate all components to TypeScript`
-  6. Update task status in backlog if needed
+  6. **Delete the task file** when implementation is completed
+- **Task Creation**: Use `docs/tasks/NEXT_TASK_NUMBER.txt` for next available number
 - **Commit Strategy**: One commit per completed task
 - **Task Types**: Use conventional commit types (feat, fix, refactor, docs, etc.)
 - **References**: Always include TASK-XXX number in commit message for traceability
