@@ -102,19 +102,11 @@
 - Utiliser `git commit --amend` pour les corrections/améliorations mineures
 
 ## Gestion du Backlog
-- **Emplacement** : Fichiers de tâches individuels dans le répertoire `docs/tasks/`
-- **Vue d'ensemble** : Roadmap générale dans `docs/BACKLOG.md`
-- **Sélection des tâches** : Prioriser les tâches marquées 🔴 P0 (Critique) ou 🟠 P1 (Priorité haute)
-- **Processus d'implémentation** :
-  1. Lire le fichier de tâche `docs/tasks/TASK-XXX.md` pour les détails complets et critères d'acceptation
-  2. Créer un plan d'implémentation si la tâche est complexe
-  3. Implémenter la tâche en suivant tous les standards de code ci-dessus
-  4. Tester l'implémentation (`npm run type-check`, `npm run build`)
-  5. Commit avec le format : `[type-tâche]: [TASK-XXX] [description]`
-     - Exemple : `feat: [TASK-032] add reset password for magic link accounts`
-     - Exemple : `fix: [TASK-004] migrate all components to TypeScript`
-  6. **Supprimer le fichier de tâche** une fois l'implémentation terminée
-- **Création de tâches** : Utiliser `docs/tasks/NEXT_TASK_NUMBER.txt` pour le prochain numéro disponible
-- **Stratégie de commit** : Un commit par tâche terminée
-- **Types de tâches** : Utiliser les types de commit conventionnels (feat, fix, refactor, docs, etc.)
-- **Références** : Toujours inclure le numéro TASK-XXX dans le message de commit pour la traçabilité
+### Prendre une tâche
+1. S'appuyer sur les guidelines définies dans la configuration notion-ai-tasks
+2. Créer une branche selon le type : `git checkout -b feat/nom-tache` ou `git checkout -b fix/nom-tache`
+3. Tester l'implémentation
+t### Créer une tâche
+- S'appuyer sur les guidelines définies dans la configuration notion-ai-tasks
+### Modifier une tâche
+- S'appuyer sur les guidelines définies dans la configuration notion-ai-tasks

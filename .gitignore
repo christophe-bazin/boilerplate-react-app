@@ -62,3 +62,6 @@ coverage/
 # Build and deploy
 build/
 out/
+
+# Other
+notion-tasks.config.json
