@@ -330,21 +330,32 @@
 
 ---
 
-## 🎯 **PROCHAINES ACTIONS** (Mise à jour post-audit)
+## 🎯 **PROCHAINES ACTIONS** (Système modulaire activé)
 
-**✅ AUDIT COMPLETED - Code Quality: 95% ✅**
+**✅ MIGRATION VERS SYSTÈME MODULAIRE ✅**
+
+> **📁 Nouvelles tâches**: Voir répertoire `docs/tasks/` pour fichiers individuels  
+> **🔄 Migration en cours**: Tâches BACKLOG.md → fichiers individuels progressivement
+
+### 🔥 **Priorités immédiates** (Fichiers individuels créés)
 
 1. **~~🔴 TASK-001~~** : ✅ SSR protection parfaite - DONE
-2. **🔴 TASK-002** : Sitemap automatique
-3. **🟠 TASK-003** : Variables env production  
-4. **🟠 TASK-004** : 🔥 **PRIORITY** Migration vers TypeScript complet
+2. **🔴 [TASK-002](tasks/TASK-002.md)** : Sitemap automatique
+3. **🟠 [TASK-003](tasks/TASK-003.md)** : Variables env production  
+4. **🟠 [TASK-004](tasks/TASK-004.md)** : 🔥 **PRIORITY** Migration vers TypeScript complet
 5. **~~🟠 TASK-005~~** : ✅ Images Next.js - Pas nécessaire pour l'instant
-6. **🟠 TASK-006** : Setup Turborepo
+6. **🟠 [TASK-006](tasks/TASK-006.md)** : Setup Turborepo
 
-**🔒 NOUVELLES PRIORITÉS AUTHENTIFICATION:**
+### 🔒 **Authentification** (Fichiers individuels créés)
 7. **🟠 [TASK-032](tasks/TASK-032.md)** : 🔥 **PRIORITY** Reset Password pour Magic Link
 8. **🟠 [TASK-033](tasks/TASK-033.md)** : UX création compte existant
 9. **🟠 [TASK-034](tasks/TASK-034.md)** : Implémentation MFA (Multi-Factor Authentication)
+
+### 📋 **Autres tâches importantes**
+- **🟡 [TASK-018](tasks/TASK-018.md)** : Intégration Stripe/LemonSqueezy
+- **🟡 [TASK-029](tasks/TASK-029.md)** : Tests automatisés
+
+> **Note**: Les autres tâches seront migrées vers `docs/tasks/` au fur et à mesure. Consulter ce fichier pour le détail des tâches non encore migrées.
 
 **📊 AUDIT FINDINGS SUMMARY:**
 - **SSR/Performance**: Excellent (100% browser API protection)
