@@ -6,7 +6,8 @@
 'use client';
 
 import { useAuthContext } from '../../src/contexts/AuthContext';
-import { redirect } from 'next/navigation';
+import { useRouter } from 'next/navigation';
+import { useEffect } from 'react';
 import { TopBar } from '../../src/components/layout';
 
 export default function AuthLayout({
@@ -15,6 +16,13 @@ export default function AuthLayout({
   children: React.ReactNode;
 }) {
   const { user, loading } = useAuthContext();
+  const router = useRouter();
+  
+  useEffect(() => {
+    if (!loading && user) {
+      router.replace('/dashboard');
+    }
+  }, [user, loading, router]);
   
   // Show loading state while auth is being determined
   if (loading) {
@@ -25,9 +33,13 @@ export default function AuthLayout({
     );
   }
   
-  // Redirect logged users to dashboard
+  // Don't render content if user is authenticated (will redirect)
   if (user) {
-    redirect('/dashboard');
+    return (
+      <div className="flex justify-center items-center h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+      </div>
+    );
   }
   
   return (

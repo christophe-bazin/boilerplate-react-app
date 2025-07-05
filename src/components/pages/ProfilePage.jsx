@@ -12,7 +12,7 @@ import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 
 // Local imports
-import { useAuthContext, withLoadingProtection } from '../../contexts/AuthContext';
+import { useAuthContext } from '../../contexts/AuthContext';
 import { usePasswordValidation } from '../../hooks/usePasswordValidation';
 import { useLanguage } from '../../hooks/useLanguage';
 import { translateAuthError } from '../../lib/errorTranslation';
@@ -447,5 +447,4 @@ function ProfilePage() {
   );
 }
 
-// Export with loading protection to prevent showing "Access denied" during auth state loading
-export default withLoadingProtection(ProfilePage);
+export default ProfilePage;

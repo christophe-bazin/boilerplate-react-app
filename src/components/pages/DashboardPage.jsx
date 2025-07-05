@@ -9,8 +9,9 @@
 import { useTranslation } from 'react-i18next';
 
 // Local imports
-import { useAuthContext, withLoadingProtection } from '../../contexts/AuthContext';
-function DashboardPage() {
+import { useAuthContext } from '../../contexts/AuthContext';
+
+export default function DashboardPage() {
   const { t } = useTranslation('dashboard');
   const { user } = useAuthContext();
 
@@ -28,6 +29,3 @@ function DashboardPage() {
     </div>
   );
 }
-
-// Export with loading protection to prevent showing user email flickering
-export default withLoadingProtection(DashboardPage);

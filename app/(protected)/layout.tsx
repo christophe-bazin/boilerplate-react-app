@@ -6,7 +6,8 @@
 'use client';
 
 import { useAuthContext } from '../../src/contexts/AuthContext';
-import { redirect } from 'next/navigation';
+import { useRouter } from 'next/navigation';
+import { useEffect } from 'react';
 import { TopBar } from '../../src/components/layout';
 
 export default function ProtectedLayout({
@@ -15,6 +16,13 @@ export default function ProtectedLayout({
   children: React.ReactNode;
 }) {
   const { user, loading } = useAuthContext();
+  const router = useRouter();
+  
+  useEffect(() => {
+    if (!loading && !user) {
+      router.replace('/sign-in');
+    }
+  }, [user, loading, router]);
   
   // Show loading state while auth is being determined
   if (loading) {
@@ -25,9 +33,13 @@ export default function ProtectedLayout({
     );
   }
   
-  // Redirect non-authenticated users to sign in
+  // Don't render content if user is not authenticated (will redirect)
   if (!user) {
-    redirect('/sign-in');
+    return (
+      <div className="flex justify-center items-center h-screen bg-white dark:bg-gray-900">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+      </div>
+    );
   }
   
   return (
