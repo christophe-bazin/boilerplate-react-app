@@ -292,17 +292,78 @@
   - [ ] Bundle analysis et optimisation
   - [ ] Service Worker pour PWA
 
+### 🟠 P1 - Améliorations Authentification
+
+#### **TASK-032**: Amélioration Reset Password pour comptes Magic Link
+- **Type**: Feature
+- **Description**: Permettre la réinitialisation de mot de passe pour les comptes créés via Magic Link
+- **Problem**: Actuellement, resetPassword ne renvoie rien pour les comptes sans mot de passe
+- **Implementation**:
+  - [ ] Détecter si le compte a été créé en Magic Link (pas de mot de passe)
+  - [ ] Permettre l'envoi d'un reset password même sans mot de passe existant
+  - [ ] Ajouter UI appropriée pour "Définir un mot de passe" vs "Réinitialiser"
+  - [ ] Messages d'erreur/succès adaptés selon le contexte
+- **Acceptance Criteria**:
+  - [ ] Un utilisateur Magic Link peut définir son premier mot de passe
+  - [ ] Interface différenciée selon l'état du compte
+  - [ ] Gestion d'erreurs appropriée
+
+#### **TASK-033**: Amélioration UX création de compte existant
+- **Type**: Security & UX
+- **Description**: Améliorer le feedback lors de tentative de création avec email existant
+- **Problem**: Message de succès même si le compte existe déjà (comportement sécurisé mais UX confuse)
+- **Implementation**:
+  - [ ] Analyser les bonnes pratiques de sécurité (ne pas révéler l'existence d'emails)
+  - [ ] Créer un message alternatif plus approprié
+  - [ ] Implémenter un flow différent pour comptes existants
+  - [ ] Considérer un message générique + email de notification
+- **Security Requirements**:
+  - [ ] Ne pas révéler l'existence d'emails dans la base
+  - [ ] Respecter les bonnes pratiques OWASP
+  - [ ] Éviter l'énumération d'utilisateurs
+- **Acceptance Criteria**:
+  - [ ] UX moins confuse pour les utilisateurs
+  - [ ] Sécurité maintenue (pas de leak d'informations)
+  - [ ] Messages cohérents entre sign-up et sign-in
+
+#### **TASK-034**: Implémentation Multi-Factor Authentication (MFA)
+- **Type**: Security Feature
+- **Description**: Ajouter l'authentification à deux facteurs pour renforcer la sécurité
+- **Implementation**:
+  - [ ] Rechercher les options MFA disponibles avec Supabase
+  - [ ] Implémenter TOTP (Time-based One-Time Password) avec Google Authenticator
+  - [ ] Ajouter interface de configuration MFA dans le profil
+  - [ ] Codes de récupération (backup codes)
+  - [ ] Flow de connexion avec MFA
+  - [ ] Option SMS/Email comme alternative (si supporté)
+- **UI/UX Requirements**:
+  - [ ] Page configuration MFA dans le profil utilisateur
+  - [ ] QR Code pour configuration TOTP
+  - [ ] Interface de saisie du code lors de la connexion
+  - [ ] Gestion des codes de récupération
+  - [ ] Option désactivation MFA (avec confirmation)
+- **Security Requirements**:
+  - [ ] Codes TOTP valides selon RFC 6238
+  - [ ] Codes de récupération sécurisés et uniques
+  - [ ] Rate limiting sur les tentatives MFA
+  - [ ] Logging des événements MFA
+- **Acceptance Criteria**:
+  - [ ] Utilisateur peut activer/désactiver MFA
+  - [ ] Connexion requiert MFA si activé
+  - [ ] Codes de récupération fonctionnels
+  - [ ] Interface intuitive et accessible
+
 ### 🟢 P3 - Developer Experience
 
-#### **TASK-032**: Storybook setup
+#### **TASK-035**: Storybook setup
 - **Type**: Tool
 - **Description**: Playground pour composants UI
 
-#### **TASK-033**: ESLint/Prettier optimisation
+#### **TASK-036**: ESLint/Prettier optimisation
 - **Type**: Tool
 - **Description**: Rules strictes + auto-fix
 
-#### **TASK-034**: Husky + lint-staged
+#### **TASK-037**: Husky + lint-staged
 - **Type**: Git
 - **Description**: Pre-commit hooks qualité
 
@@ -332,6 +393,11 @@
 4. **🟠 TASK-004** : 🔥 **PRIORITY** Migration vers TypeScript complet
 5. **~~🟠 TASK-005~~** : ✅ Images Next.js - Pas nécessaire pour l'instant
 6. **🟠 TASK-006** : Setup Turborepo
+
+**🔒 NOUVELLES PRIORITÉS AUTHENTIFICATION:**
+7. **🟠 TASK-032** : 🔥 **PRIORITY** Reset Password pour Magic Link
+8. **🟠 TASK-033** : UX création compte existant
+9. **🟠 TASK-034** : Implémentation MFA (Multi-Factor Authentication)
 
 **📊 AUDIT FINDINGS SUMMARY:**
 - **SSR/Performance**: Excellent (100% browser API protection)
