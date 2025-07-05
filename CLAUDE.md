@@ -14,6 +14,7 @@
 - **Folders**: kebab-case (ex: `sign-in/`, `reset-password/`)
 - **Utility files**: camelCase (ex: `errorTranslation.js`)
 - **Export files**: always `index.js` to avoid compilation errors
+- **Markdown files**: UPPERCASE (ex: `README.md`, `CLAUDE.md`)
 
 ## TypeScript
 - Use `.tsx` for all React components
@@ -103,6 +104,6 @@
 
 ## Commands
 - **Lint**: `npm run lint`
-- **Type check**: `npm run typecheck`
+- **Type check**: `npm run type-check`
 - **Build**: `npm run build`
 - **Test**: `npm run test`
