@@ -7,12 +7,20 @@
 - Supabase (auth + database)
 - react-i18next (FR/EN)
 
-## Conventions de code
-- Composants en PascalCase
-- Hooks customs avec préfixe "use"
-- Fichiers en camelCase ou kebab-case
-- Utiliser les hooks modernes (useState, useEffect, etc.)
-- Extensions .tsx pour les composants TypeScript
+## Conventions de nommage
+- **Composants** : PascalCase (ex: `UserDropdown.tsx`)
+- **Hooks customs** : camelCase avec préfixe "use" (ex: `useAuth.js`)
+- **Pages/Layouts** : camelCase (ex: `page.tsx`, `layout.tsx`)
+- **Dossiers** : kebab-case (ex: `sign-in/`, `reset-password/`)
+- **Fichiers utilitaires** : camelCase (ex: `errorTranslation.js`)
+- **Fichiers d'export** : toujours `index.js` pour éviter les erreurs de compilation
+
+## TypeScript
+- Utiliser `.tsx` pour tous les composants React
+- Utiliser `.ts` pour les utilitaires et helpers
+- Layouts et pages App Router en `.tsx`
+- Fichiers d'export (`index.js`) restent en `.js` pour la compatibilité
+- Typer correctement tous les props et états
 
 ## Structure des composants
 - Imports React en premier (optionnel avec Next.js 14)
@@ -20,6 +28,15 @@
 - Puis les imports locaux
 - Export default à la fin
 - Ne pas laisser d'imports vides ou inutilisés
+
+## Code quality
+- Commentaires toujours en anglais
+- Commentaire de présentation obligatoire en début de fichier
+- Commentaires pour découper les sections d'un script
+- Autres commentaires uniquement si nécessaires pour clarifier la logique
+- Code propre et concis
+- Pas de données sensibles dans le code
+- Utiliser les hooks modernes (useState, useEffect, etc.)
 
 ## Next.js App Router
 - Utiliser App Router exclusivement (pas Pages Router)
@@ -60,20 +77,18 @@
 - Éviter le props drilling avec `user={user}` - le context gère tout
 - L'état loading global est géré par les layouts App Router + protections locales
 
-## Code quality
-- Commentaires toujours en anglais
-- Commentaire de présentation obligatoire en début de fichier
-- Commentaires pour découper les sections d'un script
-- Autres commentaires uniquement si nécessaires pour clarifier la logique
-- Code propre et concis
-- Pas de données sensibles dans le code
-
 ## Internationalisation (i18n)
 - Utiliser react-i18next pour tous les textes utilisateur
 - Importer `useTranslation` et utiliser `const { t } = useTranslation('namespace')`
 - Tous les textes affichés doivent utiliser `t('key')` (pas de fallbacks)
 - Organiser les traductions par namespace (auth, common, etc.)
 - Maintenir les fichiers de traduction dans `src/locales/fr/` et `src/locales/en/`
+
+## SSR/Performance
+- Protéger les accès window/document dans les hooks avec des vérifications typeof
+- Éviter les warnings SSR en production
+- Utiliser next/image pour toutes les images
+- Optimiser les composants pour le rendu côté serveur
 
 ## Maintenance du projet
 - README.md : Maintenir les étapes d'installation et la description du projet
