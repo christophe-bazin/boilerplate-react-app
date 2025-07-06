@@ -29,6 +29,7 @@ function SignUp() {
   const [email, setEmail] = useState('');
   const [error, setError] = useState('');
   const [success, setSuccess] = useState(false);
+  const [showAccountExistsFlow, setShowAccountExistsFlow] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [useMagicLink, setUseMagicLink] = useState(true); // Magic link by default
   
@@ -45,7 +46,10 @@ function SignUp() {
 
   // Handle magic link submission
   const handleMagicLinkSubmit = async (email) => {
-    return await signUpWithMagicLink(email);
+    // Magic link signup - always succeeds for security reasons
+    const result = await signUpWithMagicLink(email);
+    // Don't set showAccountExistsFlow here, let MagicLinkForm handle it via onAccountExists
+    return result;
   };
 
   // Handle password form submission
@@ -75,6 +79,12 @@ function SignUp() {
             error.code === 'weak_password' ||
             error.code === 'password_requirements_not_met') {
           handleSupabaseError(error);
+        } else if (error.message.includes('User already registered')) {
+          // Show account exists flow instead of error
+          setShowAccountExistsFlow(true);
+          // Clear form
+          setEmail('');
+          resetValidation();
         } else {
           const translatedError = translateAuthError(error.message, t);
           setError(translatedError);
@@ -100,7 +110,42 @@ function SignUp() {
           mode="signup"
           loading={loading}
           onToggleMode={() => setUseMagicLink(false)}
+          onAccountExists={() => setShowAccountExistsFlow(true)}
         />
+      ) : showAccountExistsFlow ? (
+        // Account exists flow - security-first approach
+        <div className="w-full p-8 bg-white dark:bg-secondary-800 rounded-xl shadow-xl border border-secondary-100 dark:border-secondary-700">
+          <div className="text-center">
+            <div className="w-16 h-16 mx-auto mb-4 bg-blue-100 dark:bg-blue-900/20 rounded-full flex items-center justify-center">
+              <svg className="w-8 h-8 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+              </svg>
+            </div>
+            <h3 className="text-2xl font-bold text-secondary-900 dark:text-white mb-2">
+              {t('signUp.accountExistsTitle')}
+            </h3>
+            <p className="text-secondary-600 dark:text-secondary-400 mb-6">
+              {t('signUp.accountExistsMessage')}
+            </p>
+            <div className="flex flex-col gap-3">
+              <Link
+                href="/sign-in"
+                className="inline-block px-6 py-3 bg-primary-600 hover:bg-primary-700 text-white rounded-lg transition-colors font-medium"
+              >
+                {t('signUp.accountExistsSignIn')}
+              </Link>
+              <button
+                onClick={() => {
+                  setShowAccountExistsFlow(false);
+                  setUseMagicLink(true);
+                }}
+                className="text-primary-600 dark:text-primary-400 hover:text-primary-800 dark:hover:text-primary-300 hover:underline text-sm"
+              >
+                {t('signUp.accountExistsResend')}
+              </button>
+            </div>
+          </div>
+        </div>
       ) : success ? (
         // Success state for password signup
         <div className="w-full p-8 bg-white dark:bg-secondary-800 rounded-xl shadow-xl border border-secondary-100 dark:border-secondary-700">
@@ -177,7 +222,10 @@ function SignUp() {
           <div className="text-center">
             <button
               type="button"
-              onClick={() => setUseMagicLink(true)}
+              onClick={() => {
+                setUseMagicLink(true);
+                setShowAccountExistsFlow(false);
+              }}
               className="text-primary-600 dark:text-primary-400 hover:text-primary-800 dark:hover:text-primary-300 hover:underline text-sm"
             >
               {t('signUp.useMagicLink')}

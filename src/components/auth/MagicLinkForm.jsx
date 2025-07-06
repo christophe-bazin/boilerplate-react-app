@@ -12,7 +12,7 @@ import { useTranslation } from 'react-i18next';
 // Local imports
 import { translateAuthError } from '../../lib/errorTranslation';
 
-function MagicLinkForm({ onSubmit, mode = 'signin', loading, onToggleMode }) {
+function MagicLinkForm({ onSubmit, mode = 'signin', loading, onToggleMode, onAccountExists }) {
   const { t } = useTranslation('auth');
   const [email, setEmail] = useState('');
   const [error, setError] = useState('');
@@ -36,7 +36,12 @@ function MagicLinkForm({ onSubmit, mode = 'signin', loading, onToggleMode }) {
         const translatedError = translateAuthError(error.message, t);
         setError(translatedError);
       } else {
-        setSuccess(true);
+        // For signup mode, always show account exists flow for better UX
+        if (mode === 'signup' && onAccountExists) {
+          onAccountExists();
+        } else {
+          setSuccess(true);
+        }
       }
     } catch {
       setError(t('errors.unexpected'));
