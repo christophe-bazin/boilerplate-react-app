@@ -63,5 +63,9 @@ coverage/
 build/
 out/
 
+# Generated files
+public/robots.txt
+public/sitemap.xml
+
 # Other
 notion-tasks.config.json
