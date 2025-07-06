@@ -1,112 +1,125 @@
-# Instructions GitHub Copilot
+# Claude Code Instructions
 
-## Stack technique
-- Next.js 14+ avec App Router
+## Technical Stack
+- Next.js 14+ with App Router
 - TypeScript
 - Tailwind CSS v3
 - Supabase (auth + database)
 - react-i18next (FR/EN)
 
-## Conventions de nommage
-- **Composants** : PascalCase (ex: `UserDropdown.tsx`)
-- **Hooks customs** : camelCase avec préfixe "use" (ex: `useAuth.js`)
-- **Pages/Layouts** : camelCase (ex: `page.tsx`, `layout.tsx`)
-- **Dossiers** : kebab-case (ex: `sign-in/`, `reset-password/`)
-- **Fichiers utilitaires** : camelCase (ex: `errorTranslation.js`)
-- **Fichiers d'export** : toujours `index.js` pour éviter les erreurs de compilation
+## Naming Conventions
+- **Components**: PascalCase (ex: `UserDropdown.tsx`)
+- **Custom hooks**: camelCase with "use" prefix (ex: `useAuth.js`)
+- **Pages/Layouts**: camelCase (ex: `page.tsx`, `layout.tsx`)
+- **Folders**: kebab-case (ex: `sign-in/`, `reset-password/`)
+- **Utility files**: camelCase (ex: `errorTranslation.js`)
+- **Export files**: always `index.js` to avoid compilation errors
+- **Markdown files**: UPPERCASE (ex: `README.md`, `CLAUDE.md`)
 
 ## TypeScript
-- Utiliser `.tsx` pour tous les composants React
-- Utiliser `.ts` pour les utilitaires et helpers
-- Layouts et pages App Router en `.tsx`
-- Fichiers d'export (`index.js`) restent en `.js` pour la compatibilité
-- Typer correctement tous les props et états
+- Use `.tsx` for all React components
+- Use `.ts` for utilities and helpers
+- App Router layouts and pages in `.tsx`
+- Export files (`index.js`) stay in `.js` for compatibility
+- Properly type all props and states
 
-## Structure des composants
-- Imports React en premier (optionnel avec Next.js 14)
-- Puis les libs externes  
-- Puis les imports locaux
-- Export default à la fin
-- Ne pas laisser d'imports vides ou inutilisés
+## Component Structure
+- React imports first (optional with Next.js 14)
+- Then external libs
+- Then local imports
+- Default export at the end
+- No empty or unused imports
 
-## Code quality
-- Commentaires toujours en anglais
-- Commentaire de présentation obligatoire en début de fichier
-- Commentaires pour découper les sections d'un script
-- Autres commentaires uniquement si nécessaires pour clarifier la logique
-- Code propre et concis
-- Pas de données sensibles dans le code
-- Utiliser les hooks modernes (useState, useEffect, etc.)
+## Code Quality
+- Comments always in English
+- Mandatory presentation comment at start of file
+- Comments to break up script sections
+- Other comments only if necessary to clarify logic
+- Clean and concise code
+- No sensitive data in code
+- Use modern hooks (useState, useEffect, etc.)
 
 ## Next.js App Router
-- Utiliser App Router exclusivement (pas Pages Router)
-- Variables d'env : NEXT_PUBLIC_SUPABASE_URL, NEXT_PUBLIC_SUPABASE_ANON_KEY
-- 'use client' obligatoire pour : hooks, états, événements, contextes
-- Server Components par défaut pour les pages et layouts
-- Route groups : (auth) pour auth, (protected) pour pages protégées
-- Utiliser next/link et next/navigation (useRouter, redirect, notFound)
-- Layouts imbriqués pour structurer l'application
+- Use App Router exclusively (not Pages Router)
+- Environment variables: NEXT_PUBLIC_SUPABASE_URL, NEXT_PUBLIC_SUPABASE_ANON_KEY
+- 'use client' required for: hooks, states, events, contexts
+- Server Components by default for pages and layouts
+- Route groups: (auth) for auth, (protected) for protected pages
+- Use next/link and next/navigation (useRouter, redirect, notFound)
+- Nested layouts to structure the application
 
-## Architecture App Router
-- app/ : Pages et layouts Next.js
-- app/layout.tsx : Layout racine avec métadonnées
-- app/page.tsx : Page d'accueil
-- app/(auth)/ : Route group pour l'authentification
-- app/(protected)/ : Route group pour les pages protégées
-- src/ : Code source (composants, hooks, utils)
-- Providers centralisés dans src/components/providers/Providers.tsx
+## App Router Architecture
+- app/ : Next.js pages and layouts
+- app/layout.tsx : Root layout with metadata
+- app/page.tsx : Homepage
+- app/(auth)/ : Route group for authentication
+- app/(protected)/ : Route group for protected pages
+- src/ : Source code (components, hooks, utils)
+- Centralized providers in src/components/providers/Providers.tsx
 
 ## Styling
-- Utiliser Tailwind CSS uniquement
+- Use Tailwind CSS only
 - Responsive first (mobile-first)
-- Classes utilitaires plutôt que CSS custom
-- Dark mode géré par Tailwind CSS
-- Styles globaux dans src/styles/global.css
+- Utility classes rather than custom CSS
+- Dark mode managed by Tailwind CSS
+- Global styles in src/styles/global.css
 
-## Data management
-- Utiliser les hooks customs pour la logique métier
-- Gérer les états loading/error dans tous les appels async
-- Validation côté client ET serveur pour toutes les données
-- Utiliser Supabase pour l'auth et la base de données
+## Data Management
+- Use custom hooks for business logic
+- Handle loading/error states in all async calls
+- Client AND server validation for all data
+- Use Supabase for auth and database
 
 ## Authentication (AuthContext)
-- Utiliser `useAuthContext()` pour accéder à l'état d'authentification
-- Ne jamais utiliser directement `useAuth()` dans les composants
-- L'AuthContext centralise l'état auth dans toute l'application
-- Utiliser `withLoadingProtection()` HOC pour les composants sensibles
-- Éviter le props drilling avec `user={user}` - le context gère tout
-- L'état loading global est géré par les layouts App Router + protections locales
+- Use `useAuthContext()` to access authentication state
+- Never use `useAuth()` directly in components
+- AuthContext centralizes auth state throughout the application
+- Use `withLoadingProtection()` HOC for sensitive components
+- Avoid props drilling with `user={user}` - context handles everything
+- Global loading state managed by App Router layouts + local protections
 
-## Internationalisation (i18n)
-- Utiliser react-i18next pour tous les textes utilisateur
-- Importer `useTranslation` et utiliser `const { t } = useTranslation('namespace')`
-- Tous les textes affichés doivent utiliser `t('key')` (pas de fallbacks)
-- Organiser les traductions par namespace (auth, common, etc.)
-- Maintenir les fichiers de traduction dans `src/locales/fr/` et `src/locales/en/`
+## Internationalization (i18n)
+- Use react-i18next for all user texts
+- Import `useTranslation` and use `const { t } = useTranslation('namespace')`
+- All displayed texts must use `t('key')` (no fallbacks)
+- Organize translations by namespace (auth, common, etc.)
+- Maintain translation files in `src/locales/fr/` and `src/locales/en/`
 
 ## SSR/Performance
-- Protéger les accès window/document dans les hooks avec des vérifications typeof
-- Éviter les warnings SSR en production
-- Utiliser next/image pour toutes les images
-- Optimiser les composants pour le rendu côté serveur
+- Protect window/document access in hooks with typeof checks
+- Avoid SSR warnings in production
+- Use next/image for all images
+- Optimize components for server-side rendering
 
-## Maintenance du projet
-- README.md : Maintenir les étapes d'installation et la description du projet
-- package.json : Ajouter les nouveaux scripts et dépendances
-- database/setup.sql : Documenter les changements de schéma de base de données
-- .gitignore : Ajouter les nouveaux types de fichiers à ignorer
+## Project Maintenance
+- README.md: Maintain installation steps and project description
+- package.json: Add new scripts and dependencies
+- database/setup.sql: Document database schema changes
+- .gitignore: Add new types of files to ignore
 
 ## Git
-- Commits fréquents avec messages courts et précis
-- Messages en anglais
-- Utiliser `git commit --amend` pour les corrections/améliorations mineures
+- Frequent commits with short and precise messages
+- Messages in English
+- Use `git commit --amend` for minor corrections/improvements
 
-## Gestion du Backlog
-### Prendre une tâche
-1. S'appuyer sur les guidelines définies dans la configuration notion-ai-tasks
-2. Créer une branche selon le type : `git checkout -b feat/nom-tache` ou `git checkout -b fix/nom-tache`
-3. Tester l'implémentation
-t### Créer une tâche
-- S'appuyer sur les guidelines définies dans la configuration notion-ai-tasks
-### Modifier une tâche
-- S'appuyer sur les guidelines définies dans la configuration notion-ai-tasks
+## Commands
+- **Lint**: `npm run lint`
+- **Type check**: `npm run type-check`
+- **Build**: `npm run build`
+- **Test**: `npm run test`
+
+## Backlog Management
+### Taking a task (notion-ai-tasks workflow)
+1. `npx notion-ai-tasks get <task-id>` (extract task-id from Notion URL)
+2. Create a branch based on task type: `git checkout -b feat/task-name` or `git checkout -b fix/task-name`
+3. `npx notion-ai-tasks update <task-id> -s "In Progress"`
+4. Use EXACT todos from Notion task content (don't create your own)
+5. Implement following technical conventions in this CLAUDE.md
+6. Update todos during development: `npx notion-ai-tasks update-todo <task-id> "todo text" -c true`
+7. Test the implementation
+8. Commit with format: `[task-type]: [task-name] [description]`
+9. `npx notion-ai-tasks update <task-id> -s "Done"`
+### Creating a task
+- Rely on guidelines defined in notion-ai-tasks configuration
+### Modifying a task
+- Rely on guidelines defined in notion-ai-tasks configuration
