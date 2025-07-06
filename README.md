@@ -58,6 +58,7 @@ cp .env.example .env.local
 
 Create a `.env.local` file:
 ```env
+SITE_URL=http://localhost:3000
 NEXT_PUBLIC_SUPABASE_URL=https://your-project-ref.supabase.co
 NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key-here
 ```
@@ -156,8 +157,13 @@ Centralized app settings used in all environments:
 ```
 
 #### **Environment Variables** - `.env.local` (local), `.env.production` (prod)
-Supabase connection settings:
+Required environment variables:
 ```env
+# App Configuration
+SITE_URL=http://localhost:3000  # For development
+# SITE_URL=https://your-domain.com  # For production
+
+# Supabase Configuration
 NEXT_PUBLIC_SUPABASE_URL=https://your-project-ref.supabase.co
 NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key-here
 ```
@@ -186,6 +192,7 @@ Update `src/config/app.json` for app name and logo, then modify translation file
 2. **Execute** `database/setup.sql` in SQL editor
 3. **Set Environment Variables**
    ```env
+   SITE_URL=https://your-domain.com
    NEXT_PUBLIC_SUPABASE_URL=https://your-project-ref.supabase.co
    NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key-here
    ```
