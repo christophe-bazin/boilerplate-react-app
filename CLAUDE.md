@@ -109,11 +109,16 @@
 - **Test**: `npm run test`
 
 ## Backlog Management
-### Taking a task
-1. Rely on guidelines defined in notion-ai-tasks configuration
-2. Create a branch based on type: `git checkout -b feat/task-name` or `git checkout -b fix/task-name`
-3. Test the implementation
-4. Commit with format: `[task-type]: [task-name] [description]`
+### Taking a task (notion-ai-tasks workflow)
+1. `npx notion-ai-tasks get <task-id>` (extract task-id from Notion URL)
+2. Create a branch based on task type: `git checkout -b feat/task-name` or `git checkout -b fix/task-name`
+3. `npx notion-ai-tasks update <task-id> -s "In Progress"`
+4. Use EXACT todos from Notion task content (don't create your own)
+5. Implement following technical conventions in this CLAUDE.md
+6. Update todos during development: `npx notion-ai-tasks update-todo <task-id> "todo text" -c true`
+7. Test the implementation
+8. Commit with format: `[task-type]: [task-name] [description]`
+9. `npx notion-ai-tasks update <task-id> -s "Done"`
 ### Creating a task
 - Rely on guidelines defined in notion-ai-tasks configuration
 ### Modifying a task
